@@ -3,14 +3,14 @@
 // https://github.com/commitizen/cz-cli
 
 var CWD = process.cwd();
-// var config = require(CWD + '/cz-config');
-var config = require('./cz-config');
+var config = require(CWD + '/.cz-config');
+// var config = require('./cz-config');
 var wrap = require('./node_modules/word-wrap/index');
 
 
 var types = config.types;
 var scopes = config.scopes;
-var fixScopes = config.fixScopes;
+var scopeOverrides = config.scopeOverrides;
 
 
 function buildCommit(answers) {
@@ -81,9 +81,11 @@ module.exports = {
         name: 'scope',
         message: '\nDenote the SCOPE of this change:\n',
         choices: function(answers) {
-          if (answers.type === 'fix') {
-            return fixScopes;
+
+          if (scopeOverrides[answers.type]) {
+            return scopeOverrides[answers.type];
           }
+
           return scopes;
         },
         when: isWip
