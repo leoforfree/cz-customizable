@@ -21,8 +21,13 @@ Steps:
   "path": "node_modules/cz-customizable"
   }
   ```
-- copy the file `.cz-config-EXAMPLE.js` to the root of your project.
-- rename the file to `.cz-config.js` and modify the options and scopes as you like.
+
+- Optionall step - Override the commit types and scopes:
+  - copy the file `.cz-config-EXAMPLE.js` to the root of your project.
+  - rename the file to `.cz-config.js` and modify the options and scopes as you like.
+
+* if you don't override, this plugin will use the contents of file `node_modules/cz-customizable/.cz-config-EXAMPLE.js`
+
 
 From now on, instead of `git commit` you type `git cz` and let the tool do the work for you.
 
