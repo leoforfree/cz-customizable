@@ -34,6 +34,7 @@ From now on, instead of `git commit` you type `git cz` and let the tool do the w
 Hopefully this will help you to have consistent commit messages and have a fully automated deployemnt without any human intervention.
 
 Related tools:
+- https://github.com/commitizen/cz-cli
 - https://github.com/stevemao/conventional-recommended-bump
 - https://github.com/semantic-release/semantic-release
 
