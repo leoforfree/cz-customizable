@@ -3,8 +3,14 @@
 // https://github.com/commitizen/cz-cli
 
 var CWD = process.cwd();
-var config = require(CWD + '/.cz-config');
-// var config = require('./cz-config');
+
+try {
+  //try to find a customized version for the project
+  var config = require(CWD + '/.cz-config');
+} catch (err) {
+  var config = require('./cz-config-EXAMPLE.js');
+}
+
 var wrap = require('./node_modules/word-wrap/index');
 
 
