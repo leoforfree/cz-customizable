@@ -1,6 +1,6 @@
 {
   "name": "cz-customizable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
   "scripts": {
