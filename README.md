@@ -37,12 +37,11 @@ Related tools:
 - https://github.com/stevemao/conventional-recommended-bump
 - https://github.com/semantic-release/semantic-release
 
-Part of the [commitizen](https://github.com/commitizen/cz-cli) family. Prompts for [conventional changelog](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md) standard.
+
+It prompts for [conventional changelog](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md) standard.
 
 
 Please feel free to send any any suggestion.
 
-TODO:
-- unit tests
-- set up semantic releases
+
 
