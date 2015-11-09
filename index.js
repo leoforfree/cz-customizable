@@ -8,7 +8,7 @@ try {
   //try to find a customized version for the project
   var config = require(CWD + '/.cz-config');
 } catch (err) {
-  var config = require('./cz-config-EXAMPLE.js');
+  var config = require('./cz-config-EXAMPLE');
 }
 
 var wrap = require('./node_modules/word-wrap/index');
@@ -118,7 +118,7 @@ module.exports = {
         name: 'confirmCommit',
         message: function(answers) {
           var SEP = '###--------------------------------------------------------###';
-          console.info(`\n${SEP}\n` + buildCommit(answers) + `\n${SEP}\n`);
+          console.info('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
           return 'Are you sure you want to proceed with the commit above?';
         }
       }
@@ -129,7 +129,6 @@ module.exports = {
       }
 
       var commitStr = buildCommit(answers);
-      // console.info('>>>>>>>>>>>>> DRY RUN <<<<<<<<<<<<<<<<');
       commit(commitStr);
     });
   }
