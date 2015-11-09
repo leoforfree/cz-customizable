@@ -1,26 +1,26 @@
 {
-  "name": "cz-conventional-changelog",
+  "name": "cz-customizable",
   "version": "0.0.0-semantically-released.0",
-  "description": "Commitizen adapter following the conventional-changelog format.",
+  "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
   "scripts": {
     "commit": "git-cz",
     "test": "echo 'Tests need to be setup!'",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
-  "homepage": "https://github.com/commitizen/cz-conventional-changelog",
+  "homepage": "https://github.com/leonardoanalista/cz-customizable",
   "repository": {
     "type": "git",
-    "url": "https://github.com/commitizen/cz-conventional-changelog.git"
+    "url": "https://github.com/leonardoanalista/cz-customizable.git"
   },
-  "author": "Jim Cummins <jimthedev@gmail.com>",
+  "author": "Jim Cummins <leonardoanalista@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "word-wrap": "^1.0.3"
+    "word-wrap": "1.0.3"
   },
   "devDependencies": {
     "commitizen": "1.0.5",
-    "semantic-release": "^4.3.5"
+    "semantic-release": "4.3.5"
   },
   "czConfig": {
     "path": "./"
