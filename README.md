@@ -25,7 +25,7 @@ Steps:
 - Optionall step - Override the commit types and scopes:
   - copy the file `.cz-config-EXAMPLE.js` to the root of your project.
   - rename the file to `.cz-config.js` and modify the options and scopes as you like.
-  - Now create a symlink to your config file: (I am sorry about this I am working on getting around the `require(../../.cz-config)` in a nice way. If you know a better way please let me know. I definitelly want to learn how to do in a nice way)
+  - Now create a symlink to your config file: (I am sorry about this I am working on getting around the `require(../../.cz-config)` in a nice way. If you know a better way please let me know. I definitelly want to learn how to do this better)
     - Linux```ln -nsf ../../.cz-config.js node_modules/cz-customizable/.cz-config.js```
     - Windows: ```mklink /D node_modules\cz-customizable\.cz-config.js ..\..\.cz-config.js```
 
