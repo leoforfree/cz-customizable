@@ -1,10 +1,9 @@
 {
   "name": "cz-customizable",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
   "scripts": {
-    "commit": "git-cz",
     "test": "echo 'Tests need to be setup!'",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
@@ -13,14 +12,14 @@
     "type": "git",
     "url": "https://github.com/leonardoanalista/cz-customizable.git"
   },
-  "author": "Jim Cummins <leonardoanalista@gmail.com>",
+  "author": "Leonardo Correa <leonardoanalista@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "word-wrap": "1.0.3"
   },
   "devDependencies": {
-    "commitizen": "1.0.5",
-    "semantic-release": "4.3.5"
+    "commitizen": "2.4.4",
+    "semantic-release": "6.0.3"
   },
   "czConfig": {
     "path": "./"

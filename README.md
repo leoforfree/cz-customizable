@@ -26,8 +26,8 @@ Steps:
   - copy the file `.cz-config-EXAMPLE.js` to the root of your project.
   - rename the file to `.cz-config.js` and modify the options and scopes as you like.
   - Now create a symlink to your config file: (I am sorry about this I am working on getting around the `require(../../.cz-config)` in a nice way. If you know a better way please let me know. I definitelly want to learn how to do this better)
-    - Linux```ln -nsf ../../.cz-config.js node_modules/cz-customizable/.cz-config.js```
-    - Windows: ```mklink /D node_modules\cz-customizable\.cz-config.js ..\..\.cz-config.js```
+    - Linux ```ln -nsf ../../.cz-config.js node_modules/cz-customizable/.cz-config.js```
+    - Windows (something like this): ```mklink /D node_modules\cz-customizable\.cz-config.js ..\..\.cz-config.js```
 
 - you should commit your `.cz-config.js` file to git.
 * if you don't override, this plugin will use the contents of file `node_modules/cz-customizable/.cz-config-EXAMPLE.js`
@@ -46,7 +46,7 @@ Related tools:
 It prompts for [conventional changelog](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md) standard.
 
 
-Please feel free to send any any suggestion.
+Please feel free to send any suggestion.
 
 
 

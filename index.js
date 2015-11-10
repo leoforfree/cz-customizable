@@ -1,11 +1,11 @@
 
-// Inspired by: https://github.com/commitizen/cz-conventional-changelog/blob/master/index.js
-// https://github.com/commitizen/cz-cli
+// Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
 
 var CWD = process.cwd();
 
 try {
-  //try to find a customized version for the project
+  // Yry to find a customized version for the project
+  // This file is a symlink to the real one usually placed in the root of your project.
   var config = require('./.cz-config');
 } catch (err) {
   var config = require('./cz-config-EXAMPLE');
