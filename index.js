@@ -6,7 +6,7 @@ var CWD = process.cwd();
 
 try {
   //try to find a customized version for the project
-  var config = require(CWD + '/.cz-config');
+  var config = require('./.cz-config');
 } catch (err) {
   var config = require('./cz-config-EXAMPLE');
 }
