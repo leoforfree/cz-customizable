@@ -4,8 +4,9 @@
   "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'Tests need to be setup!'",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
+    "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
+    "semantic-releaseXXX": "semantic-release pre && npm publish && semantic-release post"
   },
   "homepage": "https://github.com/leonardoanalista/cz-customizable",
   "repository": {
@@ -15,10 +16,11 @@
   "author": "Leonardo Correa <leonardoanalista@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "word-wrap": "1.0.3"
+    "word-wrap": "1.1.0"
   },
   "devDependencies": {
-    "commitizen": "2.4.4",
+    "jasmine-node": "1.14.5",
+    "rewire": "2.4.0",
     "semantic-release": "6.0.3"
   },
   "czConfig": {

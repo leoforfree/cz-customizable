@@ -1,23 +1,21 @@
 
 // Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
 
-var CWD = process.cwd();
-
-try {
-  // Yry to find a customized version for the project
-  // This file is a symlink to the real one usually placed in the root of your project.
-  var config = require('./.cz-config');
-} catch (err) {
-  var config = require('./cz-config-EXAMPLE');
-}
-
 var wrap = require('./node_modules/word-wrap/index');
 
 
-var types = config.types;
-var scopes = config.scopes;
-var scopeOverrides = config.scopeOverrides;
-
+function readConfigFile(){
+  var config;
+  try {
+    // Yry to find a customized version for the project
+    // This file is a symlink to the real one usually placed in the root of your project.
+    config = require('./.cz-config');
+  } catch (err) {
+    config = require('./cz-config-EXAMPLE');
+  }
+  return config;
+}
+var config = readConfigFile();
 
 function buildCommit(answers) {
   var maxLineWidth = 100;
@@ -48,7 +46,7 @@ function buildCommit(answers) {
   var head = (answers.type + addScope(answers.scope) + addSubject(answers.subject)).slice(0, maxLineWidth);
 
   // Wrap these lines at 100 characters
-  var body = wrap(answers.body, wrapOptions);
+  var body = wrap(answers.body, wrapOptions) || '';
   body = body.split('|').join('\n');
 
   var footer = wrap(answers.footer, wrapOptions);
@@ -64,22 +62,27 @@ function buildCommit(answers) {
   return result;
 }
 
-var isWip = function(answers) {
-  return answers.type !== 'WIP';
+var isNotWip = function(answers) {
+  return answers.type.toLowerCase() !== 'wip';
+}
+
+var logger = function(arguments) {
+  console.info(arguments);
 }
 
 module.exports = {
 
   prompter: function(cz, commit) {
 
-    console.log('\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
+    // console.info('\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
+    logger('\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
 
     cz.prompt([
       {
         type: 'list',
         name: 'type',
         message: '\nSelect the type of change that you\'re committing:',
-        choices: types
+        choices: config.types
       },
 
       {
@@ -88,13 +91,13 @@ module.exports = {
         message: '\nDenote the SCOPE of this change:\n',
         choices: function(answers) {
 
-          if (scopeOverrides[answers.type]) {
-            return scopeOverrides[answers.type];
+          if (config.scopeOverrides[answers.type]) {
+            return config.scopeOverrides[answers.type];
           }
 
-          return scopes;
+          return config.scopes;
         },
-        when: isWip
+        when: isNotWip
       },
       {
         type: 'input',
@@ -111,20 +114,20 @@ module.exports = {
         type: 'input',
         name: 'footer',
         message: '\nList any BREAKING CHANGES or ISSUES CLOSED by this change (optional):\n',
-        when: isWip
+        when: isNotWip
       },
       {
         type: 'confirm',
         name: 'confirmCommit',
         message: function(answers) {
           var SEP = '###--------------------------------------------------------###';
-          console.info('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
+          logger('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
           return 'Are you sure you want to proceed with the commit above?';
         }
       }
     ], function(answers) {
       if (!answers.confirmCommit) {
-        console.info('Commit has been canceled.');
+        logger('Commit has been canceled.');
         return;
       }
 
