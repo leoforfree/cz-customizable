@@ -20,10 +20,6 @@
   },
   "devDependencies": {
     "jasmine-node": "1.14.5",
-    "rewire": "2.4.0",
-    "semantic-release": "6.0.3"
-  },
-  "czConfig": {
-    "path": "./"
+    "rewire": "2.4.0"
   }
 }
