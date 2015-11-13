@@ -2,9 +2,12 @@
 
 This is a customizable Commitizen plugin. You can specify the commit types, scopes and override scopes for specific types.
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+
 Steps:
 - install commitizen case you don't have it: `npm install -g commitizen`
-- install the cz-customizable: `npm install cz-customizable`
+- install the cz-customizable: `npm install cz-customizable --save-dev`
 - configure `commitizen` to use `cz-customizable` as plugin. There are a few ways to do this.
   - Option 1: change your `package.json`
   ```
