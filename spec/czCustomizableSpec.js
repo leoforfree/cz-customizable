@@ -71,6 +71,15 @@ describe('cz-customizable', function(){
     //question 6, last one
     expect(getQuestion(6).name).toEqual('confirmCommit');
     expect(getQuestion(6).type).toEqual('confirm');
+
+
+    var answers = {
+      confirmCommit: true,
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature'
+    };
+    expect(getQuestion(6).message(answers)).toMatch('Are you sure');
   });
 
   it("should call not call commit() function if there is no final confirmation", function() {
@@ -97,6 +106,36 @@ describe('cz-customizable', function(){
 
     commitAnswers(answers);
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nmy footer');
+  });
+
+  it("should call commit() function with commit message with the minimal required fields", function() {
+    module.prompter(cz, commit);
+    var commitAnswers = cz.prompt.mostRecentCall.args[1];
+
+    var answers = {
+      confirmCommit: true,
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature'
+    };
+
+    commitAnswers(answers);
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature');
+  });
+
+  it("should suppress scope when commit type is WIP", function() {
+    module.prompter(cz, commit);
+    var commitAnswers = cz.prompt.mostRecentCall.args[1];
+
+    var answers = {
+      confirmCommit: true,
+      type: 'WIP',
+      // scope: 'myScope',
+      subject: 'this is my worl-in-progress'
+    };
+
+    commitAnswers(answers);
+    expect(commit).toHaveBeenCalledWith('WIP: this is my worl-in-progress');
   });
 
   it("should truncate first line if number of characters is higher than 200", function() {

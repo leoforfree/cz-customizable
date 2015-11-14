@@ -4,6 +4,7 @@ This is a customizable Commitizen plugin. You can specify the commit types, scop
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
+[![Build Status](https://travis-ci.org/leonardoanalista/cz-customizable.svg)](https://travis-ci.org/leonardoanalista/cz-customizable)
 
 Steps:
 - install commitizen case you don't have it: `npm install -g commitizen`

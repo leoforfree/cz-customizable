@@ -28,17 +28,12 @@ function buildCommit(answers) {
   };
 
   function addScope(scope) {
-    if (!scope) return '';
+    if (!scope) return ': '; //it could be type === WIP. So there is no scope
 
     return '(' + scope.trim() + '): '
   }
 
   function addSubject(subject) {
-    if (!subject) return '';
-
-    if(!answers.scope)
-      return ': ' + subject.trim();
-
     return subject.trim();
   }
 
