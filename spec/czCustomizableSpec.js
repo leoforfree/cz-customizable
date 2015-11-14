@@ -26,12 +26,6 @@ describe('cz-customizable', function(){
   });
 
 
-  it("should test pass", function() {
-    expect(1).toEqual(1);
-    module.prompter(cz, commit);
-    expect(cz.prompt).toHaveBeenCalled();
-  });
-
   it("should call cz.prompt with questions ", function() {
     module.prompter(cz, commit);
 
