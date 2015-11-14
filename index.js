@@ -3,19 +3,29 @@
 
 var wrap = require('./node_modules/word-wrap/index');
 
+var SYMLINK_CONFIG_NAME = 'cz-config';
 
+
+function logger(arguments) {
+  console.info(arguments);
+}
+
+/* istanbul ignore next */
 function readConfigFile(){
+  // this function is replaced in test.
   var config;
   try {
-    // Yry to find a customized version for the project
+    // Try to find a customized version for the project
     // This file is a symlink to the real one usually placed in the root of your project.
-    config = require('./.cz-config');
+    config = require('./' + SYMLINK_CONFIG_NAME);
   } catch (err) {
+    logger('You don\'t have a file "' + SYMLINK_CONFIG_NAME + '" in your porject root directory. We will use the default configuration file inside this directory: ' + __dirname);
+    logger('\n\nYou should run "npm run postinstall" to fix it up.');
     config = require('./cz-config-EXAMPLE');
   }
   return config;
 }
-var config = readConfigFile();
+
 
 function buildCommit(answers) {
   var maxLineWidth = 100;
@@ -61,15 +71,12 @@ var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
 }
 
-var logger = function(arguments) {
-  console.info(arguments);
-}
 
 module.exports = {
 
   prompter: function(cz, commit) {
+    var config = readConfigFile();
 
-    // console.info('\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
     logger('\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
 
     cz.prompt([

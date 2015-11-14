@@ -2,8 +2,8 @@
 describe('cz-customizable', function(){
 
   var module, cz, commit;
-
   var rewire = require('rewire');
+
   beforeEach(function(){
     module = rewire('../index.js');
 
@@ -11,13 +11,29 @@ describe('cz-customizable', function(){
       console: {
         info: function(){}
       },
-      'config': {
-        types: [{value: 'feat', name: 'feat: my feat'}],
-        scopes: [{name: 'myScope'}],
-        scopeOverrides: {
-          fix: [{name: 'fixOverride'}]
+
+      // logger: function(){console.info('>>> zzzzzzzzzzzzzzzzzzzzzz')},
+      readConfigFile: function() {
+        return {
+          types: [{value: 'feat', name: 'feat: my feat'}],
+          scopes: [{name: 'myScope'}],
+          scopeOverrides: {
+            fix: [{name: 'fixOverride'}]
+          }
         }
-      }
+      },
+
+      // 'require': function (a){
+      //   console.info('>>> RRRRRRRRRRRR: ', a);
+      // },
+
+      // 'config': {
+      //   types: [{value: 'feat', name: 'feat: my feat'}],
+      //   scopes: [{name: 'myScope'}],
+      //   scopeOverrides: {
+      //     fix: [{name: 'fixOverride'}]
+      //   }
+      // }
 
     });
 
@@ -124,7 +140,6 @@ describe('cz-customizable', function(){
     var answers = {
       confirmCommit: true,
       type: 'WIP',
-      // scope: 'myScope',
       subject: 'this is my worl-in-progress'
     };
 

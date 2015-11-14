@@ -8,7 +8,8 @@
     "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "postinstall": "node ./postinstall.js"
   },
   "homepage": "https://github.com/leonardoanalista/cz-customizable",
   "repository": {
