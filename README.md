@@ -5,7 +5,7 @@ This is a customizable Commitizen plugin. You can specify the commit types, scop
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Build Status](https://travis-ci.org/leonardoanalista/cz-customizable.svg)](https://travis-ci.org/leonardoanalista/cz-customizable) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![codecov.io](https://codecov.io/github/leonardoanalista/cz-customizable/coverage.svg?branch=master)](https://codecov.io/github/leonardoanalista/cz-customizable?branch=master) [![npm monthly downloads](https://img.shields.io/npm/dm/cz-customizable.svg?style=flat-square)](https://www.npmjs.com/package/cz-customizable)
 
 
-Steps:
+## Steps:
 - install commitizen case you don't have it: `npm install -g commitizen`
 - install the cz-customizable: `npm install cz-customizable --save-dev`
 - configure `commitizen` to use `cz-customizable` as plugin. There are a few ways to do this.
@@ -34,7 +34,7 @@ From now on, instead of `git commit` you type `git cz` and let the tool do the w
 
 Hopefully this will help you to have consistent commit messages and have a fully automated deployemnt without any human intervention.
 
-Related tools:
+## Related tools:
 - https://github.com/commitizen/cz-cli
 - https://github.com/stevemao/conventional-recommended-bump
 - https://github.com/semantic-release/semantic-release
@@ -43,11 +43,11 @@ Related tools:
 It prompts for [conventional changelog](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md) standard.
 
 
-Troubleshooting: 
-- you can't see the file `.cz-config` in the root of your porject.
+## Troubleshooting: 
+### you can't see the file `.cz-config` in the root of your porject.
   - you can manually copy from `node_modules/cz-customizable/cz-config-EXAMPLE.js` to your project root (where your package.json is) and rename to `.cz-config.js`
 
-- you edited the contents of `.cz-config.js` but `git cz` still doesn't show your values
+### you edited the contents of `.cz-config.js` but `git cz` still doesn't show your values
   - probably the post install script didn't create the symlink properly.
     - Manual symlink creation:
       - copy the file `cz-config-EXAMPLE.js` to the root of your project.
