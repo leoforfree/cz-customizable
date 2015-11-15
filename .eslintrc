@@ -1,0 +1,32 @@
+{
+  "env": {
+    "node": true
+  },
+  "globals": {
+    "console": true,
+    "module": true
+  },
+  "rules": {
+    "strict": [2, "global"],
+    "quotes": [2, "single", "avoid-escape"],
+    "eqeqeq": 1,
+    "brace-style": 2,
+    "eol-last": 1,
+    "no-nested-ternary": 1,
+    "space-after-keywords": [1, "always"],
+    "space-before-blocks": [1, "always"],
+    "semi": 2,
+    "comma-dangle": [2, "never"],
+    "no-cond-assign": 2,
+    "valid-typeof": 2,
+    "no-unreachable": 2,
+    "no-func-assign": 2,
+    "no-extra-semi": 2,
+    "semi-spacing": [2, {"before": false, "after": true}],
+    "no-extra-boolean-cast": 2,
+    "no-empty": 2,
+    "no-dupe-keys": 2,
+    "no-dupe-args": 2,
+    "no-constant-condition": 2
+  }
+}

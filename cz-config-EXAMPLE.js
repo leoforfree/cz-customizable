@@ -1,3 +1,4 @@
+'use strict';
 
 module.exports = {
 
@@ -18,7 +19,7 @@ module.exports = {
     {name: 'accounts'},
     {name: 'admin'},
     {name: 'app'},
-    {name: 'build'},    
+    {name: 'build'},
     {name: 'others'}
   ],
 
@@ -32,4 +33,4 @@ module.exports = {
     ]
   }
 
-}
+};

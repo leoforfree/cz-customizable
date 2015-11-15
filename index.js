@@ -1,3 +1,4 @@
+'use strict';
 
 // Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
 
@@ -6,12 +7,13 @@ var wrap = require('./node_modules/word-wrap/index');
 var SYMLINK_CONFIG_NAME = 'cz-config';
 
 
-function logger(arguments) {
+// function logger(arguments) {
+function logger() {
   console.info(arguments);
 }
 
 /* istanbul ignore next */
-function readConfigFile(){
+function readConfigFile() {
   // this function is replaced in test.
   var config;
   try {
@@ -40,7 +42,7 @@ function buildCommit(answers) {
   function addScope(scope) {
     if (!scope) return ': '; //it could be type === WIP. So there is no scope
 
-    return '(' + scope.trim() + '): '
+    return '(' + scope.trim() + '): ';
   }
 
   function addSubject(subject) {
@@ -56,11 +58,11 @@ function buildCommit(answers) {
 
   var footer = wrap(answers.footer, wrapOptions);
 
-  var result = head
-  if(body) {
+  var result = head;
+  if (body) {
     result += '\n\n' + body;
   }
-  if(footer) {
+  if (footer) {
     result += '\n\n' + footer;
   }
 
@@ -69,7 +71,7 @@ function buildCommit(answers) {
 
 var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
-}
+};
 
 
 module.exports = {
@@ -92,11 +94,9 @@ module.exports = {
         name: 'scope',
         message: '\nDenote the SCOPE of this change:\n',
         choices: function(answers) {
-
           if (config.scopeOverrides[answers.type]) {
             return config.scopeOverrides[answers.type];
           }
-
           return config.scopes;
         },
         when: isNotWip
@@ -137,4 +137,4 @@ module.exports = {
       commit(commitStr);
     });
   }
-}
+};

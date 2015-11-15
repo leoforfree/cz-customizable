@@ -1,18 +1,19 @@
+'use strict';
 
-describe('cz-customizable', function(){
+
+describe('cz-customizable', function() {
 
   var module, cz, commit;
   var rewire = require('rewire');
 
-  beforeEach(function(){
+  beforeEach(function() {
     module = rewire('../index.js');
 
     module.__set__({
       console: {
-        info: function(){}
+        info: function() {}
       },
 
-      // logger: function(){console.info('>>> zzzzzzzzzzzzzzzzzzzzzz')},
       readConfigFile: function() {
         return {
           types: [{value: 'feat', name: 'feat: my feat'}],
@@ -20,21 +21,8 @@ describe('cz-customizable', function(){
           scopeOverrides: {
             fix: [{name: 'fixOverride'}]
           }
-        }
-      },
-
-      // 'require': function (a){
-      //   console.info('>>> RRRRRRRRRRRR: ', a);
-      // },
-
-      // 'config': {
-      //   types: [{value: 'feat', name: 'feat: my feat'}],
-      //   scopes: [{name: 'myScope'}],
-      //   scopeOverrides: {
-      //     fix: [{name: 'fixOverride'}]
-      //   }
-      // }
-
+        };
+      }
     });
 
     cz = {prompt: jasmine.createSpy()};
@@ -42,12 +30,12 @@ describe('cz-customizable', function(){
   });
 
 
-  it("should call cz.prompt with questions ", function() {
+  it('should call cz.prompt with questions', function() {
     module.prompter(cz, commit);
 
     var getQuestion = function(number) {
       return cz.prompt.mostRecentCall.args[0][number - 1];
-    }
+    };
 
     //question 1
     expect(getQuestion(1).name).toEqual('type');
@@ -92,7 +80,7 @@ describe('cz-customizable', function(){
     expect(getQuestion(6).message(answers)).toMatch('Are you sure');
   });
 
-  it("should call not call commit() function if there is no final confirmation", function() {
+  it('should call not call commit() function if there is no final confirmation', function() {
     module.prompter(cz, commit);
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
     var res = commitAnswers({});
@@ -101,7 +89,7 @@ describe('cz-customizable', function(){
     expect(commit).not.toHaveBeenCalled();
   });
 
-  it("should call commit() function with commit message when user confirms commit", function() {
+  it('should call commit() function with commit message when user confirms commit', function() {
     module.prompter(cz, commit);
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
 
@@ -118,7 +106,7 @@ describe('cz-customizable', function(){
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nmy footer');
   });
 
-  it("should call commit() function with commit message with the minimal required fields", function() {
+  it('should call commit() function with commit message with the minimal required fields', function() {
     module.prompter(cz, commit);
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
 
@@ -133,7 +121,7 @@ describe('cz-customizable', function(){
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature');
   });
 
-  it("should suppress scope when commit type is WIP", function() {
+  it('should suppress scope when commit type is WIP', function() {
     module.prompter(cz, commit);
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
 
@@ -147,7 +135,7 @@ describe('cz-customizable', function(){
     expect(commit).toHaveBeenCalledWith('WIP: this is my worl-in-progress');
   });
 
-  it("should truncate first line if number of characters is higher than 200", function() {
+  it('should truncate first line if number of characters is higher than 200', function() {
     module.prompter(cz, commit);
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
 
