@@ -5,7 +5,7 @@
   "scripts": {
     "eslint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
     "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
-    "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/ ",
+    "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/",
     "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "codecov.io": "0.1.6",
     "cz-conventional-changelog": "1.1.4",
-    "eslint": "^1.9.0",
+    "eslint": "1.9.0",
     "ghooks": "1.0.0",
     "istanbul": "0.4.0",
     "jasmine-node": "1.14.5",
