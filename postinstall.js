@@ -4,7 +4,7 @@ var path = require('path');
 var fs = require('fs');
 
 var SYM_LINK_LOCATION = './cz-config';
-var CZ_CONFIG_NAME = '.cz-config';
+var CZ_CONFIG_NAME = '.cz-config.js';
 var CZ_CONFIG_EXAMPLE_LOCATION = './cz-config-EXAMPLE.js';
 
 
