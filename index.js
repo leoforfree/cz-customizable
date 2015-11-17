@@ -3,14 +3,9 @@
 // Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
 
 var wrap = require('./node_modules/word-wrap/index');
-
 var SYMLINK_CONFIG_NAME = 'cz-config';
+var log = require('winston');
 
-
-// function logger(arguments) {
-function logger() {
-  console.info(arguments);
-}
 
 /* istanbul ignore next */
 function readConfigFile() {
@@ -21,8 +16,9 @@ function readConfigFile() {
     // This file is a symlink to the real one usually placed in the root of your project.
     config = require('./' + SYMLINK_CONFIG_NAME);
   } catch (err) {
-    logger('You don\'t have a file "' + SYMLINK_CONFIG_NAME + '" in your porject root directory. We will use the default configuration file inside this directory: ' + __dirname);
-    logger('\n\nYou should run "npm run postinstall" to fix it up.');
+    log.warn('You don\'t have a file "' + SYMLINK_CONFIG_NAME + '" in your porject root directory. We will use the default configuration file inside this directory: ' + __dirname);
+    log.warn('You should go to your "node_modules/cz-customizable" and run "npm run postinstall" to fix it up. Please report on Github if this doenst work.');
+
     config = require('./cz-config-EXAMPLE');
   }
   return config;
@@ -79,7 +75,7 @@ module.exports = {
   prompter: function(cz, commit) {
     var config = readConfigFile();
 
-    logger('\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
+    log.info('\n\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
 
     cz.prompt([
       {
@@ -123,18 +119,19 @@ module.exports = {
         name: 'confirmCommit',
         message: function(answers) {
           var SEP = '###--------------------------------------------------------###';
-          logger('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
+          log.info('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
           return 'Are you sure you want to proceed with the commit above?';
         }
       }
     ], function(answers) {
       if (!answers.confirmCommit) {
-        logger('Commit has been canceled.');
+        log.info('Commit has been canceled.');
         return;
       }
 
       var commitStr = buildCommit(answers);
       commit(commitStr);
+      // log.info('<<< this is dry run >>>');
     });
   }
 };

@@ -30,7 +30,8 @@
     "istanbul": "0.4.0",
     "jasmine-node": "1.14.5",
     "rewire": "2.4.0",
-    "semantic-release": "4.3.5"
+    "semantic-release": "4.3.5",
+    "winston": "2.1.0"
   },
   "config": {
     "commitizen": {
