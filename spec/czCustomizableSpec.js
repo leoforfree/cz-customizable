@@ -10,7 +10,8 @@ describe('cz-customizable', function() {
     module = rewire('../index.js');
 
     module.__set__({
-      console: {
+      // it mocks winston logging tool
+      log: {
         info: function() {}
       },
 
