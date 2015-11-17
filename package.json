@@ -20,7 +20,8 @@
   "author": "Leonardo Correa <leonardoanalista@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "word-wrap": "1.1.0"
+    "word-wrap": "1.1.0",
+    "winston": "2.1.0"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
@@ -30,8 +31,7 @@
     "istanbul": "0.4.0",
     "jasmine-node": "1.14.5",
     "rewire": "2.5.0",
-    "semantic-release": "4.3.5",
-    "winston": "2.1.0"
+    "semantic-release": "4.3.5"
   },
   "config": {
     "commitizen": {
