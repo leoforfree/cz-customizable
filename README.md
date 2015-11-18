@@ -8,8 +8,7 @@ This is a customizable Commitizen plugin. You can specify the commit types, scop
 ## Steps:
 - install commitizen case you don't have it: `npm install -g commitizen`
 - install the cz-customizable: `npm install cz-customizable --save-dev`
-- configure `commitizen` to use `cz-customizable` as plugin. There are a few ways to do this.
-  - Option 1: change your `package.json`
+- configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
   ```
   ...
   "config": {
@@ -18,15 +17,11 @@ This is a customizable Commitizen plugin. You can specify the commit types, scop
     }
   }
   ```
-  - Option 2: Create a file called `.cz.json`
-  ```
-  {
-  "path": "node_modules/cz-customizable"
-  }
-  ```
-- the `postinstall` script will automatically create a `.cz-config` in the root of your project. It also crates a symlink inside `node_modules/cz-customizable` to point to your config file.
+  
+- the `postinstall` script will automatically create a `.cz-config` in the root of your project *if it doesn't exsit*. It also creates a symlink inside `node_modules/cz-customizable` to point to your config file.
 
 - you should commit your `.cz-config.js` file to your git.
+
 * if you don't provide a config file, this adapter will use the contents of the default file `node_modules/cz-customizable/cz-config-EXAMPLE.js`
 
 
@@ -60,6 +55,7 @@ It prompts for [conventional changelog](https://github.com/ajoslin/conventional-
 ## CONTRIBUTING
 
 Please refer to the [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) and [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
+
 
 
 
