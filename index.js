@@ -74,6 +74,7 @@ module.exports = {
 
   prompter: function(cz, commit) {
     var config = readConfigFile();
+    config.scopeOverrides = config.scopeOverrides || {};
 
     log.info('\n\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
 
@@ -131,7 +132,6 @@ module.exports = {
 
       var commitStr = buildCommit(answers);
       commit(commitStr);
-      // log.info('<<< this is dry run >>>');
     });
   }
 };
