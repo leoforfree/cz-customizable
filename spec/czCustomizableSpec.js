@@ -170,57 +170,52 @@ describe('cz-customizable', function() {
 
 
 
+  describe('optional fixOverride', function() {
 
-//###############
-describe('optional fixOverride', function() {
+    beforeEach(function() {
+      module.__set__({
+        readConfigFile: function() {
+          return {
+            types: [{value: 'feat', name: 'feat: my feat'}],
+            scopes: [{name: 'myScope'}]
+          };
+        }
+      });
 
-  beforeEach(function() {
-    module.__set__({
-      readConfigFile: function() {
-        return {
-          types: [{value: 'feat', name: 'feat: my feat'}],
-          scopes: [{name: 'myScope'}]
-        };
-      }
+      cz = {prompt: jasmine.createSpy()};
+      commit = jasmine.createSpy();
     });
 
-    cz = {prompt: jasmine.createSpy()};
-    commit = jasmine.createSpy();
+
+    it('should call cz.prompt with questions', function() {
+      module.prompter(cz, commit);
+
+      var getQuestion = function(number) {
+        return cz.prompt.mostRecentCall.args[0][number - 1];
+      };
+
+      //question 1
+      expect(getQuestion(1).name).toEqual('type');
+      expect(getQuestion(1).type).toEqual('list');
+      expect(getQuestion(1).choices[0]).toEqual({value: 'feat', name: 'feat: my feat'});
+
+      //question 2
+      expect(getQuestion(2).name).toEqual('scope');
+      expect(getQuestion(2).choices({})[0]).toEqual({name: 'myScope'});
+      expect(getQuestion(2).choices({type: 'fix'})[0]).toEqual({name: 'myScope'}); //should override scope
+      expect(getQuestion(2).when({type: 'fix'})).toEqual(true);
+      expect(getQuestion(2).when({type: 'WIP'})).toEqual(false);
+      expect(getQuestion(2).when({type: 'wip'})).toEqual(false);
+
+      var answers = {
+        confirmCommit: true,
+        type: 'feat',
+        scope: 'myScope',
+        subject: 'create a new cool feature'
+      };
+      expect(getQuestion(6).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+    });
   });
-
-
-  it('should call cz.prompt with questions', function() {
-    module.prompter(cz, commit);
-
-    var getQuestion = function(number) {
-      return cz.prompt.mostRecentCall.args[0][number - 1];
-    };
-
-    //question 1
-    expect(getQuestion(1).name).toEqual('type');
-    expect(getQuestion(1).type).toEqual('list');
-    expect(getQuestion(1).choices[0]).toEqual({value: 'feat', name: 'feat: my feat'});
-
-    //question 2
-    expect(getQuestion(2).name).toEqual('scope');
-    expect(getQuestion(2).choices({})[0]).toEqual({name: 'myScope'});
-    expect(getQuestion(2).choices({type: 'fix'})[0]).toEqual({name: 'myScope'}); //should override scope
-    expect(getQuestion(2).when({type: 'fix'})).toEqual(true);
-    expect(getQuestion(2).when({type: 'WIP'})).toEqual(false);
-    expect(getQuestion(2).when({type: 'wip'})).toEqual(false);
-
-    var answers = {
-      confirmCommit: true,
-      type: 'feat',
-      scope: 'myScope',
-      subject: 'create a new cool feature'
-    };
-    expect(getQuestion(6).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
-  });
-});
-//###############
-
-
 
 
 });
