@@ -56,10 +56,11 @@ It prompts for [conventional changelog](https://github.com/ajoslin/conventional-
         - Linux ```ln -nsf ../../.cz-config.js node_modules/cz-customizable/.cz-config.js```
         - Windows (something like this): ```mklink /D node_modules\cz-customizable\.cz-config.js ..\..\.cz-config.js```
 
+
 ## CONTRIBUTING
 
 Please refer to the [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) and [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
 
 
 
-Please feel free to send any suggestion.
+Leonardo Correa
