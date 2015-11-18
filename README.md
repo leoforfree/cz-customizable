@@ -35,15 +35,15 @@ From now on, instead of `git commit` you type `git cz` and let the tool do the w
 Hopefully this will help you to have consistent commit messages and have a fully automated deployemnt without any human intervention.
 
 ## Related tools:
-- https://github.com/commitizen/cz-cli
-- https://github.com/stevemao/conventional-recommended-bump
-- https://github.com/semantic-release/semantic-release
+- (https://github.com/commitizen/cz-cli)
+- (https://github.com/stevemao/conventional-recommended-bump)
+- (https://github.com/semantic-release/semantic-release)
 
 
 It prompts for [conventional changelog](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md) standard.
 
 
-## Troubleshooting: 
+## Troubleshooting:
 ### you can't see the file `.cz-config` in the root of your porject.
   - you can manually copy from `node_modules/cz-customizable/cz-config-EXAMPLE.js` to your project root (where your package.json is) and rename to `.cz-config.js`
 
@@ -55,6 +55,11 @@ It prompts for [conventional changelog](https://github.com/ajoslin/conventional-
       - Now create a symlink to your config file:
         - Linux ```ln -nsf ../../.cz-config.js node_modules/cz-customizable/.cz-config.js```
         - Windows (something like this): ```mklink /D node_modules\cz-customizable\.cz-config.js ..\..\.cz-config.js```
+
+## CONTRIBUTING
+
+Please refer to the [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) and [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
+
 
 
 Please feel free to send any suggestion.
