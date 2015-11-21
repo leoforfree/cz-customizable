@@ -2,7 +2,7 @@
 
 // Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
 
-var wrap = require('./node_modules/word-wrap/index');
+var wrap = require('word-wrap');
 var SYMLINK_CONFIG_NAME = 'cz-config';
 var log = require('winston');
 
