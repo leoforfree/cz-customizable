@@ -31,6 +31,8 @@ module.exports = {
       {name: 'e2eTest'},
       {name: 'unitTest'}
     ]
-  }
+  },
+
+  allowBreakingChanges: ['feat', 'fix']
 
 };
