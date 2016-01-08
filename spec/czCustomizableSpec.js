@@ -57,6 +57,7 @@ describe('cz-customizable', function() {
     expect(getQuestion(3).type).toEqual('input');
     expect(getQuestion(3).message).toMatch(/IMPERATIVE tense description/);
     expect(getQuestion(3).validate()).toEqual(false); //mandatory question
+    expect(getQuestion(3).filter('Subject')).toEqual('subject');
 
     //question 4
     expect(getQuestion(4).name).toEqual('body');
