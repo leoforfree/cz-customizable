@@ -21,7 +21,8 @@ describe('cz-customizable', function() {
           scopes: [{name: 'myScope'}],
           scopeOverrides: {
             fix: [{name: 'fixOverride'}]
-          }
+          },
+          allowBreakingChanges: ['feat']
         };
       }
     });
@@ -62,14 +63,20 @@ describe('cz-customizable', function() {
     expect(getQuestion(4).type).toEqual('input');
 
     //question 5
-    expect(getQuestion(5).name).toEqual('footer');
+    expect(getQuestion(5).name).toEqual('breaking');
     expect(getQuestion(5).type).toEqual('input');
-    expect(getQuestion(5).when({type: 'fix'})).toEqual(true);
-    expect(getQuestion(5).when({type: 'WIP'})).toEqual(false);
+    expect(getQuestion(5).when({type: 'feat'})).toEqual(true);
+    expect(getQuestion(5).when({type: 'fix'})).toEqual(false);
 
-    //question 6, last one
-    expect(getQuestion(6).name).toEqual('confirmCommit');
-    expect(getQuestion(6).type).toEqual('confirm');
+    //question 6
+    expect(getQuestion(6).name).toEqual('footer');
+    expect(getQuestion(6).type).toEqual('input');
+    expect(getQuestion(6).when({type: 'fix'})).toEqual(true);
+    expect(getQuestion(6).when({type: 'WIP'})).toEqual(false);
+
+    //question 7, last one
+    expect(getQuestion(7).name).toEqual('confirmCommit');
+    expect(getQuestion(7).type).toEqual('confirm');
 
 
     var answers = {
@@ -78,10 +85,10 @@ describe('cz-customizable', function() {
       scope: 'myScope',
       subject: 'create a new cool feature'
     };
-    expect(getQuestion(6).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+    expect(getQuestion(7).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
   });
 
-  it('should call not call commit() function if there is no final confirmation', function() {
+  it('should not call commit() function if there is no final confirmation', function() {
     module.prompter(cz, commit);
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
     var res = commitAnswers({});
@@ -100,11 +107,12 @@ describe('cz-customizable', function() {
       scope: 'myScope',
       subject: 'create a new cool feature',
       body: '-line1|-line2',
+      breaking: 'breaking',
       footer: 'my footer'
     };
 
     commitAnswers(answers);
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nmy footer');
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nmy footer');
   });
 
   it('should call commit() function with commit message with the minimal required fields', function() {
@@ -129,11 +137,11 @@ describe('cz-customizable', function() {
     var answers = {
       confirmCommit: true,
       type: 'WIP',
-      subject: 'this is my worl-in-progress'
+      subject: 'this is my work-in-progress'
     };
 
     commitAnswers(answers);
-    expect(commit).toHaveBeenCalledWith('WIP: this is my worl-in-progress');
+    expect(commit).toHaveBeenCalledWith('WIP: this is my work-in-progress');
   });
 
   it('should truncate first line if number of characters is higher than 200', function() {
@@ -169,8 +177,7 @@ describe('cz-customizable', function() {
   });
 
 
-
-  describe('optional fixOverride', function() {
+  describe('optional fixOverride and allowBreakingChanges', function() {
 
     beforeEach(function() {
       module.__set__({
@@ -207,13 +214,19 @@ describe('cz-customizable', function() {
       expect(getQuestion(2).when({type: 'WIP'})).toEqual(false);
       expect(getQuestion(2).when({type: 'wip'})).toEqual(false);
 
+      //question 5
+      expect(getQuestion(5).name).toEqual('breaking');
+      expect(getQuestion(5).when({type: 'feat'})).toEqual(true);
+      expect(getQuestion(5).when({type: 'fix'})).toEqual(true);
+      expect(getQuestion(5).when({type: 'FIX'})).toEqual(true);
+
       var answers = {
         confirmCommit: true,
         type: 'feat',
         scope: 'myScope',
         subject: 'create a new cool feature'
       };
-      expect(getQuestion(6).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+      expect(getQuestion(7).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
     });
   });
 

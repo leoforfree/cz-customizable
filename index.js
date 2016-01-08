@@ -6,7 +6,6 @@ var wrap = require('word-wrap');
 var SYMLINK_CONFIG_NAME = 'cz-config';
 var log = require('winston');
 
-
 /* istanbul ignore next */
 function readConfigFile() {
   // this function is replaced in test.
@@ -16,14 +15,13 @@ function readConfigFile() {
     // This file is a symlink to the real one usually placed in the root of your project.
     config = require('./' + SYMLINK_CONFIG_NAME);
   } catch (err) {
-    log.warn('You don\'t have a file "' + SYMLINK_CONFIG_NAME + '" in your porject root directory. We will use the default configuration file inside this directory: ' + __dirname);
+    log.warn('You don\'t have a file "' + SYMLINK_CONFIG_NAME + '" in your project root directory. We will use the default configuration file inside this directory: ' + __dirname);
     log.warn('You should go to your "node_modules/cz-customizable" and run "npm run postinstall" to fix it up. Please report on Github if this doenst work.');
 
     config = require('./cz-config-EXAMPLE');
   }
   return config;
 }
-
 
 function buildCommit(answers) {
   var maxLineWidth = 100;
@@ -52,11 +50,15 @@ function buildCommit(answers) {
   var body = wrap(answers.body, wrapOptions) || '';
   body = body.split('|').join('\n');
 
+  var breaking = wrap(answers.breaking, wrapOptions);
   var footer = wrap(answers.footer, wrapOptions);
 
   var result = head;
   if (body) {
     result += '\n\n' + body;
+  }
+  if (breaking) {
+    result += '\n\n' + 'BREAKING CHANGE:\n' + breaking;
   }
   if (footer) {
     result += '\n\n' + footer;
@@ -68,7 +70,6 @@ function buildCommit(answers) {
 var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
 };
-
 
 module.exports = {
 
@@ -85,7 +86,6 @@ module.exports = {
         message: '\nSelect the type of change that you\'re committing:',
         choices: config.types
       },
-
       {
         type: 'list',
         name: 'scope',
@@ -105,14 +105,28 @@ module.exports = {
         validate: function(value) {
           return !!value;
         }
-      }, {
+      },
+      {
         type: 'input',
         name: 'body',
         message: '\nProvide a LONGER description of the change (optional). Use "|" to break new line:\n'
-      }, {
+      },
+      {
+        type: 'input',
+        name: 'breaking',
+        message: '\nList any BREAKING CHANGES (optional):\n',
+        when: function(answers) {
+          if (config.allowBreakingChanges) {
+            return config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0;
+          }
+
+          return true;
+        }
+      },
+      {
         type: 'input',
         name: 'footer',
-        message: '\nList any BREAKING CHANGES or ISSUES CLOSED by this change (optional):\n',
+        message: '\nList any ISSUES CLOSED by this change (optional):\n',
         when: isNotWip
       },
       {
