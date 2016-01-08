@@ -104,6 +104,9 @@ module.exports = {
         message: '\nWrite a SHORT, IMPERATIVE tense description of the change:\n',
         validate: function(value) {
           return !!value;
+        },
+        filter: function(value) {
+          return value.charAt(0).toLowerCase() + value.slice(1);
         }
       },
       {
