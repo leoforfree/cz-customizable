@@ -5,6 +5,9 @@
 var wrap = require('word-wrap');
 var SYMLINK_CONFIG_NAME = 'cz-config';
 var log = require('winston');
+var editor = require('editor');
+var temp = require('temp').track();
+var fs = require('fs');
 
 /* istanbul ignore next */
 function readConfigFile() {
@@ -164,8 +167,13 @@ module.exports = {
         when: isNotWip
       },
       {
-        type: 'confirm',
+        type: 'expand',
         name: 'confirmCommit',
+        choices: [
+          { key: 'y', name: 'Yes', value: 'yes' },
+          { key: 'n', name: 'Abort commit', value: 'no' },
+          { key: 'e', name: 'Edit message', value: 'edit' }
+        ],
         message: function(answers) {
           var SEP = '###--------------------------------------------------------###';
           log.info('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
@@ -173,13 +181,28 @@ module.exports = {
         }
       }
     ], function(answers) {
-      if (!answers.confirmCommit) {
+      if (answers.confirmCommit === 'edit') {
+        temp.open(null, function(err, info) {
+          /* istanbul ignore else */
+          if (!err) {
+            fs.write(info.fd, buildCommit(answers));
+            fs.close(info.fd, function(err) {
+              editor(info.path, function (code, sig) {
+                if (code === 0) {
+                  var commitStr = fs.readFileSync(info.path, { encoding: 'utf8' });
+                  commit(commitStr);
+                } else {
+                  log.info('Editor returned non zero value. Commit message was:\n' + buildCommit(answers));
+                }
+              });
+            });
+          }
+        });
+      } else if (answers.confirmCommit === 'yes') {
+        commit(buildCommit(answers));
+      } else {
         log.info('Commit has been canceled.');
-        return;
       }
-
-      var commitStr = buildCommit(answers);
-      commit(commitStr);
     });
   }
 };
