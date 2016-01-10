@@ -19,6 +19,9 @@
     "url": "https://github.com/leonardoanalista/cz-customizable.git"
   },
   "author": "Leonardo Correa <leonardoanalista@gmail.com>",
+  "contributors": [
+    "Aleksey Guryanov <gurianov@gmail.com>"
+  ],
   "license": "MIT",
   "dependencies": {
     "word-wrap": "1.1.0",
@@ -27,7 +30,6 @@
   "devDependencies": {
     "codecov.io": "0.1.6",
     "commitizen": "^2.4.6",
-    "cz-conventional-changelog": "1.1.4",
     "eslint": "1.9.0",
     "ghooks": "1.0.0",
     "istanbul": "0.4.0",
@@ -37,7 +39,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "."
     },
     "ghooks": {
       "pre-commit": "npm run eslint && npm run test"
