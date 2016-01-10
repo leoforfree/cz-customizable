@@ -89,7 +89,7 @@ module.exports = {
       {
         type: 'list',
         name: 'scope',
-        message: '\nDenote the SCOPE of this change:\n',
+        message: '\nDenote the SCOPE of this change (optional):\n',
         choices: function(answers) {
           var scopes = [];
           if (config.scopeOverrides[answers.type]) {
