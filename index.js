@@ -91,12 +91,43 @@ module.exports = {
         name: 'scope',
         message: '\nDenote the SCOPE of this change:\n',
         choices: function(answers) {
+          var scopes = [];
           if (config.scopeOverrides[answers.type]) {
-            return config.scopeOverrides[answers.type];
+            scopes = scopes.concat(config.scopeOverrides[answers.type]);
+          } else {
+            scopes = scopes.concat(config.scopes);
           }
-          return config.scopes;
+          if (config.allowCustomScopes || scopes.length === 0) {
+            scopes = scopes.concat([
+              new cz.Separator(),
+              { name: 'empty', value: false },
+              { name: 'custom', value: 'custom' }
+            ]);
+          }
+          return scopes;
         },
-        when: isNotWip
+        when: function(answers) {
+          var hasScope = false;
+          if (config.scopeOverrides[answers.type]) {
+            hasScope = !!(config.scopeOverrides[answers.type].length > 0);
+          } else {
+            hasScope = !!(config.scopes && (config.scopes.length > 0));
+          }
+          if (!hasScope) {
+            answers.scope = 'custom';
+            return false;
+          } else {
+            return isNotWip(answers);
+          }
+        }
+      },
+      {
+        type: 'input',
+        name: 'scope',
+        message: '\nDenote the SCOPE of this change:\n',
+        when: function(answers) {
+          return answers.scope === 'custom';
+        }
       },
       {
         type: 'input',
