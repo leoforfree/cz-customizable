@@ -2,26 +2,26 @@
 
 // Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
 
+var CZ_CONFIG_NAME = '.cz-config.js';
+var CZ_CONFIG_EXAMPLE_LOCATION = './cz-config-EXAMPLE.js';
 var wrap = require('word-wrap');
-var SYMLINK_CONFIG_NAME = 'cz-config';
+var findConfig = require('find-config');
 var log = require('winston');
 var editor = require('editor');
 var temp = require('temp').track();
 var fs = require('fs');
+var path = require('path');
 
 /* istanbul ignore next */
 function readConfigFile() {
   // this function is replaced in test.
-  var config;
-  try {
-    // Try to find a customized version for the project
-    // This file is a symlink to the real one usually placed in the root of your project.
-    config = require('./' + SYMLINK_CONFIG_NAME);
-  } catch (err) {
-    log.warn('You don\'t have a file "' + SYMLINK_CONFIG_NAME + '" in your project root directory. We will use the default configuration file inside this directory: ' + __dirname);
-    log.warn('You should go to your "node_modules/cz-customizable" and run "npm run postinstall" to fix it up. Please report on Github if this doenst work.');
+  var config = findConfig.require(CZ_CONFIG_NAME, {home: false});
+  if (!config) {
+    log.warn('Unable to find a config file "' + CZ_CONFIG_NAME + '". Default configuration would be used.');
+    log.warn('Copy and use it as template by running in a project root directory:\n      "cp '
+      + path.resolve(CZ_CONFIG_EXAMPLE_LOCATION) + ' ' + path.join('.', CZ_CONFIG_NAME) + '"');
 
-    config = require('./cz-config-EXAMPLE');
+    config = require(CZ_CONFIG_EXAMPLE_LOCATION);
   }
   return config;
 }
