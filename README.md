@@ -6,7 +6,7 @@ This is a customizable Commitizen plugin. You can specify the commit types, scop
 
 
 ## Steps:
-- install commitizen case you don't have it: `npm install -g commitizen`
+- install commitizen in case you don't have it: `npm install -g commitizen`
 - install the cz-customizable: `npm install cz-customizable --save-dev`
 - configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
   ```
@@ -18,9 +18,7 @@ This is a customizable Commitizen plugin. You can specify the commit types, scop
   }
   ```
   
-- the `postinstall` script will automatically create a `.cz-config` in the root of your project *if it doesn't exsit*. It also creates a symlink inside `node_modules/cz-customizable` to point to your config file.
-
-- you should commit your `.cz-config.js` file to your git.
+- you should commit your `.cz-config.js` file to your git. Run `cp ./node_modules/cz-customizable/cz-config-EXAMPLE.js ./.cz-config.js` in a project root directory to get a template.
 
 * if you don't provide a config file, this adapter will use the contents of the default file `node_modules/cz-customizable/cz-config-EXAMPLE.js`
 
@@ -36,20 +34,6 @@ Hopefully this will help you to have consistent commit messages and have a fully
 
 
 It prompts for [conventional changelog](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md) standard.
-
-
-## Troubleshooting:
-### you can't see the file `.cz-config` in the root of your porject.
-  - you can manually copy from `node_modules/cz-customizable/cz-config-EXAMPLE.js` to your project root (where your package.json is) and rename to `.cz-config.js`
-
-### you edited the contents of `.cz-config.js` but `git cz` still doesn't show your values
-  - probably the post install script didn't create the symlink properly.
-    - Manual symlink creation:
-      - copy the file `cz-config-EXAMPLE.js` to the root of your project.
-      - rename the file to `.cz-config.js` and modify the options and scopes as you like.
-      - Now create a symlink to your config file:
-        - Linux ```ln -nsf ../../.cz-config.js node_modules/cz-customizable/.cz-config.js```
-        - Windows (something like this): ```mklink /D node_modules\cz-customizable\.cz-config.js ..\..\.cz-config.js```
 
 
 ## CONTRIBUTING

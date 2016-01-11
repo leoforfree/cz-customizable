@@ -84,11 +84,11 @@ describe('cz-customizable', function() {
 
     //question 8, last one
     expect(getQuestion(8).name).toEqual('confirmCommit');
-    expect(getQuestion(8).type).toEqual('confirm');
+    expect(getQuestion(8).type).toEqual('expand');
 
 
     var answers = {
-      confirmCommit: true,
+      confirmCommit: 'yes',
       type: 'feat',
       scope: 'myScope',
       subject: 'create a new cool feature'
@@ -110,7 +110,7 @@ describe('cz-customizable', function() {
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
 
     var answers = {
-      confirmCommit: true,
+      confirmCommit: 'yes',
       type: 'feat',
       scope: 'myScope',
       subject: 'create a new cool feature',
@@ -128,7 +128,7 @@ describe('cz-customizable', function() {
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
 
     var answers = {
-      confirmCommit: true,
+      confirmCommit: 'yes',
       type: 'feat',
       scope: 'myScope',
       subject: 'create a new cool feature'
@@ -143,13 +143,49 @@ describe('cz-customizable', function() {
     var commitAnswers = cz.prompt.mostRecentCall.args[1];
 
     var answers = {
-      confirmCommit: true,
+      confirmCommit: 'yes',
       type: 'WIP',
       subject: 'this is my work-in-progress'
     };
 
     commitAnswers(answers);
     expect(commit).toHaveBeenCalledWith('WIP: this is my work-in-progress');
+  });
+
+  it('should allow edit message before commit', function(done) {
+    module.prompter(cz, commit);
+    var commitAnswers = cz.prompt.mostRecentCall.args[1];
+    process.env.EDITOR = 'true';
+
+    var answers = {
+      confirmCommit: 'edit',
+      type: 'feat',
+      subject: 'create a new cool feature'
+    };
+
+    commitAnswers(answers);
+    setTimeout(function() {
+      expect(commit).toHaveBeenCalledWith('feat: create a new cool feature');
+      done();
+    }, 100);
+  });
+
+  it('should not commit if editor returned non-zero value', function(done) {
+    module.prompter(cz, commit);
+    var commitAnswers = cz.prompt.mostRecentCall.args[1];
+    process.env.EDITOR = 'false';
+
+    var answers = {
+      confirmCommit: 'edit',
+      type: 'feat',
+      subject: 'create a new cool feature'
+    };
+
+    commitAnswers(answers);
+    setTimeout(function() {
+      expect(commit.wasCalled).toEqual(false);
+      done();
+    }, 100);
   });
 
   it('should truncate first line if number of characters is higher than 200', function() {
@@ -159,7 +195,7 @@ describe('cz-customizable', function() {
     var chars_100 = '0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789';
 
     var answers = {
-      confirmCommit: true,
+      confirmCommit: 'yes',
       type: 'feat',
       scope: 'myScope',
       subject: chars_100,
@@ -229,7 +265,7 @@ describe('cz-customizable', function() {
       expect(getQuestion(6).when({type: 'FIX'})).toEqual(true);
 
       var answers = {
-        confirmCommit: true,
+        confirmCommit: 'yes',
         type: 'feat',
         scope: 'myScope',
         subject: 'create a new cool feature'
