@@ -50,7 +50,7 @@ function buildCommit(answers) {
   function escapeSpecialChars(result) {
     var specialChars = ['\`'];
 
-    specialChars.map(function (item){
+    specialChars.map(function (item) {
       // For some strange reason, we have to pass additional '\' slash to commitizen. Total slashes are 4.
       // If user types "feat: `string`", the commit preview should show "feat: `\\string\\`".
       // Don't worry. The git log will be "feat: `string`"
