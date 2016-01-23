@@ -32,6 +32,19 @@ describe('cz-customizable', function() {
     commit = jasmine.createSpy();
   });
 
+  it('should escape special characters sush as backticks', function() {
+    module.prompter(cz, commit);
+    var commitAnswers = cz.prompt.mostRecentCall.args[1];
+
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      subject: 'with backticks `here`'
+    };
+
+    commitAnswers(answers);
+    expect(commit).toHaveBeenCalledWith('feat: with backticks \\\\`here\\\\`');
+  });
 
   it('should call cz.prompt with questions', function() {
     module.prompter(cz, commit);

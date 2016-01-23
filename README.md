@@ -17,7 +17,7 @@ This is a customizable Commitizen plugin. You can specify the commit types, scop
     }
   }
   ```
-  
+
 - you should commit your `.cz-config.js` file to your git. Run `cp ./node_modules/cz-customizable/cz-config-EXAMPLE.js ./.cz-config.js` in a project root directory to get a template.
 
 * if you don't provide a config file, this adapter will use the contents of the default file `node_modules/cz-customizable/cz-config-EXAMPLE.js`
@@ -34,6 +34,23 @@ Hopefully this will help you to have consistent commit messages and have a fully
 
 
 It prompts for [conventional changelog](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md) standard.
+
+
+## GOTCHAS
+
+* backticks
+If you wish to have backticks in your content, for example "feat: \`string\`", the commit preview will be "feat: \\\\`string\\\\`".
+Don't worry because on your `git log` will be "feat: \`string\`" as desired.
+
+* multiline contents on the body of the message
+Body is the only place where you can use a `pipe` to break lines.
+E.g.: you type this: `my items are:| - item01| - item 02`, which will become:
+
+
+`my items are:`
+ `- item01`
+ `- item 02`
+
 
 
 ## CONTRIBUTING

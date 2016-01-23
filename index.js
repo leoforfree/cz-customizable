@@ -16,6 +16,7 @@ var path = require('path');
 function readConfigFile() {
   // this function is replaced in test.
   var config = findConfig.require(CZ_CONFIG_NAME, {home: false});
+
   if (!config) {
     log.warn('Unable to find a config file "' + CZ_CONFIG_NAME + '". Default configuration would be used.');
     log.warn('Copy and use it as template by running in a project root directory:\n      "cp '
@@ -46,6 +47,18 @@ function buildCommit(answers) {
     return subject.trim();
   }
 
+  function escapeSpecialChars(result) {
+    var specialChars = ['\`'];
+
+    specialChars.map(function (item){
+      // For some strange reason, we have to pass additional '\' slash to commitizen. Total slashes are 4.
+      // If user types "feat: `string`", the commit preview should show "feat: `\\string\\`".
+      // Don't worry. The git log will be "feat: `string`"
+      result = result.replace(new RegExp(item, 'g'), '\\\\`');
+    });
+    return result;
+  }
+
   // Hard limit this line
   var head = (answers.type + addScope(answers.scope) + addSubject(answers.subject)).slice(0, maxLineWidth);
 
@@ -67,7 +80,7 @@ function buildCommit(answers) {
     result += '\n\n' + footer;
   }
 
-  return result;
+  return escapeSpecialChars(result);
 }
 
 var isNotWip = function(answers) {
