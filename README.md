@@ -40,10 +40,10 @@ Hopefully this will help you to have consistent commit messages and have a fully
 
 ## Options
 
-Here are the options you can set in your `cz-config.js`
+Here are the options you can set in your `cz-config.js`:
 
 * scopes: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
-* scopeOverrides: {}: 
+* scopeOverrides: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:  
 ```
   scopeOverrides: {
     fix: [
