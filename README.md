@@ -5,9 +5,7 @@ The customizable Commitizen plugin to help achieve consistent commit messages li
 
 ![screenshot](screenshot.png)
 
-Suitable for large teams working with multiple projects with their own commit scopes. When you specify the scopes in your `.cz-config.js`, `cz-customizable` will allow you to **select** the pre-defined scopes. So no more scope spelling mistakes embarrassing you in your changelog file.
-
-You can specify the commit types, scopes and override scopes for specific types. Please refer to Options secion bellow.
+Suitable for large teams working with multiple projects with their own commit scopes. When you specify the scopes in your `.cz-config.js`, `cz-customizable` allows you to **select** the pre-defined scopes. No more spelling mistakes embarrassing you when generating the changelog file.
 
 
 
@@ -27,11 +25,11 @@ You can specify the commit types, scopes and override scopes for specific types.
   }
   ```
 
-* you should commit your `.cz-config.js` file to your git. 
-
 * Run `cp ./node_modules/cz-customizable/cz-config-EXAMPLE.js ./.cz-config.js` in a project root directory to get a template.
 
-** if you don't provide a config file, this adapter will use the contents of the default file `node_modules/cz-customizable/cz-config-EXAMPLE.js`
+**Notes:** 
+* you should commit your `.cz-config.js` file to your git. 
+* if you don't provide a config file, this adapter will use the contents of the default file `node_modules/cz-customizable/cz-config-EXAMPLE.js`
 
 
 From now on, instead of `git commit` you type `git cz` and let the tool do the work for you.
