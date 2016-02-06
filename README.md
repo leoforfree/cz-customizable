@@ -1,7 +1,7 @@
 # cz-customizable
 
 
-The customizable Commitizen plugin to help to have consistent commit messages like the [AngularJS team](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines).
+The customizable Commitizen plugin to help achieve consistent commit messages like the [AngularJS team](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines).
 
 ![screenshot](screenshot.png)
 
