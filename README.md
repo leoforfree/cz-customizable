@@ -27,8 +27,8 @@ Suitable for large teams working with multiple projects with their own commit sc
 
 * Run `cp ./node_modules/cz-customizable/cz-config-EXAMPLE.js ./.cz-config.js` in a project root directory to get a template.
 
-**Notes:** 
-* you should commit your `.cz-config.js` file to your git. 
+**Notes:**
+* you should commit your `.cz-config.js` file to your git.
 * if you don't provide a config file, this adapter will use the contents of the default file `node_modules/cz-customizable/cz-config-EXAMPLE.js`
 
 
@@ -41,7 +41,7 @@ Hopefully this will help you to have consistent commit messages and have a fully
 Here are the options you can set in your `.cz-config.js`:
 
 * scopes: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
-* scopeOverrides: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:  
+* scopeOverrides: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:
 ```
   scopeOverrides: {
     fix: [
@@ -83,6 +83,7 @@ E.g.: you type this: `my items are:| - item01| - item 02`, which will become:
 ## CONTRIBUTING
 
 Please refer to the [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) and [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
+
 
 
 

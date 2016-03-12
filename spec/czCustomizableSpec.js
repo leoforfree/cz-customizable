@@ -133,7 +133,7 @@ describe('cz-customizable', function() {
     };
 
     commitAnswers(answers);
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nmy footer');
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nISSUES CLOSED: my footer');
   });
 
   it('should call commit() function with commit message with the minimal required fields', function() {
@@ -207,13 +207,16 @@ describe('cz-customizable', function() {
 
     var chars_100 = '0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789';
 
+    // this string will be prepend: "ISSUES CLOSED: " = 15 chars
+    var footerChars_100 = '0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-012345';
+
     var answers = {
       confirmCommit: 'yes',
       type: 'feat',
       scope: 'myScope',
       subject: chars_100,
       body: chars_100 + ' body-second-line',
-      footer: chars_100 + ' footer-second-line'
+      footer: footerChars_100 + ' footer-second-line'
     };
 
     commitAnswers(answers);
@@ -229,7 +232,7 @@ describe('cz-customizable', function() {
 
     //it should wrap footer
     var footer = commit.mostRecentCall.args[0].split('\n\n')[2];
-    expect(footer).toEqual(chars_100 + '\nfooter-second-line');
+    expect(footer).toEqual('ISSUES CLOSED: ' + footerChars_100 + '\nfooter-second-line');
 
   });
 
