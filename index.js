@@ -77,7 +77,7 @@ function buildCommit(answers) {
     result += '\n\n' + 'BREAKING CHANGE:\n' + breaking;
   }
   if (footer) {
-    result += '\n\n' + footer;
+    result += '\n\nISSUES CLOSED: ' + footer;
   }
 
   return escapeSpecialChars(result);
@@ -99,13 +99,13 @@ module.exports = {
       {
         type: 'list',
         name: 'type',
-        message: '\nSelect the type of change that you\'re committing:',
+        message: 'Select the type of change that you\'re committing:',
         choices: config.types
       },
       {
         type: 'list',
         name: 'scope',
-        message: '\nDenote the SCOPE of this change (optional):\n',
+        message: '\nDenote the SCOPE of this change (optional):',
         choices: function(answers) {
           var scopes = [];
           if (config.scopeOverrides[answers.type]) {
@@ -140,7 +140,7 @@ module.exports = {
       {
         type: 'input',
         name: 'scope',
-        message: '\nDenote the SCOPE of this change:\n',
+        message: 'Denote the SCOPE of this change:',
         when: function(answers) {
           return answers.scope === 'custom';
         }
@@ -148,7 +148,7 @@ module.exports = {
       {
         type: 'input',
         name: 'subject',
-        message: '\nWrite a SHORT, IMPERATIVE tense description of the change:\n',
+        message: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
         validate: function(value) {
           return !!value;
         },
@@ -159,12 +159,12 @@ module.exports = {
       {
         type: 'input',
         name: 'body',
-        message: '\nProvide a LONGER description of the change (optional). Use "|" to break new line:\n'
+        message: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n'
       },
       {
         type: 'input',
         name: 'breaking',
-        message: '\nList any BREAKING CHANGES (optional):\n',
+        message: 'List any BREAKING CHANGES (optional):\n',
         when: function(answers) {
           if (config.allowBreakingChanges) {
             return config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0;
@@ -176,7 +176,7 @@ module.exports = {
       {
         type: 'input',
         name: 'footer',
-        message: '\nList any ISSUES CLOSED by this change (optional):\n',
+        message: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
         when: isNotWip
       },
       {
