@@ -25,7 +25,24 @@ Suitable for large teams working with multiple projects with their own commit sc
   }
   ```
 
-* Run `cp ./node_modules/cz-customizable/cz-config-EXAMPLE.js ./.cz-config.js` in a project root directory to get a template.
+## You have two options to configure `cz-customizable`:
+* Option 1: Config block in your `package.json` (recommended):
+  ```
+  ...
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "config/path/to/my/config.js"
+    }
+  }
+  ```
+Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `cz-config.js`.
+
+* Option 2: Run `cp ./node_modules/cz-customizable/cz-config-EXAMPLE.js ./.cz-config.js` in a project root directory to get a template.
+Note: if you chose option 2, config file has to be called `.cz-config.js`.
+
 
 **Notes:**
 * you should commit your `.cz-config.js` file to your git.
