@@ -14,17 +14,37 @@ var path = require('path');
 
 /* istanbul ignore next */
 function readConfigFile() {
-  // this function is replaced in test.
+
+  // First try to find config block in the nearest package.json
+  var pkg = findConfig.require('package.json', {home: false});
+  if (pkg) {
+    if (pkg.config && pkg.config['cz-customizable'] && pkg.config['cz-customizable'].config) {
+      var pkgPath = path.resolve(pkg.config['cz-customizable'].config);
+
+      console.info('>>> Using cz-customizable config specified in your package.json: ', pkgPath);
+
+      config = require(pkgPath);
+      return config;
+    }
+  }
+
+  // Second attempt is the nearest .cz-config.js.
   var config = findConfig.require(CZ_CONFIG_NAME, {home: false});
 
-  if (!config) {
-    log.warn('Unable to find a config file "' + CZ_CONFIG_NAME + '". Default configuration would be used.');
-    log.warn('Copy and use it as template by running in a project root directory:\n      "cp '
-      + path.resolve(CZ_CONFIG_EXAMPLE_LOCATION) + ' ' + path.join('.', CZ_CONFIG_NAME) + '"');
-
-    config = require(CZ_CONFIG_EXAMPLE_LOCATION);
+  if (config) {
+    console.info('>>> Using cz-customizable file ".cz-config.js"');
+    return config;
   }
-  return config;
+
+  log.warn('Unable to find a configuration file. Please refer to documentation to learn how to ser up: https://github.com/leonardoanalista/cz-customizable#steps "');
+
+  // if (!config) {
+    // log.warn('Unable to find a config file "' + CZ_CONFIG_NAME + '". Default configuration would be used.');
+    // log.warn('Copy and use it as template by running in a project root directory:\n      "cp '
+    //   + path.resolve(CZ_CONFIG_EXAMPLE_LOCATION) + ' ' + path.join('.', CZ_CONFIG_NAME) + '"');
+
+    // config = require(CZ_CONFIG_EXAMPLE_LOCATION);
+  // }
 }
 
 function buildCommit(answers) {
