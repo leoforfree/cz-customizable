@@ -99,7 +99,9 @@ E.g.: you type this: `my items are:| - item01| - item 02`, which will become:
 
 ## CONTRIBUTING
 
-Please refer to the [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) and [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
+Please refer to:
+* [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) - disregard section "Signing the CLA"
+* [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
 
 
 
