@@ -16,6 +16,7 @@ Suitable for large teams working with multiple projects with their own commit sc
 * install commitizen in case you don't have it: `npm install -g commitizen`
 * install the cz-customizable: `npm install cz-customizable --save-dev`
 * configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
+
   ```
   ...
   "config": {
@@ -46,7 +47,6 @@ Note: if you chose option 2, config file has to be called `.cz-config.js`.
 
 **Notes:**
 * you should commit your `.cz-config.js` file to your git.
-* if you don't provide a config file, this adapter will use the contents of the default file `node_modules/cz-customizable/cz-config-EXAMPLE.js`
 
 
 From now on, instead of `git commit` you type `git cz` and let the tool do the work for you.
