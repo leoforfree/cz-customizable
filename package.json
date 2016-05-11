@@ -23,15 +23,15 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "editor": "^1.0.0",
-    "find-config": "^0.3.0",
-    "temp": "^0.8.3",
+    "editor": "1.0.0",
+    "find-config": "0.3.0",
+    "temp": "0.8.3",
     "winston": "2.1.0",
     "word-wrap": "1.1.0"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
-    "commitizen": "^2.4.6",
+    "commitizen": "2.8.1",
     "eslint": "1.9.0",
     "ghooks": "1.0.0",
     "istanbul": "0.4.0",
@@ -41,7 +41,10 @@
   },
   "config": {
     "commitizen": {
-      "path": "."
+      "path": "./index.js"
+    },
+    "cz-customizable": {
+      "config": "cz-config-EXAMPLE.js"
     },
     "ghooks": {
       "pre-commit": "npm run eslint && npm run test"

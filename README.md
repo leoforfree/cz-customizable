@@ -13,7 +13,7 @@ Suitable for large teams working with multiple projects with their own commit sc
 
 
 ## Steps:
-* install commitizen in case you don't have it: `npm install -g commitizen`
+* install commitizen in case you don't have it: `npm install -g commitizen`. Make sure you have version `2.8.1`+.
 * install the cz-customizable: `npm install cz-customizable --save-dev`
 * configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
 
