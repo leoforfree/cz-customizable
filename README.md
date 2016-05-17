@@ -78,6 +78,7 @@ Here are the options you can set in your `.cz-config.js`:
 - (https://github.com/commitizen/cz-cli)
 - (https://github.com/stevemao/conventional-recommended-bump)
 - (https://github.com/semantic-release/semantic-release)
+- (https://github.com/uglow/cz-customizable-ghooks)
 
 
 
@@ -97,14 +98,11 @@ E.g.: you type this: `my items are:| - item01| - item 02`, which will become:
  `- item 02`
 
 
-
 ## CONTRIBUTING
 
 Please refer to:
 * [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) - disregard section "Signing the CLA"
 * [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
-
-
 
 
 
