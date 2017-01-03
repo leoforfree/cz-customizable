@@ -93,9 +93,11 @@ Body is the only place where you can use a `pipe` to break lines.
 E.g.: you type this: `my items are:| - item01| - item 02`, which will become:
 
 
-`my items are:`
- `- item01`
- `- item 02`
+```
+my items are:
+ - item01
+ - item 02
+```
 
 
 ## CONTRIBUTING
