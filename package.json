@@ -27,11 +27,12 @@
     "find-config": "0.3.0",
     "temp": "0.8.3",
     "winston": "2.1.0",
-    "word-wrap": "1.1.0"
+    "word-wrap": "1.1.0",
+    "inquirer": "1.2.3"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
-    "commitizen": "2.8.1",
+    "commitizen": "2.9.5",
     "eslint": "1.9.0",
     "ghooks": "1.0.0",
     "istanbul": "0.4.0",

@@ -24,17 +24,8 @@ function readConfigFile() {
 
       console.info('>>> Using cz-customizable config specified in your package.json: ', pkgPath);
 
-      config = require(pkgPath);
-      return config;
+      return require(pkgPath);
     }
-  }
-
-  // Second attempt is the nearest .cz-config.js.
-  var config = findConfig.require(CZ_CONFIG_NAME, {home: false});
-
-  if (config) {
-    console.info('>>> cz-customizable config file has been found.');
-    return config;
   }
 
   log.warn('Unable to find a configuration file. Please refer to documentation to learn how to ser up: https://github.com/leonardoanalista/cz-customizable#steps "');
