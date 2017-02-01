@@ -13,7 +13,7 @@ Suitable for large teams working with multiple projects with their own commit sc
 
 
 ## Steps:
-* install commitizen in case you don't have it: `npm install -g commitizen`. Make sure you have version `2.8.1`+.
+* install commitizen in case you don't have it: `npm install -g commitizen`. Make sure you have the latest version of commitizen installed globally.
 * install the cz-customizable: `npm install cz-customizable --save-dev`
 * configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
 
@@ -27,7 +27,7 @@ Suitable for large teams working with multiple projects with their own commit sc
   ```
 
 ## You have two options to configure `cz-customizable`:
-* Option 1: Config block in your `package.json` (recommended):
+* Config block in your `package.json`:
   ```
   ...
   "config": {
@@ -40,10 +40,6 @@ Suitable for large teams working with multiple projects with their own commit sc
   }
   ```
 Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `cz-config.js`.
-
-* Option 2: (**DEPRECATED** in order to align configuration with Commitizen. Please use option 1)
-Run `cp ./node_modules/cz-customizable/cz-config-EXAMPLE.js ./.cz-config.js` in a project root directory to get a template.
-Note: if you chose option 2, config file has to be called `.cz-config.js`. This option will be removed after the next major release.
 
 
 **Notes:**
