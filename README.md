@@ -1,18 +1,14 @@
 # cz-customizable
 
-
 The customizable Commitizen plugin to help achieve consistent commit messages like the [AngularJS team](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines).
 
 ![screenshot](screenshot.png)
 
 Suitable for large teams working with multiple projects with their own commit scopes. When you specify the scopes in your `.cz-config.js`, `cz-customizable` allows you to **select** the pre-defined scopes. No more spelling mistakes embarrassing you when generating the changelog file.
 
-
-
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Build Status](https://travis-ci.org/leonardoanalista/cz-customizable.svg)](https://travis-ci.org/leonardoanalista/cz-customizable) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![codecov.io](https://codecov.io/github/leonardoanalista/cz-customizable/coverage.svg?branch=master)](https://codecov.io/github/leonardoanalista/cz-customizable?branch=master) [![npm monthly downloads](https://img.shields.io/npm/dm/cz-customizable.svg?style=flat-square)](https://www.npmjs.com/package/cz-customizable)
 
-
-## Steps:
+## Steps
 * install commitizen in case you don't have it: `npm install -g commitizen`. Make sure you have the latest version of commitizen installed globally.
 * install the cz-customizable: `npm install cz-customizable --save-dev`
 * configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
@@ -26,7 +22,7 @@ Suitable for large teams working with multiple projects with their own commit sc
   }
   ```
 
-## You have two options to configure `cz-customizable`:
+## Configure
 * Config block in your `package.json`:
   ```
   ...
@@ -70,7 +66,7 @@ Here are the options you can set in your `.cz-config.js`:
   * allowBreakingChanges: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix']
   * appendBranchNameToCommitMessage: If you use `cz-customizable` with `cz-customizable-ghooks`, you can get the branch name automatically appended to the commit message. This is done by a commit hook on `cz-customizable-ghooks`. This option has been added on `cz-customizable-ghooks`, v1.3.0. Default value is `true`.
 
-## Related tools:
+## Related tools
 - (https://github.com/commitizen/cz-cli)
 - (https://github.com/stevemao/conventional-recommended-bump)
 - (https://github.com/semantic-release/semantic-release)
