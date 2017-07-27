@@ -16,11 +16,21 @@ var buildCommit = require('./buildCommit');
 /* istanbul ignore next */
 function readConfigFile() {
 
-  // First try to find config block in the nearest package.json
-  var pkg = findConfig.require('package.json', {home: false});
+  // First try to find the .cz-config.js config file
+  var czConfig = findConfig.require(CZ_CONFIG_NAME, {home: false});
+  if (czConfig) {
+    return czConfig;
+  }
+
+  // fallback to locating it using the config block in the nearest package.json
+  var pkg = findConfig('package.json', {home: false});
   if (pkg) {
+    var pkgDir = path.dirname(pkg);
+    pkg = require(pkg);
+
     if (pkg.config && pkg.config['cz-customizable'] && pkg.config['cz-customizable'].config) {
-      var pkgPath = path.resolve(pkg.config['cz-customizable'].config);
+      // resolve relative to discovered package.json
+      var pkgPath = path.resolve(pkgDir, pkg.config['cz-customizable'].config);
 
       console.info('>>> Using cz-customizable config specified in your package.json: ', pkgPath);
 

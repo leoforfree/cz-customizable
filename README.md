@@ -23,7 +23,8 @@ Suitable for large teams working with multiple projects with their own commit sc
   ```
 
 ## Configure
-* Config block in your `package.json`:
+* `cz-customizable` will first look for a file called `.cz-config.js`
+* alternatively add a config block in your `package.json`:
   ```
   ...
   "config": {
@@ -44,7 +45,7 @@ Note: option one allows you to have your config away from root directory. It als
 
 From now on, instead of `git commit` you type `git cz` and let the tool do the work for you.
 
-Hopefully this will help you to have consistent commit messages and have a fully automated deployemnt without any human intervention.
+Hopefully this will help you to have consistent commit messages and have a fully automated deployment without any human intervention.
 
 ## Options
 
