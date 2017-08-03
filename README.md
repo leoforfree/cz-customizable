@@ -65,6 +65,8 @@ Here are the options you can set in your `.cz-config.js`:
   * allowCustomScopes: {boolean, default false}: adds the option `custom` to scope selection so you can still typea scope if you need.
   * allowBreakingChanges: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix']
   * appendBranchNameToCommitMessage: If you use `cz-customizable` with `cz-customizable-ghooks`, you can get the branch name automatically appended to the commit message. This is done by a commit hook on `cz-customizable-ghooks`. This option has been added on `cz-customizable-ghooks`, v1.3.0. Default value is `true`.
+  * breakingPrefix: {string, default 'BREAKING CHANGE:'}: Set a custom prefix for the breaking change block in commit messages
+  * footerPrefix: {string, default 'ISSUES CLOSED:'}: Set a custom prefix for the footer block in commit messages
 
 ## Related tools
 - (https://github.com/commitizen/cz-cli)

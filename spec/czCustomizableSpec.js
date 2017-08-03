@@ -192,4 +192,76 @@ describe('cz-customizable', function() {
 
   });
 
+  it('should call commit() function with custom breaking prefix', function() {
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      breaking: 'breaking',
+      footer: 'my footer'
+    };
+    
+    module.__set__({
+      // it mocks winston logging tool
+      log: {
+        info: function() {}
+      },
+
+      readConfigFile: function() {
+        return {
+          types: [{value: 'feat', name: 'feat: my feat'}],
+          scopes: [{name: 'myScope'}],
+          scopeOverrides: {
+            fix: [{name: 'fixOverride'}]
+          },
+          allowCustomScopes: true,
+          allowBreakingChanges: ['feat'],
+          breakingPrefix: 'WARNING:'
+        };
+      }
+    });
+
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\nWARNING:\nbreaking\n\nISSUES CLOSED: my footer');
+  });
+
+  it('should call commit() function with custom footer prefix', function() {
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      breaking: 'breaking',
+      footer: 'my footer'
+    };
+    
+    module.__set__({
+      // it mocks winston logging tool
+      log: {
+        info: function() {}
+      },
+
+      readConfigFile: function() {
+        return {
+          types: [{value: 'feat', name: 'feat: my feat'}],
+          scopes: [{name: 'myScope'}],
+          scopeOverrides: {
+            fix: [{name: 'fixOverride'}]
+          },
+          allowCustomScopes: true,
+          allowBreakingChanges: ['feat'],
+          footerPrefix: 'FIXES:'
+        };
+      }
+    });
+
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+    
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: my footer');
+  });
+
 });
