@@ -52,11 +52,11 @@ module.exports = function buildCommit(answers, config) {
     result += '\n\n' + body;
   }
   if (breaking) {
-    var breakingPrefix = config.breakingPrefix || 'BREAKING CHANGE:';
+    var breakingPrefix = config && config.breakingPrefix ? config.breakingPrefix : 'BREAKING CHANGE:';
     result += '\n\n' + breakingPrefix + '\n' + breaking;
   }
   if (footer) {
-    var footerPrefix = config.footerPrefix || 'ISSUES CLOSED:';
+    var footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
     result += '\n\n' + footerPrefix + ' ' + footer;
   }
 
