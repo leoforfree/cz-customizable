@@ -14,23 +14,33 @@ module.exports = {
   getQuestions: function(config, cz) {
 
     // normalize config optional options
-    config.scopeOverrides = config.scopeOverrides || {};
+    var scopeOverrides = config.scopeOverrides || {};
+    var messages = config.messages || {};
+
+    messages.type = messages.type || 'Select the type of change that you\'re committing:';
+    messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
+    messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
+    messages.subject = messages.subject || 'Write a SHORT, IMPERATIVE tense description of the change:\n';
+    messages.body = messages.body || 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n';
+    messages.breaking = messages.breaking || 'List any BREAKING CHANGES (optional):\n';
+    messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
+    messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
     var questions = [
       {
         type: 'list',
         name: 'type',
-        message: 'Select the type of change that you\'re committing:',
+        message: messages.type,
         choices: config.types
       },
       {
         type: 'list',
         name: 'scope',
-        message: '\nDenote the SCOPE of this change (optional):',
+        message: messages.scope,
         choices: function(answers) {
           var scopes = [];
-          if (config.scopeOverrides[answers.type]) {
-            scopes = scopes.concat(config.scopeOverrides[answers.type]);
+          if (scopeOverrides[answers.type]) {
+            scopes = scopes.concat(scopeOverrides[answers.type]);
           } else {
             scopes = scopes.concat(config.scopes);
           }
@@ -45,8 +55,8 @@ module.exports = {
         },
         when: function(answers) {
           var hasScope = false;
-          if (config.scopeOverrides[answers.type]) {
-            hasScope = !!(config.scopeOverrides[answers.type].length > 0);
+          if (scopeOverrides[answers.type]) {
+            hasScope = !!(scopeOverrides[answers.type].length > 0);
           } else {
             hasScope = !!(config.scopes && (config.scopes.length > 0));
           }
@@ -61,7 +71,7 @@ module.exports = {
       {
         type: 'input',
         name: 'scope',
-        message: 'Denote the SCOPE of this change:',
+        message: messages.customScope,
         when: function(answers) {
           return answers.scope === 'custom';
         }
@@ -69,7 +79,7 @@ module.exports = {
       {
         type: 'input',
         name: 'subject',
-        message: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
+        message: messages.subject,
         validate: function(value) {
           return !!value;
         },
@@ -80,12 +90,12 @@ module.exports = {
       {
         type: 'input',
         name: 'body',
-        message: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n'
+        message: messages.body
       },
       {
         type: 'input',
         name: 'breaking',
-        message: 'List any BREAKING CHANGES (optional):\n',
+        message: messages.breaking,
         when: function(answers) {
           if (config.allowBreakingChanges && config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0) {
             return true;
@@ -96,7 +106,7 @@ module.exports = {
       {
         type: 'input',
         name: 'footer',
-        message: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
+        message: messages.footer,
         when: isNotWip
       },
       {
@@ -110,7 +120,7 @@ module.exports = {
         message: function(answers) {
           var SEP = '###--------------------------------------------------------###';
           log.info('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
-          return 'Are you sure you want to proceed with the commit above?';
+          return messages.confirmCommit;
         }
       }
     ];
