@@ -119,7 +119,7 @@ module.exports = {
         ],
         message: function(answers) {
           var SEP = '###--------------------------------------------------------###';
-          log.info('\n' + SEP + '\n' + buildCommit(answers) + '\n' + SEP + '\n');
+          log.info('\n' + SEP + '\n' + buildCommit(answers, config) + '\n' + SEP + '\n');
           return messages.confirmCommit;
         }
       }
