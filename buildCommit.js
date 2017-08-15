@@ -4,7 +4,7 @@
 var wrap = require('word-wrap');
 
 
-module.exports = function buildCommit(answers) {
+module.exports = function buildCommit(answers, config) {
 
   var maxLineWidth = 100;
 
@@ -52,10 +52,12 @@ module.exports = function buildCommit(answers) {
     result += '\n\n' + body;
   }
   if (breaking) {
-    result += '\n\n' + 'BREAKING CHANGE:\n' + breaking;
+    var breakingPrefix = config && config.breakingPrefix ? config.breakingPrefix : 'BREAKING CHANGE:';
+    result += '\n\n' + breakingPrefix + '\n' + breaking;
   }
   if (footer) {
-    result += '\n\nISSUES CLOSED: ' + footer;
+    var footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
+    result += '\n\n' + footerPrefix + ' ' + footer;
   }
 
   return escapeSpecialChars(result);
