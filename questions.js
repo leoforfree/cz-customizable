@@ -30,7 +30,7 @@ module.exports = {
 
     var questions = [];
 
-    if(!config.skipType) {
+    if (!config.skipType) {
       questions.push({
         type: 'list',
         name: 'type',
@@ -39,7 +39,7 @@ module.exports = {
       });
     }
 
-    if(!config.skipScope) {
+    if (!config.skipScope) {
       questions.push({
         type: 'list',
         name: 'scope',
@@ -86,7 +86,7 @@ module.exports = {
       });
     }
 
-    if(!config.skipSubject) {
+    if (!config.skipSubject) {
       questions.push({
         type: 'input',
         name: 'subject',
@@ -99,8 +99,8 @@ module.exports = {
         }
       });
     }
-    
-    if(!config.skipBody) {
+
+    if (!config.skipBody) {
       questions.push({
         type: 'input',
         name: 'body',
@@ -108,7 +108,7 @@ module.exports = {
       });
     }
 
-    if(!config.skipBreaking) {
+    if (!config.skipBreaking) {
       questions.push({
         type: 'input',
         name: 'breaking',
@@ -122,7 +122,7 @@ module.exports = {
       });
     }
 
-    if(!config.skipFooter) {
+    if (!config.skipFooter) {
       questions.push({
         type: 'input',
         name: 'footer',
