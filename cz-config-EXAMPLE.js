@@ -49,7 +49,7 @@ module.exports = {
 
   allowCustomScopes: true,
   allowBreakingChanges: ['feat', 'fix'],
-  
+
   // any step can be skipped
   skipType: true,
   skipsScope: true,
