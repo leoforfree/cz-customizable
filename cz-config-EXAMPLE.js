@@ -48,6 +48,13 @@ module.exports = {
   },
 
   allowCustomScopes: true,
-  allowBreakingChanges: ['feat', 'fix']
-
+  allowBreakingChanges: ['feat', 'fix'],
+  
+  // any step can be skipped
+  skipType: true,
+  skipsScope: true,
+  skipSubject: true,
+  skipBody: true,
+  skipBreaking: true,
+  skipFooter: true  
 };

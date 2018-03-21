@@ -26,14 +26,21 @@ module.exports = {
     messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
-    var questions = [
-      {
+
+
+    var questions = [];
+
+    if(!config.skipType) {
+      questions.push({
         type: 'list',
         name: 'type',
         message: messages.type,
         choices: config.types
-      },
-      {
+      });
+    }
+
+    if(!config.skipScope) {
+      questions.push({
         type: 'list',
         name: 'scope',
         message: messages.scope,
@@ -67,16 +74,20 @@ module.exports = {
             return isNotWip(answers);
           }
         }
-      },
-      {
+      });
+
+      questions.push({
         type: 'input',
         name: 'scope',
         message: messages.customScope,
         when: function(answers) {
           return answers.scope === 'custom';
         }
-      },
-      {
+      });
+    }
+
+    if(!config.skipSubject) {
+      questions.push({
         type: 'input',
         name: 'subject',
         message: messages.subject,
@@ -86,13 +97,19 @@ module.exports = {
         filter: function(value) {
           return value.charAt(0).toLowerCase() + value.slice(1);
         }
-      },
-      {
+      });
+    }
+    
+    if(!config.skipBody) {
+      questions.push({
         type: 'input',
         name: 'body',
         message: messages.body
-      },
-      {
+      });
+    }
+
+    if(!config.skipBreaking) {
+      questions.push({
         type: 'input',
         name: 'breaking',
         message: messages.breaking,
@@ -102,29 +119,33 @@ module.exports = {
           }
           return false; // no breaking changes allowed unless specifed
         }
-      },
-      {
+      });
+    }
+
+    if(!config.skipFooter) {
+      questions.push({
         type: 'input',
         name: 'footer',
         message: messages.footer,
         when: isNotWip
-      },
-      {
-        type: 'expand',
-        name: 'confirmCommit',
-        choices: [
-          { key: 'y', name: 'Yes', value: 'yes' },
-          { key: 'n', name: 'Abort commit', value: 'no' },
-          { key: 'e', name: 'Edit message', value: 'edit' }
-        ],
-        message: function(answers) {
-          var SEP = '###--------------------------------------------------------###';
-          log.info('\n' + SEP + '\n' + buildCommit(answers, config) + '\n' + SEP + '\n');
-          return messages.confirmCommit;
-        }
-      }
-    ];
+      });
+    }
 
+    questions.push({
+      type: 'expand',
+      name: 'confirmCommit',
+      choices: [
+        { key: 'y', name: 'Yes', value: 'yes' },
+        { key: 'n', name: 'Abort commit', value: 'no' },
+        { key: 'e', name: 'Edit message', value: 'edit' }
+      ],
+      message: function(answers) {
+        var SEP = '###--------------------------------------------------------###';
+        log.info('\n' + SEP + '\n' + buildCommit(answers, config) + '\n' + SEP + '\n');
+        return messages.confirmCommit;
+      }
+    });
     return questions;
   }
 };
+

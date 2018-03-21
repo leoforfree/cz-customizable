@@ -68,6 +68,12 @@ Here are the options you can set in your `.cz-config.js`:
   * appendBranchNameToCommitMessage: If you use `cz-customizable` with `cz-customizable-ghooks`, you can get the branch name automatically appended to the commit message. This is done by a commit hook on `cz-customizable-ghooks`. This option has been added on `cz-customizable-ghooks`, v1.3.0. Default value is `true`.
   * breakingPrefix: {string, default 'BREAKING CHANGE:'}: Set a custom prefix for the breaking change block in commit messages
   * footerPrefix: {string, default 'ISSUES CLOSED:'}: Set a custom prefix for the footer block in commit messages
+  * skipType: {boolean, default false}. Skip question about type.
+  * skipsScope: {boolean, default false}. Skip question about scope.
+  * skipSubject: {boolean, default false}. Skip question about subject.
+  * skipBody: {boolean, default false}. Skip question about body.
+  * skipBreaking: {boolean, default false}. Skip question about breaking changes.
+  * skipFooter: {boolean, default false}. Skip question about footer.
 
 ## Related tools
 - (https://github.com/commitizen/cz-cli)
