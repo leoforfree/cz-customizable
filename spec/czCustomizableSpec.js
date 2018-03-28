@@ -33,14 +33,18 @@ describe('cz-customizable', function() {
   });
 
   function getMockedCz(answers) {
+    var prompt = function () {
+      return {
+        then: function (cb) {
+          cb(answers);
+        }
+      };
+    };
+
+    prompt.registerPrompt = function () {};
+
     return {
-      prompt: function() {
-        return {
-          then: function (cb) {
-            cb(answers);
-          }
-        };
-      }
+      prompt: prompt
     };
   }
 
@@ -95,7 +99,7 @@ describe('cz-customizable', function() {
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
 
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nISSUES CLOSED: my footer');
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\n重大修改:\nbreaking\n\nISSUE 关闭: my footer');
   });
 
   it('should call commit() function with commit message with the minimal required fields', function() {
@@ -188,7 +192,7 @@ describe('cz-customizable', function() {
 
     //it should wrap footer
     var footer = commit.mostRecentCall.args[0].split('\n\n')[2];
-    expect(footer).toEqual('ISSUES CLOSED: ' + footerChars_100 + '\nfooter-second-line');
+    expect(footer).toEqual('ISSUE 关闭: ' + footerChars_100 + '\nfooter-second-line');
 
   });
 
@@ -201,7 +205,7 @@ describe('cz-customizable', function() {
       breaking: 'breaking',
       footer: 'my footer'
     };
-    
+
     module.__set__({
       // it mocks winston logging tool
       log: {
@@ -225,7 +229,7 @@ describe('cz-customizable', function() {
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
 
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\nWARNING:\nbreaking\n\nISSUES CLOSED: my footer');
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\nWARNING:\nbreaking\n\nISSUE 关闭: my footer');
   });
 
   it('should call commit() function with custom footer prefix', function() {
@@ -237,7 +241,7 @@ describe('cz-customizable', function() {
       breaking: 'breaking',
       footer: 'my footer'
     };
-    
+
     module.__set__({
       // it mocks winston logging tool
       log: {
@@ -260,8 +264,8 @@ describe('cz-customizable', function() {
 
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
-    
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: my footer');
+
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n重大修改:\nbreaking\n\nFIXES: my footer');
   });
 
 });

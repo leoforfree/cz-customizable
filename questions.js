@@ -3,28 +3,39 @@
 
 var buildCommit = require('./buildCommit');
 var log = require('winston');
+var fuse = require('fuse.js');
 
+var emojis = require('./lib/emojis');
 
 var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
 };
 
 module.exports = {
-
   getQuestions: function(config, cz) {
-
     // normalize config optional options
     var scopeOverrides = config.scopeOverrides || {};
     var messages = config.messages || {};
 
-    messages.type = messages.type || 'Select the type of change that you\'re committing:';
-    messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
-    messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
-    messages.subject = messages.subject || 'Write a SHORT, IMPERATIVE tense description of the change:\n';
-    messages.body = messages.body || 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n';
-    messages.breaking = messages.breaking || 'List any BREAKING CHANGES (optional):\n';
-    messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
-    messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
+    messages.type = messages.type || '在你进行commit操作之前，请选择上述修改所属的类型：';
+    messages.scope = messages.scope || '\n 请提供上述修改应属的范畴（可选）：';
+    messages.customScope = messages.customScope || '请提供上述修改应属的范畴：';
+    messages.subject = messages.subject || '针对上述修改，请写一段言简意赅的描述语：\n';
+    messages.body = messages.body || '针对上述修改，请写一段详细的描述语（可选），使用“|”结束输入，并另起一行：\n';
+    messages.breaking = messages.breaking || '列出那些（与之前相比）变化很大的关键点（optional）：\n';
+    messages.footer = messages.footer || '列出在上述修改中被关掉的ISSUES （可选），例如: #31，#34：\n';
+    messages.confirmCommit = messages.confirmCommit || '确定要提交代码？';
+
+    var fuzzy = new fuse(emojis, {
+      shouldSort: true,
+      threshold: 0.4,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ['name', 'code'],
+      id: 'emoji'
+    });
 
     var questions = [
       {
@@ -77,9 +88,19 @@ module.exports = {
         }
       },
       {
-        type: 'input',
+        type: 'autocomplete',
         name: 'subject',
+        suggestOnly: true,
         message: messages.subject,
+        source: function (answersSoFar, query) {
+          if (/:[a-zA-Z]+:/.test(query)) return Promise.resolve([query]);
+
+          var mapCallback = function (config) {
+            return config.emoji;
+          };
+
+          return Promise.resolve(query ? fuzzy.search(query) : emojis.map(mapCallback));
+        },
         validate: function(value) {
           var limit = config.subjectLimit || 100;
           if (value.length > limit) {
@@ -88,7 +109,21 @@ module.exports = {
           return true;
         },
         filter: function(value) {
-          return value.charAt(0).toLowerCase() + value.slice(1);
+          value = value.trim();
+
+          var match = value.match(/:[a-zA-Z]+:\s?/);
+          var current = match ? match[0].length : 0;
+          var next = current + 1;
+          var prev = current - 1;
+
+          return (current ? [
+            value.slice(0, current),
+            value.slice(current, next).toLowerCase(),
+            value.slice(next)
+          ] : [
+            value.charAt(current).toLowerCase(),
+            value.slice(next)
+          ]).join('');
         }
       },
       {
@@ -117,12 +152,12 @@ module.exports = {
         type: 'expand',
         name: 'confirmCommit',
         choices: [
-          { key: 'y', name: 'Yes', value: 'yes' },
-          { key: 'n', name: 'Abort commit', value: 'no' },
-          { key: 'e', name: 'Edit message', value: 'edit' }
+          { key: 'y', name: '提交', value: 'yes' },
+          { key: 'n', name: '取消', value: 'no' },
+          { key: 'e', name: '修改 commit 信息', value: 'edit' }
         ],
         message: function(answers) {
-          var SEP = '###--------------------------------------------------------###';
+          var SEP = '----------------------------无耻的分割线----------------------------';
           log.info('\n' + SEP + '\n' + buildCommit(answers, config) + '\n' + SEP + '\n');
           return messages.confirmCommit;
         }

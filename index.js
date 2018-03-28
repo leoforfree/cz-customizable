@@ -32,13 +32,13 @@ function readConfigFile() {
       // resolve relative to discovered package.json
       var pkgPath = path.resolve(pkgDir, pkg.config['cz-customizable'].config);
 
-      console.info('>>> Using cz-customizable config specified in your package.json: ', pkgPath);
+      console.info('>>> : 在 package.json 确定使用 cz-customizable 配置文件', pkgPath);
 
       return require(pkgPath);
     }
   }
 
-  log.warn('Unable to find a configuration file. Please refer to documentation to learn how to ser up: https://github.com/leonardoanalista/cz-customizable#steps "');
+  log.warn('不能找到配置文件，请参考文档来学习如何搭建: https://github.com/leonardoanalista/cz-customizable#steps "');
 }
 
 module.exports = {
@@ -46,33 +46,42 @@ module.exports = {
     var config = readConfigFile();
     var subjectLimit = config.subjectLimit || 100;
 
-    log.info('\n\nLine 1 will be cropped at ' + subjectLimit + ' characters. All other lines will be wrapped after 100 characters.\n');
+    cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
+    log.info(`\n\n首行的字符数会限制在 ${subjectLimit} 个，其它行的字符数如果超过 100，会在第 100 个字符处进行折行\n`);
+
 
     var questions = require('./questions').getQuestions(config, cz);
-
-    cz.prompt(questions).then(function(answers) {
-
-      if (answers.confirmCommit === 'edit') {
+    var confirmCommitCallback = {
+      edit: function (answers, config) {
         temp.open(null, function(err, info) {
           /* istanbul ignore else */
-          if (!err) {
-            fs.writeSync(info.fd, buildCommit(answers, config));
-            fs.close(info.fd, function(err) {
-              editor(info.path, function (code, sig) {
-                if (code === 0) {
-                  var commitStr = fs.readFileSync(info.path, { encoding: 'utf8' });
-                  commit(commitStr);
-                } else {
-                  log.info('Editor returned non zero value. Commit message was:\n' + buildCommit(answers, config));
-                }
-              });
+          if (err) return;
+
+          fs.write(info.fd, buildCommit(answers, config));
+          fs.close(info.fd, function(err) {
+            editor(info.path, function (code, sig) {
+              if (code) {
+                log.info('编辑器返回非0. 提交信息:\n' + buildCommit(answers, config));
+                return;
+              }
+
+              var commitStr = fs.readFileSync(info.path, { encoding: 'utf8' });
+              commit(commitStr);
             });
-          }
+          });
         });
-      } else if (answers.confirmCommit === 'yes') {
+      },
+      yes: function (answers, config) {
         commit(buildCommit(answers, config));
-      } else {
-        log.info('Commit has been canceled.');
+      },
+      no: function (answers, config) {
+        log.info('commit操作已被阻止');
+      }
+    };
+
+    cz.prompt(questions).then(function (answers) {
+      if (confirmCommitCallback[answers.confirmCommit]) {
+        confirmCommitCallback[answers.confirmCommit](answers, config);
       }
     });
   }

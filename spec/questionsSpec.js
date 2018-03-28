@@ -50,8 +50,8 @@ describe('cz-customizable', function() {
 
     // question 4 - SUBJECT
     expect(getQuestion(4).name).toEqual('subject');
-    expect(getQuestion(4).type).toEqual('input');
-    expect(getQuestion(4).message).toMatch(/IMPERATIVE tense description/);
+    expect(getQuestion(4).type).toEqual('autocomplete');
+    expect(getQuestion(4).message).toMatch(/针对上述修改，请写一段言简意赅的描述语：/);
     expect(getQuestion(4).validate('good subject')).toEqual(true);
     expect(getQuestion(4).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
     expect(getQuestion(4).filter('Subject')).toEqual('subject');
@@ -83,7 +83,7 @@ describe('cz-customizable', function() {
       scope: 'myScope',
       subject: 'create a new cool feature'
     };
-    expect(getQuestion(8).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+    expect(getQuestion(8).message(answers)).toMatch('确定要提交代码？');
   });
 
   it('default length limit of subject should be 100', function() {
