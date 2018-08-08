@@ -46,8 +46,9 @@ module.exports = {
 
   prompter: function(cz, commit) {
     var config = readConfigFile();
+    var subjectLimit = config.subjectLimit || 100;
 
-    log.info('\n\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
+    log.info('\n\nLine 1 will be cropped at ' + subjectLimit + ' characters. All other lines will be wrapped after 100 characters.\n');
 
     var questions = require('./questions').getQuestions(config, cz);
 
