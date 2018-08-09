@@ -25,7 +25,8 @@ describe('cz-customizable', function() {
         fix: [{name: 'fixOverride'}]
       },
       allowCustomScopes: true,
-      allowBreakingChanges: ['feat']
+      allowBreakingChanges: ['feat'],
+      subjectLimit: 20
     };
 
     // question 1 - TYPE
@@ -51,7 +52,8 @@ describe('cz-customizable', function() {
     expect(getQuestion(4).name).toEqual('subject');
     expect(getQuestion(4).type).toEqual('input');
     expect(getQuestion(4).message).toMatch(/IMPERATIVE tense description/);
-    expect(getQuestion(4).validate()).toEqual(false); //mandatory question
+    expect(getQuestion(4).validate('good subject')).toEqual(true);
+    expect(getQuestion(4).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
     expect(getQuestion(4).filter('Subject')).toEqual('subject');
 
     // question 5 - BODY
@@ -82,6 +84,14 @@ describe('cz-customizable', function() {
       subject: 'create a new cool feature'
     };
     expect(getQuestion(8).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+  });
+
+  it('default length limit of subject should be 100', function() {
+    config = {
+      types: [{value: 'feat', name: 'feat: my feat'}]
+    };
+    expect(getQuestion(4).validate('good subject')).toEqual(true);
+    expect(getQuestion(4).validate('bad subject that exceed limit bad subject that exceed limitbad subject that exceed limit test test test')).toEqual('Exceed limit: 100');
   });
 
 
