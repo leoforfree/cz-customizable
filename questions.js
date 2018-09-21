@@ -5,13 +5,13 @@ var buildCommit = require('./buildCommit');
 var log = require('winston');
 
 
-var isNotWip = function(answers) {
+var isNotWip = function (answers) {
   return answers.type.toLowerCase() !== 'wip';
 };
 
 module.exports = {
 
-  getQuestions: function(config, cz) {
+  getQuestions: function (config, cz) {
 
     // normalize config optional options
     var scopeOverrides = config.scopeOverrides || {};
@@ -24,6 +24,7 @@ module.exports = {
     messages.body = messages.body || 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n';
     messages.breaking = messages.breaking || 'List any BREAKING CHANGES (optional):\n';
     messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
+    messages.coAuthor = messages.coAuthor || 'List any pair programmers (optional):\n';
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
     var questions = [
@@ -37,7 +38,7 @@ module.exports = {
         type: 'list',
         name: 'scope',
         message: messages.scope,
-        choices: function(answers) {
+        choices: function (answers) {
           var scopes = [];
           if (scopeOverrides[answers.type]) {
             scopes = scopes.concat(scopeOverrides[answers.type]);
@@ -47,13 +48,13 @@ module.exports = {
           if (config.allowCustomScopes || scopes.length === 0) {
             scopes = scopes.concat([
               new cz.Separator(),
-              { name: 'empty', value: false },
-              { name: 'custom', value: 'custom' }
+              {name: 'empty', value: false},
+              {name: 'custom', value: 'custom'}
             ]);
           }
           return scopes;
         },
-        when: function(answers) {
+        when: function (answers) {
           var hasScope = false;
           if (scopeOverrides[answers.type]) {
             hasScope = !!(scopeOverrides[answers.type].length > 0);
@@ -72,7 +73,7 @@ module.exports = {
         type: 'input',
         name: 'scope',
         message: messages.customScope,
-        when: function(answers) {
+        when: function (answers) {
           return answers.scope === 'custom';
         }
       },
@@ -80,14 +81,14 @@ module.exports = {
         type: 'input',
         name: 'subject',
         message: messages.subject,
-        validate: function(value) {
+        validate: function (value) {
           var limit = config.subjectLimit || 100;
           if (value.length > limit) {
             return 'Exceed limit: ' + limit;
           }
           return true;
         },
-        filter: function(value) {
+        filter: function (value) {
           return value.charAt(0).toLowerCase() + value.slice(1);
         }
       },
@@ -100,11 +101,9 @@ module.exports = {
         type: 'input',
         name: 'breaking',
         message: messages.breaking,
-        when: function(answers) {
-          if (config.allowBreakingChanges && config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0) {
-            return true;
-          }
-          return false; // no breaking changes allowed unless specifed
+        when: function (answers) {
+          return !!(config.allowBreakingChanges && config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0);
+           // no breaking changes allowed unless specifed
         }
       },
       {
@@ -114,14 +113,23 @@ module.exports = {
         when: isNotWip
       },
       {
+        type: 'checkbox',
+        name: 'coAuthor',
+        message: messages.coAuthor,
+        choices: config.developers,
+        when: function () {
+          return config.hasOwnProperty('developers') && config.developers.length > 0;
+        }
+      },
+      {
         type: 'expand',
         name: 'confirmCommit',
         choices: [
-          { key: 'y', name: 'Yes', value: 'yes' },
-          { key: 'n', name: 'Abort commit', value: 'no' },
-          { key: 'e', name: 'Edit message', value: 'edit' }
+          {key: 'y', name: 'Yes', value: 'yes'},
+          {key: 'n', name: 'Abort commit', value: 'no'},
+          {key: 'e', name: 'Edit message', value: 'edit'}
         ],
-        message: function(answers) {
+        message: function (answers) {
           var SEP = '###--------------------------------------------------------###';
           log.info('\n' + SEP + '\n' + buildCommit(answers, config) + '\n' + SEP + '\n');
           return messages.confirmCommit;
