@@ -3,6 +3,7 @@
   "name": "cz-customizable",
   "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "eslint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
     "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
