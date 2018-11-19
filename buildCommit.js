@@ -11,7 +11,7 @@ module.exports = function buildCommit(answers, config) {
   var wrapOptions = {
     trim: true,
     newline: '\n',
-    indent:'',
+    indent: '',
     width: maxLineWidth
   };
 
@@ -47,6 +47,14 @@ module.exports = function buildCommit(answers, config) {
   var breaking = wrap(answers.breaking, wrapOptions);
   var footer = wrap(answers.footer, wrapOptions);
 
+  var coAuthor = undefined;
+  if (config.hasOwnProperty('developers') && config.developers.length > 0 && answers.coAuthor.length > 0) {
+    coAuthor = wrap(answers.coAuthor.join('|'), wrapOptions);
+    coAuthor = coAuthor.split('|').map(function (e) {
+      return 'Co-authored-by: ' + e;
+    }).join('\n');
+  }
+
   var result = head;
   if (body) {
     result += '\n\n' + body;
@@ -58,6 +66,10 @@ module.exports = function buildCommit(answers, config) {
   if (footer) {
     var footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
     result += '\n\n' + footerPrefix + ' ' + footer;
+  }
+
+  if (coAuthor) {
+    result += '\n\n' + coAuthor;
   }
 
   return escapeSpecialChars(result);
