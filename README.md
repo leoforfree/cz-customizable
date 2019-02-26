@@ -103,8 +103,9 @@ my items are:
 
 ## CONTRIBUTING
 
+* if you add a new config property, please remember to update Types  in file `index.d.ts`.
 Please refer to:
-* [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) - disregard section "Signing the CLA"
+* [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) - disregard section "Signing the CLA" and basically be polite, respectful and understanding that we are all here after working hours spending time to build something useful to all.
 * [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
 
 

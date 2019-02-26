@@ -92,7 +92,11 @@ module.exports = {
         name: 'subject',
         message: messages.subject,
         validate: function(value) {
-          return !!value;
+          var limit = config.subjectLimit || 100;
+          if (value.length > limit) {
+            return 'Exceed limit: ' + limit;
+          }
+          return true;
         },
         filter: function(value) {
           return value.charAt(0).toLowerCase() + value.slice(1);

@@ -50,6 +50,9 @@ module.exports = {
   allowCustomScopes: true,
   allowBreakingChanges: ['feat', 'fix'],
 
+  // limit subject length
+  subjectLimit: 100,
+
   // any step can be skipped
   skipType: true,
   skipsScope: true,
