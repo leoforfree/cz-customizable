@@ -1,6 +1,6 @@
 {
-  "version": "0.0.0-development",
-  "name": "cz-customizable",
+  "version": "1.0.0",
+  "name": "@w3ctech-editorial-department/cz-customizable",
   "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -14,14 +14,15 @@
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
   },
-  "homepage": "https://github.com/leonardoanalista/cz-customizable",
+  "homepage": "https://github.com/liuliangsir/cz-customizable",
   "repository": {
     "type": "git",
-    "url": "https://github.com/leonardoanalista/cz-customizable.git"
+    "url": "git+https://github.com/liuliangsir/cz-customizable.git"
   },
   "author": "Leonardo Correa <leonardoanalista@gmail.com>",
   "contributors": [
-    "Aleksey Guryanov <gurianov@gmail.com>"
+    "Aleksey Guryanov <gurianov@gmail.com>",
+    "liuliang <liuliang@w3ctech.com>"
   ],
   "license": "MIT",
   "dependencies": {
@@ -55,5 +56,19 @@
     "ghooks": {
       "pre-commit": "npm run eslint && npm run test"
     }
+  },
+  "bugs": {
+    "url": "https://github.com/liuliangsir/cz-customizable/issues"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [
+    "Commitizen",
+    "customizable",
+    "adapter"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
   }
 }

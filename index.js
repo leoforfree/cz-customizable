@@ -47,7 +47,7 @@ module.exports = {
     var subjectLimit = config.subjectLimit || 100;
 
     cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
-    log.info(`\n\n首行的字符数会限制在 ${subjectLimit} 个，其它行的字符数如果超过 100，会在第 100 个字符处进行折行\n`);
+    log.info('\n\n首行的字符数会限制在 ' + subjectLimit + ' 个，其它行的字符数如果超过 100，会在第 100 个字符处进行折行\n');
 
 
     var questions = require('./questions').getQuestions(config, cz);
