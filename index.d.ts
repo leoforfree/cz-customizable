@@ -20,6 +20,7 @@ declare module "cz-customizable" {
     allowCustomScopes?: boolean;
     allowBreakingChanges?: string[];
     appendBranchNameToCommitMessage?: boolean;
+    skipQuestions?: string[];
     breakingPrefix?: string;
     footerPrefix?: string;
     subjectLimit?: number;

@@ -16,6 +16,7 @@ module.exports = {
     // normalize config optional options
     var scopeOverrides = config.scopeOverrides || {};
     var messages = config.messages || {};
+    var skipQuestions = config.skipQuestions || [];
 
     messages.type = messages.type || 'Select the type of change that you\'re committing:';
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
@@ -54,6 +55,9 @@ module.exports = {
           return scopes;
         },
         when: function(answers) {
+          if (skipQuestions.includes('scope')) {
+            return false;
+          }
           var hasScope = false;
           if (scopeOverrides[answers.type]) {
             hasScope = !!(scopeOverrides[answers.type].length > 0);
@@ -73,7 +77,7 @@ module.exports = {
         name: 'scope',
         message: messages.customScope,
         when: function(answers) {
-          return answers.scope === 'custom';
+          return !skipQuestions.includes('scope') && answers.scope === 'custom';
         }
       },
       {
@@ -94,7 +98,10 @@ module.exports = {
       {
         type: 'input',
         name: 'body',
-        message: messages.body
+        message: messages.body,
+        when() {
+          return !skipQuestions.includes('body');
+        }
       },
       {
         type: 'input',
@@ -111,7 +118,9 @@ module.exports = {
         type: 'input',
         name: 'footer',
         message: messages.footer,
-        when: isNotWip
+        when() {
+          return !skipQuestions.includes('footer') && isNotWip;
+        }
       },
       {
         type: 'expand',
