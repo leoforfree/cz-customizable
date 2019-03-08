@@ -19,6 +19,7 @@ declare module "cz-customizable" {
     };
     allowCustomScopes?: boolean;
     allowBreakingChanges?: string[];
+    skipQuestions?: string[];
     appendBranchNameToCommitMessage?: boolean;
     breakingPrefix?: string;
     footerPrefix?: string;

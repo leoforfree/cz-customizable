@@ -16,6 +16,7 @@ module.exports = {
     // normalize config optional options
     var scopeOverrides = config.scopeOverrides || {};
     var messages = config.messages || {};
+    var skipQuestions = config.skipQuestions || [];
 
     messages.type = messages.type || 'Select the type of change that you\'re committing:';
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
@@ -128,6 +129,10 @@ module.exports = {
         }
       }
     ];
+
+    questions = questions.filter(function(item) {
+      return !skipQuestions.includes(item.name);
+    });
 
     return questions;
   }
