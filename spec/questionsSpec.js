@@ -29,7 +29,7 @@ describe('cz-customizable', function() {
       allowTicketNumber: true,
       isTicketNumberRequired: true,
       ticketNumberPrefix: 'TICKET-',
-      ticketNumberRegExp: '\\d{1,5}'
+      ticketNumberRegExp: '\\d{1,5}',
       subjectLimit: 20
     };
 
