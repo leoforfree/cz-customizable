@@ -41,13 +41,12 @@ function readConfigFile() {
   log.warn('Unable to find a configuration file. Please refer to documentation to learn how to ser up: https://github.com/leonardoanalista/cz-customizable#steps "');
 }
 
-
 module.exports = {
-
   prompter: function(cz, commit) {
     var config = readConfigFile();
+    var subjectLimit = config.subjectLimit || 100;
 
-    log.info('\n\nLine 1 will be cropped at 100 characters. All other lines will be wrapped after 100 characters.\n');
+    log.info('\n\nLine 1 will be cropped at ' + subjectLimit + ' characters. All other lines will be wrapped after 100 characters.\n');
 
     var questions = require('./questions').getQuestions(config, cz);
 
@@ -57,7 +56,7 @@ module.exports = {
         temp.open(null, function(err, info) {
           /* istanbul ignore else */
           if (!err) {
-            fs.write(info.fd, buildCommit(answers, config));
+            fs.writeSync(info.fd, buildCommit(answers, config));
             fs.close(info.fd, function(err) {
               editor(info.path, function (code, sig) {
                 if (code === 0) {

@@ -35,6 +35,7 @@ module.exports = {
     // normalize config optional options
     var scopeOverrides = config.scopeOverrides || {};
     var messages = config.messages || {};
+    var skipQuestions = config.skipQuestions || [];
 
     messages.type = messages.type || 'Select the type of change that you\'re committing:';
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
@@ -118,7 +119,11 @@ module.exports = {
         name: 'subject',
         message: messages.subject,
         validate: function(value) {
-          return !!value;
+          var limit = config.subjectLimit || 100;
+          if (value.length > limit) {
+            return 'Exceed limit: ' + limit;
+          }
+          return true;
         },
         filter: function(value) {
           return value.charAt(0).toLowerCase() + value.slice(1);
@@ -161,6 +166,10 @@ module.exports = {
         }
       }
     ];
+
+    questions = questions.filter(function(item) {
+      return !skipQuestions.includes(item.name);
+    });
 
     return questions;
   }

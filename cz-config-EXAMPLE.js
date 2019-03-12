@@ -53,7 +53,12 @@ module.exports = {
   },
 
   allowCustomScopes: true,
-  allowBreakingChanges: ['feat', 'fix']
+  allowBreakingChanges: ['feat', 'fix'],
+  // skip any questions you want
+  skipQuestions: ['body', 'footer'],
+
+  // limit subject length
+  subjectLimit: 100
 
 
 };
