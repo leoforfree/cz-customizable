@@ -57,10 +57,6 @@ describe('cz-customizable', function() {
     expect(getQuestion(4).type).toEqual('input');
     expect(getQuestion(4).message.indexOf('Enter the ticket number folloing this patter')).toEqual(0);
     expect(getQuestion(4).validate()).toEqual(false); //mandatory question
-    expect(getQuestion(4).message).toMatch(/IMPERATIVE tense description/);
-    expect(getQuestion(4).validate('good subject')).toEqual(true);
-    expect(getQuestion(4).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
-    expect(getQuestion(4).filter('Subject')).toEqual('subject');
 
     // question 5 - SUBJECT
     expect(getQuestion(5).name).toEqual('subject');
@@ -68,7 +64,8 @@ describe('cz-customizable', function() {
     expect(getQuestion(5).message).toMatch(/IMPERATIVE tense description/);
     expect(getQuestion(5).validate()).toEqual(false); //mandatory question
     expect(getQuestion(5).filter('Subject')).toEqual('subject');
-
+    expect(getQuestion(5).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
+    
     // question 6 - BODY
     expect(getQuestion(6).name).toEqual('body');
     expect(getQuestion(6).type).toEqual('input');
