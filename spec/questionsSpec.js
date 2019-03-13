@@ -26,6 +26,10 @@ describe('cz-customizable', function() {
       },
       allowCustomScopes: true,
       allowBreakingChanges: ['feat'],
+      allowTicketNumber: true,
+      isTicketNumberRequired: true,
+      ticketNumberPrefix: 'TICKET-',
+      ticketNumberRegExp: '\\d{1,5}',
       subjectLimit: 20
     };
 
@@ -48,33 +52,39 @@ describe('cz-customizable', function() {
     expect(getQuestion(3).when({scope: false})).toEqual(false);
     expect(getQuestion(3).when({scope: 'scope'})).toEqual(false);
 
-    // question 4 - SUBJECT
-    expect(getQuestion(4).name).toEqual('subject');
+    // question 4 - TICKET_NUMBER
+    expect(getQuestion(4).name).toEqual('ticketNumber');
     expect(getQuestion(4).type).toEqual('input');
-    expect(getQuestion(4).message).toMatch(/IMPERATIVE tense description/);
-    expect(getQuestion(4).validate('good subject')).toEqual(true);
-    expect(getQuestion(4).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
-    expect(getQuestion(4).filter('Subject')).toEqual('subject');
+    expect(getQuestion(4).message.indexOf('Enter the ticket number following this pattern')).toEqual(0);
+    expect(getQuestion(4).validate()).toEqual(false); //mandatory question
 
-    // question 5 - BODY
-    expect(getQuestion(5).name).toEqual('body');
+    // question 5 - SUBJECT
+    expect(getQuestion(5).name).toEqual('subject');
     expect(getQuestion(5).type).toEqual('input');
-
-    // question 6 - BREAKING CHANGE
-    expect(getQuestion(6).name).toEqual('breaking');
+    expect(getQuestion(5).message).toMatch(/IMPERATIVE tense description/);
+    expect(getQuestion(5).filter('Subject')).toEqual('subject');
+    expect(getQuestion(5).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
+    expect(getQuestion(5).validate('good subject')).toEqual(true);
+    
+    // question 6 - BODY
+    expect(getQuestion(6).name).toEqual('body');
     expect(getQuestion(6).type).toEqual('input');
-    expect(getQuestion(6).when({type: 'feat'})).toEqual(true);
-    expect(getQuestion(6).when({type: 'fix'})).toEqual(false);
 
-    // question 7 - FOOTER
-    expect(getQuestion(7).name).toEqual('footer');
+    // question 7 - BREAKING CHANGE
+    expect(getQuestion(7).name).toEqual('breaking');
     expect(getQuestion(7).type).toEqual('input');
-    expect(getQuestion(7).when({type: 'fix'})).toEqual(true);
-    expect(getQuestion(7).when({type: 'WIP'})).toEqual(false);
+    expect(getQuestion(7).when({type: 'feat'})).toEqual(true);
+    expect(getQuestion(7).when({type: 'fix'})).toEqual(false);
 
-    //question 8, last one, CONFIRM COMMIT OR NOT
-    expect(getQuestion(8).name).toEqual('confirmCommit');
-    expect(getQuestion(8).type).toEqual('expand');
+    // question 8 - FOOTER
+    expect(getQuestion(8).name).toEqual('footer');
+    expect(getQuestion(8).type).toEqual('input');
+    expect(getQuestion(8).when({type: 'fix'})).toEqual(true);
+    expect(getQuestion(8).when({type: 'WIP'})).toEqual(false);
+
+    //question 9, last one, CONFIRM COMMIT OR NOT
+    expect(getQuestion(9).name).toEqual('confirmCommit');
+    expect(getQuestion(9).type).toEqual('expand');
 
 
     var answers = {
@@ -83,15 +93,15 @@ describe('cz-customizable', function() {
       scope: 'myScope',
       subject: 'create a new cool feature'
     };
-    expect(getQuestion(8).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+    expect(getQuestion(9).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
   });
 
   it('default length limit of subject should be 100', function() {
     config = {
       types: [{value: 'feat', name: 'feat: my feat'}]
     };
-    expect(getQuestion(4).validate('good subject')).toEqual(true);
-    expect(getQuestion(4).validate('bad subject that exceed limit bad subject that exceed limitbad subject that exceed limit test test test')).toEqual('Exceed limit: 100');
+    expect(getQuestion(5).validate('good subject')).toEqual(true);
+    expect(getQuestion(5).validate('bad subject that exceed limit bad subject that exceed limitbad subject that exceed limit test test test')).toEqual('Exceed limit: 100');
   });
 
 
@@ -103,13 +113,13 @@ describe('cz-customizable', function() {
         scopes: [{name: 'myScope'}],
         allowBreakingChanges: ['fix']
       };
-      expect(getQuestion(6).name).toEqual('breaking');
+      expect(getQuestion(7).name).toEqual('breaking');
 
       var answers = {
         type: 'feat'
       };
 
-      expect(getQuestion(6).when(answers)).toEqual(false); // not allowed
+      expect(getQuestion(7).when(answers)).toEqual(false); // not allowed
     });
 
     it('should allow BREAKING CHANGE question when config property "allowBreakingChanges" specifies array of types and answer is one of those', function() {
@@ -118,13 +128,13 @@ describe('cz-customizable', function() {
         scopes: [{name: 'myScope'}],
         allowBreakingChanges: ['fix', 'feat']
       };
-      expect(getQuestion(6).name).toEqual('breaking');
+      expect(getQuestion(7).name).toEqual('breaking');
 
       var answers = {
         type: 'feat'
       };
 
-      expect(getQuestion(6).when(answers)).toEqual(true); // allowed
+      expect(getQuestion(7).when(answers)).toEqual(true); // allowed
     });
 
   });
@@ -151,6 +161,85 @@ describe('cz-customizable', function() {
       })();
 
     });
+  });
+
+  describe('no TicketNumber question', function() {
+
+    it('should use scope override', function() {
+      config = {
+        types: [{value: 'feat', name: 'feat: my feat'}],
+        allowTicketNumber: false
+      };
+
+      // question 4 with
+      expect(getQuestion(4).name).toEqual('ticketNumber');
+      expect(getQuestion(4).when()).toEqual(false);
+    });
+  });
+
+  describe('TicketNumber', function() {
+
+    it('disable TicketNumber question', function() {
+      config = {
+        types: [{value: 'feat', name: 'feat: my feat'}],
+        allowTicketNumber: false
+      };
+
+      // question 4 with
+      expect(getQuestion(4).name).toEqual('ticketNumber');
+      expect(getQuestion(4).when()).toEqual(false);
+    });
+
+    it('custom message defined', function() {
+      config = {
+        types: [{value: 'feat', name: 'feat: my feat'}],
+        allowTicketNumber: true,
+        messages: {
+          ticketNumber: 'ticket number'
+        }
+      };
+
+      // question 4 with
+      expect(getQuestion(4).name).toEqual('ticketNumber');
+      expect(getQuestion(4).message).toEqual('ticket number');
+    });
+
+    describe('validation', function() {
+      it('invalid because empty and required', function() {
+        config = {
+          isTicketNumberRequired: true
+        };
+        expect(getQuestion(4).validate('')).toEqual(false);
+      });
+      it('empty but valid because optional', function() {
+        config = {
+          isTicketNumberRequired: false
+        };
+        expect(getQuestion(4).validate('')).toEqual(true);
+      });
+      it('valid because there is no regexp defined', function() {
+        config = {
+          isTicketNumberRequired: true,
+          ticketNumberRegExp: undefined
+        };
+        expect(getQuestion(4).validate('21234')).toEqual(true);
+      });
+      it('invalid because regexp don\'t match', function() {
+        config = {
+          isTicketNumberRequired: true,
+          ticketNumberRegExp: '\\d{1,5}'
+        };
+        expect(getQuestion(4).validate('sddsa')).toEqual(false);
+      });
+      it('valid because regexp match', function() {
+        config = {
+          isTicketNumberRequired: true,
+          ticketNumberRegExp: '\\d{1,5}'
+        };
+        expect(getQuestion(4).validate('12345')).toEqual(true);
+      });
+    });
+
   });
 
 

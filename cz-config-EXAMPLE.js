@@ -22,6 +22,11 @@ module.exports = {
     {name: 'changeMe'}
   ],
 
+  allowTicketNumber: true,
+  isTicketNumberRequired: true,
+  ticketNumberPrefix: 'TICKET-',
+  ticketNumberRegExp: '\\d{1,5}',
+
   // it needs to match the value for field type. Eg.: 'fix'
   /*
   scopeOverrides: {
@@ -54,5 +59,6 @@ module.exports = {
 
   // limit subject length
   subjectLimit: 100
+
 
 };

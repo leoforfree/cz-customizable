@@ -25,6 +25,16 @@ module.exports = function buildCommit(answers, config) {
     return subject.trim();
   }
 
+  function addTicketNumber(ticketNumber, config) {
+    if (!ticketNumber) {
+      return '';
+    }
+    if (config.ticketNumberPrefix) {
+      return config.ticketNumberPrefix + ticketNumber.trim() + ' ';
+    }
+    return ticketNumber.trim() + ' ';
+  }
+
   function escapeSpecialChars(result) {
     var specialChars = ['\`'];
 
@@ -38,7 +48,7 @@ module.exports = function buildCommit(answers, config) {
   }
 
   // Hard limit this line
-  var head = (answers.type + addScope(answers.scope) + addSubject(answers.subject)).slice(0, maxLineWidth);
+  var head = (answers.type + addScope(answers.scope) + addTicketNumber(answers.ticketNumber, config) + addSubject(answers.subject)).slice(0, maxLineWidth);
 
   // Wrap these lines at 100 characters
   var body = wrap(answers.body, wrapOptions) || '';

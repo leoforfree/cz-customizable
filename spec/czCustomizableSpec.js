@@ -264,4 +264,54 @@ describe('cz-customizable', function() {
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: my footer');
   });
 
+  it('should call commit() function with ticket number', function() {
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      ticketNumber: 'TICKET-1234'
+    };
+
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+    expect(commit).toHaveBeenCalledWith('feat(myScope): TICKET-1234 create a new cool feature');
+  });
+
+  it('should call commit() function with ticket number and prefix', function() {
+
+    module.__set__({
+      // it mocks winston logging tool
+      log: {
+        info: function() {}
+      },
+
+      readConfigFile: function() {
+        return {
+          types: [{value: 'feat', name: 'feat: my feat'}],
+          scopes: [{name: 'myScope'}],
+          scopeOverrides: {
+            fix: [{name: 'fixOverride'}]
+          },
+          allowCustomScopes: true,
+          allowBreakingChanges: ['feat'],
+          breakingPrefix: 'WARNING:',
+          ticketNumberPrefix: 'TICKET-'
+        };
+      }
+    });
+
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      ticketNumber: '1234'
+    };
+
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+    expect(commit).toHaveBeenCalledWith('feat(myScope): TICKET-1234 create a new cool feature');
+  });
+
 });

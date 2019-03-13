@@ -1,6 +1,8 @@
 'use strict';
 
 
+var fs = require('fs');
+var path = require('path');
 var buildCommit = require('./buildCommit');
 var log = require('winston');
 
@@ -8,6 +10,23 @@ var log = require('winston');
 var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
 };
+
+var cwd = fs.realpathSync(process.cwd());
+var packageData = require(path.join(cwd, 'package.json'));
+
+function isValidateTicketNo(value, config) {
+  if (!value) {
+    return config.isTicketNumberRequired ? false : true;
+  }
+  if (!config.ticketNumberRegExp) {
+    return true;
+  }
+  var reg = new RegExp(config.ticketNumberRegExp);
+  if (value.replace(reg, '') !== '') {
+    return false;
+  }
+  return true;
+}
 
 module.exports = {
 
@@ -21,6 +40,13 @@ module.exports = {
     messages.type = messages.type || 'Select the type of change that you\'re committing:';
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
+    if (!messages.ticketNumber) {
+      if (config.ticketNumberRegExp) {
+        messages.ticketNumber = messages.ticketNumberPattern || 'Enter the ticket number following this pattern (' + config.ticketNumberRegExp + ')\n';
+      } else {
+        messages.ticketNumber = 'Enter the ticket number:\n';
+      }
+    }
     messages.subject = messages.subject || 'Write a SHORT, IMPERATIVE tense description of the change:\n';
     messages.body = messages.body || 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n';
     messages.breaking = messages.breaking || 'List any BREAKING CHANGES (optional):\n';
@@ -75,6 +101,17 @@ module.exports = {
         message: messages.customScope,
         when: function(answers) {
           return answers.scope === 'custom';
+        }
+      },
+      {
+        type: 'input',
+        name: 'ticketNumber',
+        message: messages.ticketNumber,
+        when: function() {
+          return !!config.allowTicketNumber; // no ticket numbers allowed unless specifed
+        },
+        validate: function (value) {
+          return isValidateTicketNo(value, config);
         }
       },
       {
