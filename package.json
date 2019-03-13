@@ -26,22 +26,22 @@
   "license": "MIT",
   "dependencies": {
     "editor": "1.0.0",
-    "find-config": "0.3.0",
-    "temp": "0.8.3",
-    "winston": "2.1.0",
-    "word-wrap": "1.1.0",
-    "inquirer": "1.2.3"
+    "find-config": "^1.0.0",
+    "inquirer": "^6.2.2",
+    "temp": "^0.9.0",
+    "winston": "^3.2.1",
+    "word-wrap": "^1.2.3"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
-    "commitizen": "^3.0.4",
-    "eslint": "1.9.0",
+    "commitizen": "^3.0.7",
+    "eslint": "^5.15.1",
     "ghooks": "^2.0.4",
-    "istanbul": "0.4.0",
-    "jasmine-node": "1.14.5",
-    "rewire": "2.5.0",
-    "semantic-release": "^15.12.0",
-    "travis-deploy-once": "^5.0.9"
+    "istanbul": "^0.4.5",
+    "jasmine-node": "^1.16.2",
+    "rewire": "^4.0.1",
+    "semantic-release": "^15.13.3",
+    "travis-deploy-once": "^5.0.11"
   },
   "config": {
     "commitizen": {
