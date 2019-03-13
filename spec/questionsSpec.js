@@ -55,7 +55,7 @@ describe('cz-customizable', function() {
     // question 4 - TICKET_NUMBER
     expect(getQuestion(4).name).toEqual('ticketNumber');
     expect(getQuestion(4).type).toEqual('input');
-    expect(getQuestion(4).message.indexOf('Enter the ticket number folloing this patter')).toEqual(0);
+    expect(getQuestion(4).message.indexOf('Enter the ticket number following this pattern')).toEqual(0);
     expect(getQuestion(4).validate()).toEqual(false); //mandatory question
 
     // question 5 - SUBJECT
