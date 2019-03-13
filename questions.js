@@ -42,7 +42,7 @@ module.exports = {
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
     if (!messages.ticketNumber) {
       if (config.ticketNumberRegExp) {
-        messages.ticketNumber = messages.ticketNumberPattern || 'Enter the ticket number folloing this patter (' + config.ticketNumberRegExp + ')\n';
+        messages.ticketNumber = messages.ticketNumberPattern || 'Enter the ticket number following this pattern (' + config.ticketNumberRegExp + ')\n';
       } else {
         messages.ticketNumber = 'Enter the ticket number:\n';
       }
