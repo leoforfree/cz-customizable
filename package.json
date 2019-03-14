@@ -29,7 +29,6 @@
     "find-config": "^1.0.0",
     "inquirer": "^6.2.2",
     "temp": "^0.9.0",
-    "winston": "^3.2.1",
     "word-wrap": "^1.2.3"
   },
   "devDependencies": {

@@ -1,7 +1,6 @@
 'use strict';
 
 describe('cz-customizable', function() {
-
   var questions, config;
 
   beforeEach(function() {
@@ -65,7 +64,7 @@ describe('cz-customizable', function() {
     expect(getQuestion(5).filter('Subject')).toEqual('subject');
     expect(getQuestion(5).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
     expect(getQuestion(5).validate('good subject')).toEqual(true);
-    
+
     // question 6 - BODY
     expect(getQuestion(6).name).toEqual('body');
     expect(getQuestion(6).type).toEqual('input');
@@ -239,8 +238,5 @@ describe('cz-customizable', function() {
         expect(getQuestion(4).validate('12345')).toEqual(true);
       });
     });
-
   });
-
-
 });
