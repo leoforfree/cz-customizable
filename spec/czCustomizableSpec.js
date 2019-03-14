@@ -69,7 +69,7 @@ describe('cz-customizable', function() {
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
 
-    expect(commit).toHaveBeenCalledWith('feat: with backticks \\\\`here\\\\`');
+    expect(commit).toHaveBeenCalledWith('feat: with backticks \\`here\\`');
   });
 
   it('should not call commit() function if there is no final confirmation and display log message saying commit has been canceled', function() {
@@ -201,7 +201,7 @@ describe('cz-customizable', function() {
       breaking: 'breaking',
       footer: 'my footer'
     };
-    
+
     module.__set__({
       // it mocks winston logging tool
       log: {
@@ -237,7 +237,7 @@ describe('cz-customizable', function() {
       breaking: 'breaking',
       footer: 'my footer'
     };
-    
+
     module.__set__({
       // it mocks winston logging tool
       log: {
@@ -260,7 +260,7 @@ describe('cz-customizable', function() {
 
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
-    
+
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: my footer');
   });
 

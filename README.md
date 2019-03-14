@@ -53,7 +53,7 @@ Here are the options you can set in your `.cz-config.js`:
 
 * scopes: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
 * scopeOverrides: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:
-```
+  ```
   scopeOverrides: {
     fix: [
       {name: 'merge'},
@@ -81,7 +81,7 @@ Here are the options you can set in your `.cz-config.js`:
 ## GOTCHAS
 
 * backticks
-If you wish to have backticks in your content, for example "feat: \`string\`", the commit preview will be "feat: \\\\`string\\\\`".
+If you wish to have backticks in your content, for example "feat: \`string\`", the commit preview will be "feat: \\\`string\\\`".
 Don't worry because on your `git log` will be "feat: \`string\`" as desired.
 
 * multiline contents on the body of the message
