@@ -1,11 +1,9 @@
 'use strict';
 
-
 var fs = require('fs');
 var path = require('path');
 var buildCommit = require('./buildCommit');
-var log = require('winston');
-
+var log = require('./logger');
 
 var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
