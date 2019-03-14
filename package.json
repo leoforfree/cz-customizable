@@ -12,6 +12,7 @@
     "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "semantic-release": "semantic-release",
+    "prettier": "prettier --single-quote --trailing-comma es5 --write '*.js' 'spec/**/*.js'",
     "travis-deploy-once": "travis-deploy-once"
   },
   "homepage": "https://github.com/leonardoanalista/cz-customizable",
@@ -35,9 +36,14 @@
     "codecov.io": "0.1.6",
     "commitizen": "^3.0.7",
     "eslint": "^5.15.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "ghooks": "^2.0.4",
     "istanbul": "^0.4.5",
     "jasmine-node": "^1.16.2",
+    "prettier": "1.16.4",
     "rewire": "^4.0.1",
     "semantic-release": "^15.13.3",
     "travis-deploy-once": "^5.0.11"
