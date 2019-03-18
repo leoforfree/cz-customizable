@@ -1,72 +1,76 @@
-'use strict';
+const wrap = require('word-wrap');
 
-
-var wrap = require('word-wrap');
-
+function addTicketNumber(ticketNumber, config) {
+  if (!ticketNumber) {
+    return '';
+  }
+  if (config.ticketNumberPrefix) {
+    return `${config.ticketNumberPrefix + ticketNumber.trim()} `;
+  }
+  return `${ticketNumber.trim()} `;
+}
 
 module.exports = function buildCommit(answers, config) {
+  const maxLineWidth = 100;
 
-  var maxLineWidth = 100;
-
-  var wrapOptions = {
+  const wrapOptions = {
     trim: true,
     newline: '\n',
-    indent:'',
-    width: maxLineWidth
+    indent: '',
+    width: maxLineWidth,
   };
 
   function addScope(scope) {
-    if (!scope) return ': '; //it could be type === WIP. So there is no scope
+    if (!scope) return ': '; // it could be type === WIP. So there is no scope
 
-    return '(' + scope.trim() + '): ';
+    return `(${scope.trim()}): `;
   }
 
   function addSubject(subject) {
     return subject.trim();
   }
 
-  function addTicketNumber(ticketNumber, config) {
-    if (!ticketNumber) {
-      return '';
-    }
-    if (config.ticketNumberPrefix) {
-      return config.ticketNumberPrefix + ticketNumber.trim() + ' ';
-    }
-    return ticketNumber.trim() + ' ';
-  }
-
   function escapeSpecialChars(result) {
-    var specialChars = ['\`'];
+    // eslint-disable-next-line no-useless-escape
+    const specialChars = ['`'];
 
-    specialChars.map(function (item) {
+    let newResult = result;
+    // eslint-disable-next-line array-callback-return
+    specialChars.map(item => {
       // If user types "feat: `string`", the commit preview should show "feat: `\string\`".
       // Don't worry. The git log will be "feat: `string`"
-      result = result.replace(new RegExp(item, 'g'), '\\`');
+      newResult = result.replace(new RegExp(item, 'g'), '\\`');
     });
-    return result;
+    return newResult;
   }
 
   // Hard limit this line
-  var head = (answers.type + addScope(answers.scope) + addTicketNumber(answers.ticketNumber, config) + addSubject(answers.subject)).slice(0, maxLineWidth);
+  // eslint-disable-next-line max-len
+  const head = (
+    answers.type +
+    addScope(answers.scope) +
+    addTicketNumber(answers.ticketNumber, config) +
+    addSubject(answers.subject)
+  ).slice(0, maxLineWidth);
 
   // Wrap these lines at 100 characters
-  var body = wrap(answers.body, wrapOptions) || '';
+  let body = wrap(answers.body, wrapOptions) || '';
   body = body.split('|').join('\n');
 
-  var breaking = wrap(answers.breaking, wrapOptions);
-  var footer = wrap(answers.footer, wrapOptions);
+  const breaking = wrap(answers.breaking, wrapOptions);
+  const footer = wrap(answers.footer, wrapOptions);
 
-  var result = head;
+  let result = head;
   if (body) {
-    result += '\n\n' + body;
+    result += `\n\n${body}`;
   }
   if (breaking) {
-    var breakingPrefix = config && config.breakingPrefix ? config.breakingPrefix : 'BREAKING CHANGE:';
-    result += '\n\n' + breakingPrefix + '\n' + breaking;
+    const breakingPrefix = config && config.breakingPrefix ? config.breakingPrefix : 'BREAKING CHANGE:';
+    result += `\n\n${breakingPrefix}\n${breaking}`;
   }
   if (footer) {
-    var footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
-    result += '\n\n' + footerPrefix + ' ' + footer;
+    const footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
+    result += `\n\n${footerPrefix} ${footer}`;
   }
 
   return escapeSpecialChars(result);
