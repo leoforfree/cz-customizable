@@ -4,16 +4,13 @@ describe('cz-customizable', () => {
   let module;
   // let cz;
   let commit;
+  let log;
 
   beforeEach(() => {
     module = rewire('../index.js');
 
     // eslint-disable-next-line no-underscore-dangle
     module.__set__({
-      log: {
-        info() {},
-      },
-
       readConfigFile() {
         return {
           types: [{ value: 'feat', name: 'feat: my feat' }],
@@ -29,17 +26,25 @@ describe('cz-customizable', () => {
 
     // cz = jasmine.createSpyObj('cz', ['prompt', 'Separator']);
     commit = jasmine.createSpy();
+    // eslint-disable-next-line no-underscore-dangle
+    log = module.__get__('log');
+
+    spyOn(log, 'info');
   });
 
   function getMockedCz(answers) {
+    const prompt = () => {
+      return {
+        then(cb) {
+          cb(answers);
+        },
+      };
+    };
+
+    prompt.registerPrompt = () => {};
+
     return {
-      prompt() {
-        return {
-          then(cb) {
-            cb(answers);
-          },
-        };
-      },
+      prompt,
     };
   }
 
@@ -58,7 +63,7 @@ describe('cz-customizable', () => {
     expect(commit).toHaveBeenCalledWith('feat: do it all');
   });
 
-  it('should escape special characters sush as backticks', () => {
+  it('should escape special characters such as backticks', () => {
     const answers = {
       confirmCommit: 'yes',
       type: 'feat',
@@ -158,6 +163,18 @@ describe('cz-customizable', () => {
       expect(commit.wasCalled).toEqual(false);
       done();
     }, 100);
+  });
+
+  it('should log info if confirm operation for commit is canceled', () => {
+    const answers = {
+      confirmCommit: 'no',
+    };
+
+    const mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+
+    expect(commit.wasCalled).toEqual(false);
+    expect(log.info).toHaveBeenCalledWith('Commit has been canceled.');
   });
 
   it('should truncate first line if number of characters is higher than 200', () => {

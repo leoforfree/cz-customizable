@@ -1,9 +1,11 @@
-const questions = require('../questions.js');
+const rewire = require('rewire');
 
 describe('cz-customizable', () => {
   let config;
+  let questions;
 
   beforeEach(() => {
+    questions = rewire('../questions.js');
     config = null;
   });
 
@@ -61,9 +63,10 @@ describe('cz-customizable', () => {
 
     // question 5 - SUBJECT
     expect(getQuestion(5).name).toEqual('subject');
-    expect(getQuestion(5).type).toEqual('input');
+    expect(getQuestion(5).type).toEqual('autocomplete');
     expect(getQuestion(5).message).toMatch(/IMPERATIVE tense description/);
     expect(getQuestion(5).filter('Subject')).toEqual('subject');
+    expect(getQuestion(5).filter(':bug: Subject')).toEqual(':bug: subject');
     expect(getQuestion(5).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
     expect(getQuestion(5).validate('good subject')).toEqual(true);
 
@@ -236,6 +239,145 @@ describe('cz-customizable', () => {
         };
         expect(getQuestion(4).validate('12345')).toEqual(true);
       });
+    });
+  });
+
+  describe('git emoji autocomplete', () => {
+    let gitEmojiProvider;
+
+    beforeEach(() => {
+      gitEmojiProvider = rewire('../util/gitEmojiProvider.js');
+
+      // eslint-disable-next-line no-underscore-dangle
+      questions.__set__({
+        gitEmojiProvider: {
+          fetchEmoji: gitEmojiProvider.fetchEmoji,
+        },
+      });
+    });
+
+    it('git emoji autocomplete through remote fetch', () => {
+      config = {
+        types: [{ value: 'feat', name: 'feat: my feat' }],
+      };
+
+      // eslint-disable-next-line no-underscore-dangle
+      gitEmojiProvider.__set__({
+        gitmojiApiClient: {
+          request() {
+            return Promise.resolve({
+              data: {
+                gitmojis: [
+                  {
+                    emoji: '⚡️',
+                    entity: '&#x26a1;',
+                    code: ':zap:',
+                    description: 'Improving performance.',
+                    name: 'zap',
+                  },
+                  {
+                    emoji: '🍎',
+                    entity: '&#x1f34e;',
+                    code: ':apple:',
+                    description: 'Fixing something on macOS.',
+                    name: 'apple',
+                  },
+                ],
+              },
+            });
+          },
+        },
+        isCachedEmojiAvailable() {
+          return false;
+        },
+        createCacheForEmoji() {},
+      });
+
+      getQuestion(5)
+        .source('answer content placeholder', ':zap:')
+        .then(subject => {
+          expect(subject).toContain(':zap:');
+        });
+      getQuestion(5)
+        .source('answer content placeholder', ':zap')
+        .then(subject => {
+          expect(subject).toContain('⚡️');
+          expect(subject).toContain('🍎');
+        });
+      getQuestion(5)
+        .source('answer content placeholder', '')
+        .then(subject => {
+          expect(subject).toContain('');
+        });
+    });
+
+    it('git emoji autocomplete through local fetch', () => {
+      config = {
+        types: [{ value: 'feat', name: 'feat: my feat' }],
+      };
+
+      // eslint-disable-next-line no-underscore-dangle
+      gitEmojiProvider.__set__({
+        fetchCachedEmoji() {
+          return Promise.resolve([
+            {
+              emoji: '⚡️',
+              entity: '&#x26a1;',
+              code: ':zap:',
+              description: 'Improving performance.',
+              name: 'zap',
+            },
+            {
+              emoji: '🍎',
+              entity: '&#x1f34e;',
+              code: ':apple:',
+              description: 'Fixing something on macOS.',
+              name: 'apple',
+            },
+          ]);
+        },
+        isCachedEmojiAvailable() {
+          return true;
+        },
+      });
+
+      getQuestion(5)
+        .source('answer content placeholder', ':zap:')
+        .then(subject => {
+          expect(subject).toContain(':zap:');
+        });
+      getQuestion(5)
+        .source('answer content placeholder', ':zap')
+        .then(subject => {
+          expect(subject).toContain('⚡️');
+          expect(subject).toContain('🍎');
+        });
+      getQuestion(5)
+        .source('answer content placeholder', '')
+        .then(subject => {
+          expect(subject).toContain('');
+        });
+    });
+
+    it('no git emoji', () => {
+      config = {
+        types: [{ value: 'feat', name: 'feat: my feat' }],
+      };
+
+      // eslint-disable-next-line no-underscore-dangle
+      gitEmojiProvider.__set__({
+        gitmojiApiClient: {
+          request() {
+            return Promise.reject(new Error('fake terrible network condition'));
+          },
+        },
+        isCachedEmojiAvailable() {
+          return false;
+        },
+        createCacheForEmoji() {},
+      });
+
+      getQuestion(5).source('answer content placeholder', ':zap');
     });
   });
 });

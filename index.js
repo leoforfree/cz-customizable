@@ -8,8 +8,8 @@ const editor = require('editor');
 const temp = require('temp').track();
 const fs = require('fs');
 const path = require('path');
-const log = require('./logger');
-const buildCommit = require('./buildCommit');
+const log = require('./util/logger');
+const buildCommit = require('./util/commitGenerator');
 
 /* istanbul ignore next */
 function readConfigFile() {
@@ -47,36 +47,45 @@ module.exports = {
     const config = readConfigFile();
     const subjectLimit = config.subjectLimit || 100;
 
+    cz.prompt.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
     log.info(
       `\n\nLine 1 will be cropped at ${subjectLimit} characters. All other lines will be wrapped after 100 characters.\n`
     );
 
     const questions = require('./questions').getQuestions(config, cz);
+    const confirmCommitCallback = {
+      edit(answers) {
+        temp.open(null, (err, info) => {
+          /* istanbul ignore if */
+          if (err) return;
+
+          fs.write(info.fd, buildCommit(answers, config));
+          fs.close(info.fd, () => {
+            editor(info.path, code => {
+              if (code) {
+                log.info(`Editor returned non zero value. Commit message was:\n${buildCommit(answers, config)}`);
+                return;
+              }
+
+              const commitStr = fs.readFileSync(info.path, {
+                encoding: 'utf8',
+              });
+              commit(commitStr);
+            });
+          });
+        });
+      },
+      yes(answers) {
+        commit(buildCommit(answers, config));
+      },
+      no() {
+        log.info('Commit has been canceled.');
+      },
+    };
 
     cz.prompt(questions).then(answers => {
-      if (answers.confirmCommit === 'edit') {
-        temp.open(null, (err, info) => {
-          /* istanbul ignore else */
-          if (!err) {
-            fs.writeSync(info.fd, buildCommit(answers, config));
-            fs.close(info.fd, () => {
-              editor(info.path, code => {
-                if (code === 0) {
-                  const commitStr = fs.readFileSync(info.path, {
-                    encoding: 'utf8',
-                  });
-                  commit(commitStr);
-                } else {
-                  log.info(`Editor returned non zero value. Commit message was:\n${buildCommit(answers, config)}`);
-                }
-              });
-            });
-          }
-        });
-      } else if (answers.confirmCommit === 'yes') {
-        commit(buildCommit(answers, config));
-      } else {
-        log.info('Commit has been canceled.');
+      if (confirmCommitCallback[answers.confirmCommit]) {
+        confirmCommitCallback[answers.confirmCommit](answers);
       }
     });
   },

@@ -1,5 +1,8 @@
-const buildCommit = require('./buildCommit');
-const log = require('./logger');
+const Fuse = require('fuse.js');
+
+const buildCommit = require('./util/commitGenerator');
+const log = require('./util/logger');
+const gitEmojiProvider = require('./util/gitEmojiProvider');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
 
@@ -43,6 +46,16 @@ module.exports = {
     messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
+    const fuseOption = {
+      shouldSort: true,
+      threshold: 0.4,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ['name', 'code'],
+      id: 'emoji',
+    };
     let questions = [
       {
         type: 'list',
@@ -99,16 +112,23 @@ module.exports = {
         name: 'ticketNumber',
         message: messages.ticketNumber,
         when() {
-          return !!config.allowTicketNumber; // no ticket numbers allowed unless specifed
+          return !!config.allowTicketNumber; // no ticket numbers allowed unless specified
         },
         validate(value) {
           return isValidateTicketNo(value, config);
         },
       },
       {
-        type: 'input',
+        type: 'autocomplete',
         name: 'subject',
+        suggestOnly: true,
         message: messages.subject,
+        source(answersSoFar, query) {
+          /* istanbul ignore else */
+          if (/:[a-zA-Z]+:/.test(query) || !query) return Promise.resolve([query]);
+
+          return gitEmojiProvider.fetchEmoji().then(emojis => new Fuse(emojis, fuseOption).search(query));
+        },
         validate(value) {
           const limit = config.subjectLimit || 100;
           if (value.length > limit) {
@@ -116,8 +136,17 @@ module.exports = {
           }
           return true;
         },
-        filter(value) {
-          return value.charAt(0).toLowerCase() + value.slice(1);
+        filter(originalValue) {
+          const value = originalValue.trim();
+
+          const match = value.match(/^:[a-zA-Z]+:\s?/);
+          const current = match ? match[0].length : 0;
+          const next = current + 1;
+
+          return (current
+            ? [value.slice(0, current), value.slice(current, next).toLowerCase(), value.slice(next)]
+            : [value.charAt(current).toLowerCase(), value.slice(next)]
+          ).join('');
         },
       },
       {
@@ -134,7 +163,7 @@ module.exports = {
           if (config.allowBreakingChanges && config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0) {
             return true;
           }
-          return false; // no breaking changes allowed unless specifed
+          return false; // no breaking changes allowed unless specified
         },
       },
       {
