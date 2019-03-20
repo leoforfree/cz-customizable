@@ -59,7 +59,7 @@ module.exports = {
           /* istanbul ignore if */
           if (err) return;
 
-          fs.write(info.fd, buildCommit(answers, config));
+          fs.write(info.fd, buildCommit(answers, config), () => {});
           fs.close(info.fd, () => {
             editor(info.path, code => {
               if (code) {
