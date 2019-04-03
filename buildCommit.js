@@ -33,6 +33,13 @@ function addType(type, config) {
   return _.trim(`${prefix}${type}${suffix}`);
 }
 
+function addFooter(footer, config) {
+  if (config && config.footerPrefix === '') return `\n\n${footer}`;
+
+  const footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
+  return `\n\n${footerPrefix} ${footer}`;
+}
+
 module.exports = function buildCommit(answers, config) {
   const wrapOptions = {
     trim: true,
@@ -80,8 +87,7 @@ module.exports = function buildCommit(answers, config) {
     result += `\n\n${breakingPrefix}\n${breaking}`;
   }
   if (footer) {
-    const footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
-    result += `\n\n${footerPrefix} ${footer}`;
+    result += addFooter(footer, config);
   }
 
   return escapeSpecialChars(result);

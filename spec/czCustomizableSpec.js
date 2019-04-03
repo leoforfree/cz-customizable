@@ -270,6 +270,44 @@ describe('cz-customizable', () => {
     );
   });
 
+  it('should call commit() function with custom footer prefix set to empty string', () => {
+    const answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      breaking: 'breaking',
+      footer: 'my footer',
+    };
+
+    // eslint-disable-next-line no-underscore-dangle
+    module.__set__({
+      log: {
+        info() {},
+      },
+
+      readConfigFile() {
+        return {
+          types: [{ value: 'feat', name: 'feat: my feat' }],
+          scopes: [{ name: 'myScope' }],
+          scopeOverrides: {
+            fix: [{ name: 'fixOverride' }],
+          },
+          allowCustomScopes: true,
+          allowBreakingChanges: ['feat'],
+          footerPrefix: '',
+        };
+      },
+    });
+
+    const mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+
+    expect(commit).toHaveBeenCalledWith(
+      'feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nmy footer'
+    );
+  });
+
   it('should call commit() function with ticket number', () => {
     const answers = {
       confirmCommit: 'yes',
