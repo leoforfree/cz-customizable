@@ -35,7 +35,7 @@
   "devDependencies": {
     "codecov.io": "0.1.6",
     "commitizen": "^3.0.7",
-    "eslint": "^5.15.1",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.16.0",
