@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 // Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
@@ -15,6 +17,7 @@ const buildCommit = require('./buildCommit');
 function readConfigFile() {
   // First try to find the .cz-config.js config file
   const czConfig = findConfig.require(CZ_CONFIG_NAME, { home: false });
+
   if (czConfig) {
     return czConfig;
   }

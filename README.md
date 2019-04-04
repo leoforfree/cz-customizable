@@ -23,6 +23,10 @@ Suitable for large teams working with multiple projects with their own commit sc
   ```
 
 ## Configure
+
+### Options 1
+Changes to your git repository, file `package.json`.
+
 * `cz-customizable` will first look for a file called `.cz-config.js`
 * alternatively add a config block in your `package.json`:
   ```
@@ -38,6 +42,17 @@ Suitable for large teams working with multiple projects with their own commit sc
   ```
 Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `cz-config.js`.
 
+### Options 2
+Standalne - No Changes to your git repository*. This is suitable when your team is not ready to roll `cz-customizable` across all teams but you still would like to use it for your own commits, no matter the project.
+
+Steps:
+* create config file:
+  * create a file called `.cz-config.js` in your git repository root (*Asumptions: you do a global git ignore on `~/.gitignore_global` for `.cz-config.js`). Or;
+  * create a file called `.cz-config.js` your home directory.
+* npm install -g commitizen
+* npm install -g cz-customizable. Make sure you have version `>v5.6.x`
+* create global commitizen config file `.czrc`: `echo '{ "path": "cz-customizable" }' > ~/.czrc`
+* now run: `npx git-cz` or `git cz`.
 
 **Notes:**
 * you should commit your `.cz-config.js` file to your git.
