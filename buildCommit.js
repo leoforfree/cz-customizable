@@ -1,4 +1,8 @@
+const _ = require('lodash');
 const wrap = require('word-wrap');
+
+const defaultSubjectSeparator = ': ';
+const defaultMaxLineWidth = 100;
 
 function addTicketNumber(ticketNumber, config) {
   if (!ticketNumber) {
@@ -10,25 +14,32 @@ function addTicketNumber(ticketNumber, config) {
   return `${ticketNumber.trim()} `;
 }
 
-module.exports = function buildCommit(answers, config) {
-  const maxLineWidth = 100;
+function addScope(scope, config) {
+  const separator = _.get(config, 'subjectSeparator', defaultSubjectSeparator);
 
+  if (!scope) return separator; // it could be type === WIP. So there is no scope
+
+  return `(${scope.trim()})${separator}`;
+}
+
+function addSubject(subject) {
+  return _.trim(subject);
+}
+
+function addType(type, config) {
+  const prefix = _.get(config, 'typePrefix', '');
+  const suffix = _.get(config, 'typeSuffix', '');
+
+  return _.trim(`${prefix}${type}${suffix}`);
+}
+
+module.exports = function buildCommit(answers, config) {
   const wrapOptions = {
     trim: true,
     newline: '\n',
     indent: '',
-    width: maxLineWidth,
+    width: defaultMaxLineWidth,
   };
-
-  function addScope(scope) {
-    if (!scope) return ': '; // it could be type === WIP. So there is no scope
-
-    return `(${scope.trim()}): `;
-  }
-
-  function addSubject(subject) {
-    return subject.trim();
-  }
 
   function escapeSpecialChars(result) {
     // eslint-disable-next-line no-useless-escape
@@ -47,11 +58,11 @@ module.exports = function buildCommit(answers, config) {
   // Hard limit this line
   // eslint-disable-next-line max-len
   const head = (
-    answers.type +
-    addScope(answers.scope) +
+    addType(answers.type, config) +
+    addScope(answers.scope, config) +
     addTicketNumber(answers.ticketNumber, config) +
     addSubject(answers.subject)
-  ).slice(0, maxLineWidth);
+  ).slice(0, defaultMaxLineWidth);
 
   // Wrap these lines at 100 characters
   let body = wrap(answers.body, wrapOptions) || '';
