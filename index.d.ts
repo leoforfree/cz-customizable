@@ -21,6 +21,7 @@ declare module "cz-customizable" {
     allowBreakingChanges?: string[];
     skipQuestions?: string[];
     appendBranchNameToCommitMessage?: boolean;
+    ticketNumberPrefix?: string;
     breakingPrefix?: string;
     footerPrefix?: string;
     subjectLimit?: number;

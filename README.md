@@ -51,8 +51,8 @@ Hopefully this will help you to have consistent commit messages and have a fully
 
 Here are the options you can set in your `.cz-config.js`:
 
-* scopes: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
-* scopeOverrides: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:
+* **scopes**: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
+* **scopeOverrides**: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:
   ```
   scopeOverrides: {
     fix: [
@@ -63,12 +63,14 @@ Here are the options you can set in your `.cz-config.js`:
     ]
   }
   ```
-  * allowCustomScopes: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
-  * allowBreakingChanges: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
-  * skipQuestions: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
-  * appendBranchNameToCommitMessage: If you use `cz-customizable` with `cz-customizable-ghooks`, you can get the branch name automatically appended to the commit message. This is done by a commit hook on `cz-customizable-ghooks`. This option has been added on `cz-customizable-ghooks`, v1.3.0. Default value is `true`.
-  * breakingPrefix: {string, default 'BREAKING CHANGE:'}: Set a custom prefix for the breaking change block in commit messages.
-  * footerPrefix: {string, default 'ISSUES CLOSED:'}: Set a custom prefix for the footer block in commit messages.
+* **subjectLimit**: {number, default 100}: This is the commit first line.
+* **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
+* **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
+* **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
+* **appendBranchNameToCommitMessage**: If you use `cz-customizable` with `cz-customizable-ghooks`, you can get the branch name automatically appended to the commit message. This is done by a commit hook on `cz-customizable-ghooks`. This option has been added on `cz-customizable-ghooks`, v1.3.0. Default value is `true`.
+* **ticketNumberPrefix**: {string, default 'ISSUES CLOSED:'}: Set custom prefix for footer ticker number.
+* **breakingPrefix**: {string, default 'BREAKING CHANGE:'}: Set a custom prefix for the breaking change block in commit messages.
+* **footerPrefix**: {string, default 'ISSUES CLOSED:'}: Set a custom prefix for the footer block in commit messages.
 
 ## Related tools
 - (https://github.com/commitizen/cz-cli)
@@ -98,10 +100,15 @@ my items are:
 
 ## CONTRIBUTING
 
-* if you add a new config property, please remember to update Types  in file `index.d.ts`.
-Please refer to:
-* [Contributor Guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md) - disregard section "Signing the CLA" and basically be polite, respectful and understanding that we are all here after working hours spending time to build something useful to all.
-* [Conduct of Code](https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md) from [AngularJs](https://github.com/angular/angular.js) project.
+### Contributor Guidelines
+* if you add a new config property, please remember to update files `README.md` and `index.d.ts`.
+* add or update relevant tests
+* Favor non-breaking changes when possible
+* Send preliminary PR if you would like to start a discussion
+
+### Conduct of Code:
+* Be polite, respectful and understanding that we are all here after working hours spending time to build something useful to all.
+* We promise to extend courtesy and respect to everyone involved in this project regardless of gender, gender identity, sexual orientation, disability, age, race, ethnicity, religion, or level of experience
 
 
 
