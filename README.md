@@ -66,6 +66,11 @@ Hopefully this will help you to have consistent commit messages and have a fully
 
 Here are the options you can set in your `.cz-config.js`:
 
+* **subjectLimit**: {number, default 100}: This is the commit first line. Example: `feat: this is a new feature` or `feat(scopePayments): this is a new feature`
+* **subjectSeparator**: {string, default ': '}: This is the subject separator. Example: `feat: this is a new feature`
+* **typePrefix**: {string, default ''}: This is the commit type prefix. Example: config: `{ typePrefix: '[' }`, result: `[feat: this is a new feature`
+* **typeSuffix**: {string, default ''}: This is the commit type suffix. Example: config: `{ typePrefix: '[', typeSuffix: ']', subjectSeparator: ' ' }`, result: `[feat] this is a new feature`
+
 * **scopes**: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
 * **scopeOverrides**: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:
   ```
@@ -78,7 +83,6 @@ Here are the options you can set in your `.cz-config.js`:
     ]
   }
   ```
-* **subjectLimit**: {number, default 100}: This is the commit first line.
 * **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
