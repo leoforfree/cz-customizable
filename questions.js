@@ -117,7 +117,9 @@ module.exports = {
           return true;
         },
         filter(value) {
-          return value.charAt(0).toLowerCase() + value.slice(1);
+          const upperCaseSubject = config.upperCaseSubject || false;
+
+          return (upperCaseSubject ? value.charAt(0).toUpperCase() : value.charAt(0).toLowerCase()) + value.slice(1);
         },
       },
       {

@@ -108,6 +108,19 @@ describe('cz-customizable', () => {
     ).toEqual('Exceed limit: 100');
   });
 
+  it('subject should be lowercased by default', () => {
+    config = {};
+    expect(getQuestion(5).filter('Some subject')).toEqual('some subject');
+  });
+
+  it('subject should be capitilized when config property "upperCaseSubject" is set to true', () => {
+    config = {
+      upperCaseSubject: true,
+    };
+
+    expect(getQuestion(5).filter('some subject')).toEqual('Some subject');
+  });
+
   describe('optional fixOverride and allowBreakingChanges', () => {
     it('should restrict BREAKING CHANGE question when config property "allowBreakingChanges" specifies array of types', () => {
       config = {
