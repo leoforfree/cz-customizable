@@ -14,7 +14,7 @@ const log = require('./logger');
 const buildCommit = require('./buildCommit');
 
 /* istanbul ignore next */
-function readConfigFile() {
+const readConfigFile = () => {
   // First try to find the .cz-config.js config file
   const czConfig = findConfig.require(CZ_CONFIG_NAME, { home: false });
 
@@ -43,7 +43,7 @@ function readConfigFile() {
     'Unable to find a configuration file. Please refer to documentation to learn how to ser up: https://github.com/leonardoanalista/cz-customizable#steps "'
   );
   return null;
-}
+};
 
 module.exports = {
   prompter(cz, commit) {

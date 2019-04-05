@@ -90,6 +90,7 @@ Here are the options you can set in your `.cz-config.js`:
 * **ticketNumberPrefix**: {string, default 'ISSUES CLOSED:'}: Set custom prefix for footer ticker number.
 * **breakingPrefix**: {string, default 'BREAKING CHANGE:'}: Set a custom prefix for the breaking change block in commit messages.
 * **footerPrefix**: {string, default 'ISSUES CLOSED:'}: Set a custom prefix for the footer block in commit messages. Set to empty string to remove prefix.
+* **breaklineChar**: {string, default '|'}: It gets replaced with \n to create the breakline in your commit message. This is supported for fields `body` and `footer` at the moment.
 
 ## Related tools
 - (https://github.com/commitizen/cz-cli)

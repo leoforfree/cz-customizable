@@ -62,4 +62,40 @@ describe('buildCommit()', () => {
       expect(buildCommit(answersNoScope, options)).toEqual('[feat] this is a new feature');
     });
   });
+
+  describe('pipe replaced with new line', () => {
+    // I know it looks weird on tests but this proves to have the correct breakline inserted.
+    const expecteMessage = `feat: this is a new feature\n
+body with new line now
+body line2
+
+ISSUES CLOSED: footer with new line
+line 2`;
+
+    it('should add breakline for body and footer', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'this is a new feature',
+        body: 'body with new line now|body line2',
+        footer: 'footer with new line|line 2',
+      };
+      const options = {};
+
+      expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
+    });
+
+    it('should override breakline character with option breaklineChar', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'this is a new feature',
+        body: 'body with new line now@@@body line2',
+        footer: 'footer with new line@@@line 2',
+      };
+      const options = {
+        breaklineChar: '@@@',
+      };
+
+      expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
+    });
+  });
 });

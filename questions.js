@@ -3,7 +3,7 @@ const log = require('./logger');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
 
-function isValidateTicketNo(value, config) {
+const isValidateTicketNo = (value, config) => {
   if (!value) {
     return !config.isTicketNumberRequired;
   }
@@ -15,7 +15,7 @@ function isValidateTicketNo(value, config) {
     return false;
   }
   return true;
-}
+};
 
 module.exports = {
   getQuestions(config, cz) {
