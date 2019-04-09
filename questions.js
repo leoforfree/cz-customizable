@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const buildCommit = require('./buildCommit');
 const log = require('./logger');
 
@@ -133,7 +134,10 @@ module.exports = {
         message: messages.breaking,
         when(answers) {
           // eslint-disable-next-line max-len
-          if (config.allowBreakingChanges && config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0) {
+          if (
+            config.askForBreakingChangeFirst ||
+            (config.allowBreakingChanges && config.allowBreakingChanges.indexOf(answers.type.toLowerCase()) >= 0)
+          ) {
             return true;
           }
           return false; // no breaking changes allowed unless specifed
@@ -162,6 +166,15 @@ module.exports = {
     ];
 
     questions = questions.filter(item => !skipQuestions.includes(item.name));
+
+    if (config.askForBreakingChangeFirst) {
+      const isBreaking = oneQuestion => oneQuestion.name === 'breaking';
+
+      const breakingQuestion = _.filter(questions, isBreaking);
+      const questionWithoutBreaking = _.reject(questions, isBreaking);
+
+      questions = _.concat(breakingQuestion, questionWithoutBreaking);
+    }
 
     return questions;
   },

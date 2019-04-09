@@ -183,9 +183,20 @@ describe('cz-customizable', () => {
         allowTicketNumber: false,
       };
 
-      // question 4 with
       expect(getQuestion(4).name).toEqual('ticketNumber');
       expect(getQuestion(4).when()).toEqual(false);
+    });
+  });
+
+  describe('ask for breaking change first', () => {
+    it('when config askForBreakingChangeFirst is true', () => {
+      config = {
+        types: [{ value: 'feat', name: 'feat: my feat' }],
+        askForBreakingChangeFirst: true,
+      };
+
+      expect(getQuestion(1).name).toEqual('breaking');
+      expect(getQuestion(1).when()).toEqual(true);
     });
   });
 
@@ -196,7 +207,6 @@ describe('cz-customizable', () => {
         allowTicketNumber: false,
       };
 
-      // question 4 with
       expect(getQuestion(4).name).toEqual('ticketNumber');
       expect(getQuestion(4).when()).toEqual(false);
     });
@@ -210,7 +220,6 @@ describe('cz-customizable', () => {
         },
       };
 
-      // question 4 with
       expect(getQuestion(4).name).toEqual('ticketNumber');
       expect(getQuestion(4).message).toEqual('ticket number');
     });
