@@ -153,6 +153,7 @@ module.exports = {
           { key: 'n', name: 'Abort commit', value: 'no' },
           { key: 'e', name: 'Edit message', value: 'edit' },
         ],
+        default: 0,
         message(answers) {
           const SEP = '###--------------------------------------------------------###';
           log.info(`\n${SEP}\n${buildCommit(answers, config)}\n${SEP}\n`);
