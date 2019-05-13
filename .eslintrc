@@ -8,7 +8,8 @@
     "console": true,
     "module": true
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "nada"],
   "rules": {
+    "nada/path-case": [1, { "case": "kebabCase" }]
   }
 }

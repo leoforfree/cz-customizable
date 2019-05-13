@@ -5,7 +5,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "eslint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
+    "lint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
     "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
     "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/",
     "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
@@ -13,6 +13,7 @@
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "semantic-release": "semantic-release",
     "prettier": "prettier --single-quote --trailing-comma es5 --write '*.js' 'spec/**/*.js'",
+    "commit": "./standalone.js",
     "travis-deploy-once": "travis-deploy-once"
   },
   "homepage": "https://github.com/leonardoanalista/cz-customizable",
@@ -28,25 +29,26 @@
   "dependencies": {
     "editor": "1.0.0",
     "find-config": "^1.0.0",
-    "inquirer": "^6.2.2",
+    "inquirer": "^6.3.1",
     "lodash": "^4.17.11",
     "temp": "^0.9.0",
     "word-wrap": "^1.2.3"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
-    "commitizen": "^3.0.7",
+    "commitizen": "^3.1.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-nada": "^1.1.1",
+    "eslint-plugin-prettier": "^3.1.0",
     "ghooks": "^2.0.4",
     "istanbul": "^0.4.5",
     "jasmine-node": "^1.16.2",
-    "prettier": "1.16.4",
+    "prettier": "^1.17.1",
     "rewire": "^4.0.1",
-    "semantic-release": "^15.13.3",
+    "semantic-release": "^15.13.12",
     "travis-deploy-once": "^5.0.11"
   },
   "config": {
@@ -57,7 +59,7 @@
       "config": "cz-config-EXAMPLE.js"
     },
     "ghooks": {
-      "pre-commit": "npm run eslint && npm run test"
+      "pre-commit": "npm run lint && npm run test"
     }
   }
 }
