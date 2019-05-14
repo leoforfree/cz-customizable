@@ -9,7 +9,7 @@ node_js:
   - '9'
   - '8'
 script:
-  - npm run eslint
+  - npm run lint
   - npm run test
   - npm run test:coverage
   - npm run test:check-coverage

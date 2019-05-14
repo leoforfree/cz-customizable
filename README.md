@@ -1,67 +1,104 @@
 # cz-customizable
 
-The customizable Commitizen plugin to help achieve consistent commit messages like the [AngularJS team](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines).
+The customizable Commitizen plugin (or standalone utility) to help achieve consistent commit messages like the [AngularJS team](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines).
 
 ![screenshot](screenshot.png)
 
-Suitable for large teams working with multiple projects with their own commit scopes. When you specify the scopes in your `.cz-config.js`, `cz-customizable` allows you to **select** the pre-defined scopes. No more spelling mistakes embarrassing you when generating the changelog file.
+Suitable for large teams working with multiple projects with their own commit scopes. It allows you to **select** the pre-defined scopes or commit types. It works perfectly with https://github.com/semantic-release/semantic-release.
+
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Build Status](https://travis-ci.org/leonardoanalista/cz-customizable.svg)](https://travis-ci.org/leonardoanalista/cz-customizable) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![codecov.io](https://codecov.io/github/leonardoanalista/cz-customizable/coverage.svg?branch=master)](https://codecov.io/github/leonardoanalista/cz-customizable?branch=master) [![npm monthly downloads](https://img.shields.io/npm/dm/cz-customizable.svg?style=flat-square)](https://www.npmjs.com/package/cz-customizable)
 
-## Steps
+
+You have two ways to use `cz-customizable`. Originally, this project started as a commitizen plugin (Option 1). We introduced the second option to run this `cz-customizable` in standalone mode (Option 2), just like any NodeJS script. It's recommended to use `Option 2` for simplicity. The way you configure is shared between both options.
+
+
+## Option 1 - cz-customizable as commitizen plugin
+
 * install commitizen in case you don't have it: `npm install -g commitizen`. Make sure you have the latest version of commitizen installed globally.
-* install the cz-customizable: `npm install cz-customizable --save-dev`
+
 * configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
 
-  ```
-  ...
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-customizable"
-    }
+```
+...
+"config": {
+  "commitizen": {
+    "path": "node_modules/cz-customizable"
   }
-  ```
+}
+```
 
-## Configure
 
-### Options 1
-Changes to your git repository, file `package.json`.
+### Option 2 - cz-customizable in standalone mode **(New)**
 
-* `cz-customizable` will first look for a file called `.cz-config.js`
-* alternatively add a config block in your `package.json`:
-  ```
+Use `cz-customizable` without `commitzen`.
+
+* npm install `npm install cz-customizable --save-dev`
+* add a new script to your `package.json`:
+
+```
+"scripts" : {
   ...
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-customizable"
-    },
-    "cz-customizable": {
-      "config": "config/path/to/my/config.js"
-    }
-  }
-  ```
-Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `cz-config.js`.
+  "commit": "./node_modules/cz-customizable/standalone.js"
+}
+```
 
-### Options 2
-Standalne - No Changes to your git repository*. This is suitable when your team is not ready to roll `cz-customizable` across all teams but you still would like to use it for your own commits, no matter the project.
+* See options below how to create and where you could put your `.cz-config.js` file.
+* now run: `npm run commit`.
+
+
+## Configuration (Shared between options 1 and 2)
+
+* Copy contents of `https://github.com/leonardoanalista/cz-customizable/blob/master/cz-config-EXAMPLE.js` and paste into a new file `.cz-config.js`
+
+
+### Option 1 - You can make changes to your git repository, file `package.json`.
+
+* `cz-customizable` will first look for a file called `.cz-config.js` in the project root, near your `package.json`
+* If no config found, it will look for `.cz-config.js` your home directory
+* alternatively add the config location in your `package.json`:
+```
+...
+"config": {
+  "commitizen": { // not needed for standlone usage
+    "path": "node_modules/cz-customizable"
+  },
+  "cz-customizable": {
+    "config": "config/path/to/my/config.js"
+  }
+}
+```
+
+Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `.cz-config.js`.
+
+
+### Option 2 - No Changes to your git repository*.
+
+This is suitable when your team is not ready to roll `cz-customizable` across all teams but you still would like to use it for your own commits, no matter the project.
 
 Steps:
 * create config file:
   * create a file called `.cz-config.js` in your git repository root (*Asumptions: you do a global git ignore on `~/.gitignore_global` for `.cz-config.js`). Or;
   * create a file called `.cz-config.js` your home directory.
+
+#### Additional steps when used as commitizen plugin
+
 * npm install -g commitizen
 * npm install -g cz-customizable. Make sure you have version `>v5.6.x`
 * create global commitizen config file `.czrc`: `echo '{ "path": "cz-customizable" }' > ~/.czrc`
 * now run: `npx git-cz` or `git cz`.
 
+
 **Notes:**
-* you should commit your `.cz-config.js` file to your git.
+* you should commit your `.cz-config.js` file to your git when applicable.
 
 
-From now on, instead of `git commit` you type `git cz` and let the tool do the work for you.
 
 Hopefully this will help you to have consistent commit messages and have a fully automated deployment without any human intervention.
 
+
+
+---
 ## Options
 
 Here are the options you can set in your `.cz-config.js`:
@@ -96,7 +133,7 @@ Here are the options you can set in your `.cz-config.js`:
 
 ## Related tools
 - (https://github.com/commitizen/cz-cli)
-- (https://github.com/stevemao/conventional-recommended-bump)
+- (https://github.com/leonardoanalista/corp-semantic-release)
 - (https://github.com/semantic-release/semantic-release)
 - (https://github.com/uglow/cz-customizable-ghooks)
 
