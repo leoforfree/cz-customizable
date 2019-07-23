@@ -29,7 +29,7 @@ You have two ways to use `cz-customizable`. Originally, this project started as 
 ```
 
 
-### Option 2 - cz-customizable in standalone mode **(New)**
+## Option 2 - cz-customizable in standalone mode **(New)**
 
 Use `cz-customizable` without `commitzen`.
 
