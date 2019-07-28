@@ -124,7 +124,12 @@ Here are the options you can set in your `.cz-config.js`:
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
 * **appendBranchNameToCommitMessage**: If you use `cz-customizable` with `cz-customizable-ghooks`, you can get the branch name automatically appended to the commit message. This is done by a commit hook on `cz-customizable-ghooks`. This option has been added on `cz-customizable-ghooks`, v1.3.0. Default value is `true`.
+* **allowTicketNumber**: {string, default false}: Allow to optionally use tickets.
+* **isTicketNumberRequired**: {boolean, default false}: If true you have to provide ticket numbers.
 * **ticketNumberPrefix**: {string, default 'ISSUES CLOSED:'}: Set custom prefix for footer ticker number.
+* **ticketNumberRegExp**: {string, default ''}: Set regular expression to validate your tickets.
+* **ticketSeparator**: {string, default ','}: Set custom separator for multiple tickets.
+* **allowOmitTicketPrefix**: {string, default false}: Allow to omit ticket prefix in particular commits.
 * **breakingPrefix**: {string, default 'BREAKING CHANGE:'}: Set a custom prefix for the breaking change block in commit messages.
 * **footerPrefix**: {string, default 'ISSUES CLOSED:'}: Set a custom prefix for the footer block in commit messages. Set to empty string to remove prefix.
 * **breaklineChar**: {string, default '|'}: It gets replaced with \n to create the breakline in your commit message. This is supported for fields `body` and `footer` at the moment.

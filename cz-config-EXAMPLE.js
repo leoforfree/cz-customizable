@@ -32,6 +32,8 @@ module.exports = {
   isTicketNumberRequired: false,
   ticketNumberPrefix: 'TICKET-',
   ticketNumberRegExp: '\\d{1,5}',
+  // ticketSeparator: ',', // default is comma
+  // allowOmitTicketPrefix: true, // default is false
 
   // it needs to match the value for field type. Eg.: 'fix'
   /*

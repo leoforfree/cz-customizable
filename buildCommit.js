@@ -4,15 +4,22 @@ const wrap = require('word-wrap');
 const defaultSubjectSeparator = ': ';
 const defaultMaxLineWidth = 100;
 const defaultBreaklineChar = '|';
+const defaultTicketSeparator = ',';
 
-const addTicketNumber = (ticketNumber, config) => {
-  if (!ticketNumber) {
+const addTicketNumber = (ticketNumbers, skipTicketPrefix, config) => {
+  if (!ticketNumbers) {
     return '';
   }
-  if (config.ticketNumberPrefix) {
-    return `${config.ticketNumberPrefix + ticketNumber.trim()} `;
+
+  const separator = _.get(config, 'ticketSeparator', defaultTicketSeparator);
+  let tickets = ticketNumbers.trim().split(separator);
+
+  let skipPrefix = skipTicketPrefix && skipTicketPrefix === 'yes';
+  if (config.ticketNumberPrefix && !skipPrefix) {
+      return `${tickets.map(n => config.ticketNumberPrefix.concat(n.trim())).join(', ')} `;
   }
-  return `${ticketNumber.trim()} `;
+
+  return `${tickets}`;
 };
 
 const addScope = (scope, config) => {
@@ -73,7 +80,7 @@ module.exports = (answers, config) => {
   const head = (
     addType(answers.type, config) +
     addScope(answers.scope, config) +
-    addTicketNumber(answers.ticketNumber, config) +
+    addTicketNumber(answers.ticketNumber, answers.skipTicketPrefix, config) +
     addSubject(answers.subject)
   ).slice(0, defaultMaxLineWidth);
 

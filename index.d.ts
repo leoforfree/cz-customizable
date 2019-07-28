@@ -11,17 +11,26 @@ declare module "cz-customizable" {
       type?: string,
       scope?: string,
       customScope?: string,
+      ticketNumber?: string,
+      omitTicketPrefix?: string,
       subject?: string,
       body?: string,
       breaking?: string,
       footer?: string,
       confirmCommit?: string,
     };
+
+    allowTicketNumber?: boolean;
+    isTicketNumberRequired?: boolean;
+    ticketNumberPrefix?: string;
+    ticketNumberRegExp?: string;
+    ticketSeparator?: string;
+    allowOmitTicketPrefix?: boolean;
+
     allowCustomScopes?: boolean;
     allowBreakingChanges?: string[];
     skipQuestions?: string[];
     appendBranchNameToCommitMessage?: boolean;
-    ticketNumberPrefix?: string;
     breakingPrefix?: string;
     footerPrefix?: string;
     subjectLimit?: number;

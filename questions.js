@@ -11,9 +11,14 @@ const isValidateTicketNo = (value, config) => {
   if (!config.ticketNumberRegExp) {
     return true;
   }
+  const separator = _.get(config, 'ticketSeparator', ',');
+  let tickets = value.split(separator);
+
   const reg = new RegExp(config.ticketNumberRegExp);
-  if (value.replace(reg, '') !== '') {
-    return false;
+  for(v of tickets) {
+    if (v.trim().replace(reg, '') !== '') {
+      return false;
+    }
   }
   return true;
 };
@@ -32,11 +37,12 @@ module.exports = {
       if (config.ticketNumberRegExp) {
         messages.ticketNumber =
           messages.ticketNumberPattern ||
-          `Enter the ticket number following this pattern (${config.ticketNumberRegExp})\n`;
+          `Enter the ticket numbers following this pattern (${config.ticketNumberRegExp})\n`;
       } else {
-        messages.ticketNumber = 'Enter the ticket number:\n';
+        messages.ticketNumber = 'Enter the ticket numbers:\n';
       }
     }
+    messages.omitTicketPrefix = 'Do you want to omit ticket prefix?';
     messages.subject = messages.subject || 'Write a SHORT, IMPERATIVE tense description of the change:\n';
     messages.body =
       messages.body || 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n';
@@ -104,6 +110,18 @@ module.exports = {
         },
         validate(value) {
           return isValidateTicketNo(value, config);
+        },
+      },
+      {
+        type: 'list',
+        name: 'omitTicketPrefix',
+        message: messages.omitTicketPrefix,
+        choices: ['no', 'yes'],
+        when() {
+          if(config.allowTicketNumber && config.ticketNumberPrefix && config.allowOmitTicketPrefix) {
+            return true;
+          }
+          return false;
         },
       },
       {
