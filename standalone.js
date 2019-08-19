@@ -8,9 +8,11 @@ const log = require('./logger');
 
 log.info('cz-customizable standalone version');
 
-const commit = commitMessage => {
+const commit = (commitMessage, options) => {
   try {
-    execSync(`git commit -m "${commitMessage}"`, { stdio: [0, 1, 2] });
+    const args = [`commit`, `-m`, `"${commitMessage}"`, ...((options && options.args) || [])];
+    const argsString = args.toString().replace(/,/g, ' ');
+    execSync(`git ${argsString}`, { stdio: 'inherit' });
   } catch (error) {
     log.error('>>> ERROR', error.error);
   }

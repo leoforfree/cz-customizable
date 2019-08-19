@@ -6,9 +6,6 @@
 
 const CZ_CONFIG_NAME = '.cz-config.js';
 const findConfig = require('find-config');
-const editor = require('editor');
-const temp = require('temp').track();
-const fs = require('fs');
 const path = require('path');
 const log = require('./logger');
 const buildCommit = require('./buildCommit');
@@ -58,24 +55,7 @@ module.exports = {
 
     cz.prompt(questions).then(answers => {
       if (answers.confirmCommit === 'edit') {
-        temp.open(null, (err, info) => {
-          /* istanbul ignore else */
-          if (!err) {
-            fs.writeSync(info.fd, buildCommit(answers, config));
-            fs.close(info.fd, () => {
-              editor(info.path, code => {
-                if (code === 0) {
-                  const commitStr = fs.readFileSync(info.path, {
-                    encoding: 'utf8',
-                  });
-                  commit(commitStr);
-                } else {
-                  log.info(`Editor returned non zero value. Commit message was:\n${buildCommit(answers, config)}`);
-                }
-              });
-            });
-          }
-        });
+        commit(buildCommit(answers, config), { args: ['--edit'] });
       } else if (answers.confirmCommit === 'yes') {
         commit(buildCommit(answers, config));
       } else {
