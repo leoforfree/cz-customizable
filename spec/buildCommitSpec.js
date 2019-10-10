@@ -98,4 +98,62 @@ line 2`;
       expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
     });
   });
+
+  describe('with ticketNumberSuffix', () => {
+    it('should be visible', () => {
+      const answersTicketNumberSuffix = {
+        ...answers,
+        ticketNumber: '12345',
+      };
+      const options = {
+        allowTicketNumber: true,
+        ticketNumberSuffix: '@@@ ',
+      };
+
+      expect(buildCommit(answersTicketNumberSuffix, options)).toEqual('feat(app): 12345@@@ this is a new feature');
+    });
+  });
+
+  describe('with ticketNumberPosition', () => {
+    it('should be same', () => {
+      const answersTicketNumberSuffix = {
+        ...answers,
+        ticketNumber: '12345',
+      };
+      const options = {
+        allowTicketNumber: true,
+        ticketNumberPosition: 'standard',
+      };
+
+      expect(buildCommit(answersTicketNumberSuffix, options)).toEqual('feat(app): 12345 this is a new feature');
+    });
+
+    it('should be "first"', () => {
+      const answersTicketNumberSuffix = {
+        ...answers,
+        ticketNumber: '12345',
+      };
+      const options = {
+        allowTicketNumber: true,
+        ticketNumberPosition: 'first',
+      };
+
+      expect(buildCommit(answersTicketNumberSuffix, options)).toEqual('12345 feat(app): this is a new feature');
+    });
+
+    it('should be "last"', () => {
+      const answersTicketNumberSuffix = {
+        ...answers,
+        ticketNumber: '12345',
+      };
+      const options = {
+        allowTicketNumber: true,
+        ticketNumberPrefix: ' ',
+        ticketNumberSuffix: '',
+        ticketNumberPosition: 'last',
+      };
+
+      expect(buildCommit(answersTicketNumberSuffix, options)).toEqual('feat(app): this is a new feature 12345');
+    });
+  });
 });

@@ -22,6 +22,8 @@ declare module "cz-customizable" {
     skipQuestions?: string[];
     appendBranchNameToCommitMessage?: boolean;
     ticketNumberPrefix?: string;
+    ticketNumberSuffix?: string;
+    ticketNumberPosition?: string;
     breakingPrefix?: string;
     footerPrefix?: string;
     subjectLimit?: number;

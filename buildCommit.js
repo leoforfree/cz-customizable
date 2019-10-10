@@ -6,13 +6,25 @@ const defaultMaxLineWidth = 100;
 const defaultBreaklineChar = '|';
 
 const addTicketNumber = (ticketNumber, config) => {
+  let result;
+
   if (!ticketNumber) {
     return '';
   }
+
+  result = ticketNumber.trim();
+
   if (config.ticketNumberPrefix) {
-    return `${config.ticketNumberPrefix + ticketNumber.trim()} `;
+    result = `${config.ticketNumberPrefix}${result}`;
   }
-  return `${ticketNumber.trim()} `;
+
+  if (config.ticketNumberSuffix || config.ticketNumberSuffix === '') {
+    result = `${result}${config.ticketNumberSuffix}`;
+  } else {
+    result = `${result} `;
+  }
+
+  return result;
 };
 
 const addScope = (scope, config) => {
@@ -67,15 +79,38 @@ module.exports = (answers, config) => {
     indent: '',
     width: defaultMaxLineWidth,
   };
+  let head;
 
-  // Hard limit this line
-  // eslint-disable-next-line max-len
-  const head = (
-    addType(answers.type, config) +
-    addScope(answers.scope, config) +
-    addTicketNumber(answers.ticketNumber, config) +
-    addSubject(answers.subject)
-  ).slice(0, defaultMaxLineWidth);
+  switch (config.ticketNumberPosition) {
+    case 'first':
+      // Hard limit this line
+      head = (
+        addTicketNumber(answers.ticketNumber, config) +
+        addType(answers.type, config) +
+        addScope(answers.scope, config) +
+        addSubject(answers.subject)
+      ).slice(0, defaultMaxLineWidth);
+      break;
+    case 'last':
+      // Hard limit this line
+      head = (
+        addType(answers.type, config) +
+        addScope(answers.scope, config) +
+        addSubject(answers.subject) +
+        addTicketNumber(answers.ticketNumber, config)
+      ).slice(0, defaultMaxLineWidth);
+      break;
+    case 'standard':
+    default:
+      // Hard limit this line
+      head = (
+        addType(answers.type, config) +
+        addScope(answers.scope, config) +
+        addTicketNumber(answers.ticketNumber, config) +
+        addSubject(answers.subject)
+      ).slice(0, defaultMaxLineWidth);
+      break;
+  }
 
   // Wrap these lines at 100 characters
   let body = wrap(answers.body, wrapOptions) || '';
