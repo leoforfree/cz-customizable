@@ -98,4 +98,37 @@ line 2`;
       expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
     });
   });
+
+  describe('wrap only separate line with 100 characters limit', () => {
+    // I know it looks weird on tests but this proves to have the correct breakline inserted.
+    const expecteMessage = `docs: update docs\n
+1. update description
+2. add commit message format section
+3. add docker section
+4. add commit helper tool section`;
+
+    it('should add breakline for body and wrap each line separately', () => {
+      const answersNoScope = {
+        type: 'docs',
+        subject: 'update docs',
+        body: '1. update description|2. add commit message format section|3. add docker section|4. add commit helper tool section'
+      };
+      const options = {};
+
+      expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
+    });
+
+    it('should add breakline for body and wrap each line separately with option breaklineChar', () => {
+      const answersNoScope = {
+        type: 'docs',
+        subject: 'update docs',
+        body: '1. update description@@@2. add commit message format section@@@3. add docker section@@@4. add commit helper tool section',
+      };
+      const options = {
+        breaklineChar: '@@@',
+      };
+
+      expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
+    });
+  });
 });
