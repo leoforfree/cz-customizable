@@ -1,24 +1,20 @@
-sudo: false
 language: node_js
 cache:
   directories:
-    - node_modules
+    - ~/.npm
 notifications:
   email: false
 node_js:
-  - '4'
-before_install:
-  - npm i -g npm@^2.0.0
-before_script:
-  - npm prune
+  - '10'
+  - '9'
+  - '8'
 script:
-  - npm run eslint
+  - npm run lint
   - npm run test
   - npm run test:coverage
   - npm run test:check-coverage
 after_success:
-  - npm run semantic-release
-  - npm run report-coverage
+  - npm run travis-deploy-once "npm run semantic-release"
 branches:
   except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+    - /^v\d+\.\d+\.\d+$/

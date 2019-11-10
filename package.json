@@ -1,16 +1,20 @@
 {
-  "version": "0.0.0-semantically-released",
+  "version": "0.0.0-development",
   "name": "cz-customizable",
   "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "eslint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
+    "lint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
     "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
     "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/",
     "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release",
+    "prettier": "prettier --single-quote --trailing-comma es5 --write '*.js' 'spec/**/*.js'",
+    "commit": "./standalone.js",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "homepage": "https://github.com/leonardoanalista/cz-customizable",
   "repository": {
@@ -24,21 +28,28 @@
   "license": "MIT",
   "dependencies": {
     "editor": "1.0.0",
-    "find-config": "0.3.0",
-    "temp": "0.8.3",
-    "winston": "2.1.0",
-    "word-wrap": "1.1.0",
-    "inquirer": "1.2.3"
+    "find-config": "^1.0.0",
+    "inquirer": "^6.3.1",
+    "lodash": "^4.17.11",
+    "temp": "^0.9.0",
+    "word-wrap": "^1.2.3"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
-    "commitizen": "2.9.5",
-    "eslint": "1.9.0",
-    "ghooks": "1.0.0",
-    "istanbul": "0.4.0",
-    "jasmine-node": "1.14.5",
-    "rewire": "2.5.0",
-    "semantic-release": "4.3.5"
+    "commitizen": "^3.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-nada": "^1.1.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "ghooks": "^2.0.4",
+    "istanbul": "^0.4.5",
+    "jasmine-node": "^1.16.2",
+    "prettier": "^1.17.1",
+    "rewire": "^4.0.1",
+    "semantic-release": "^15.13.12",
+    "travis-deploy-once": "^5.0.11"
   },
   "config": {
     "commitizen": {
@@ -48,7 +59,7 @@
       "config": "cz-config-EXAMPLE.js"
     },
     "ghooks": {
-      "pre-commit": "npm run eslint && npm run test"
+      "pre-commit": "npm run lint && npm run test"
     }
   }
 }
