@@ -111,7 +111,8 @@ line 2`;
       const answersNoScope = {
         type: 'docs',
         subject: 'update docs',
-        body: '1. update description|2. add commit message format section|3. add docker section|4. add commit helper tool section'
+        body:
+          '1. update description|2. add commit message format section|3. add docker section|4. add commit helper tool section',
       };
       const options = {};
 
@@ -122,7 +123,8 @@ line 2`;
       const answersNoScope = {
         type: 'docs',
         subject: 'update docs',
-        body: '1. update description@@@2. add commit message format section@@@3. add docker section@@@4. add commit helper tool section',
+        body:
+          '1. update description@@@2. add commit message format section@@@3. add docker section@@@4. add commit helper tool section',
       };
       const options = {
         breaklineChar: '@@@',

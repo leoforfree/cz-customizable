@@ -43,13 +43,15 @@ const addBreaklinesIfNeededAndWrap = (value = '', config) => {
     width: defaultMaxLineWidth,
   };
 
-  return value
-    .split(breaklineChar)
-    // Wrap each line at 100 characters
-    .map(p => wrap(p, wrapOptions))
-    .join('\n')
-    .valueOf();
-}
+  return (
+    value
+      .split(breaklineChar)
+      // Wrap each line at 100 characters
+      .map(p => wrap(p, wrapOptions))
+      .join('\n')
+      .valueOf()
+  );
+};
 
 const addBreaking = (breaking, config) => {
   const breakingPrefix = _.get(config, 'breakingPrefix', defaultBreakingPrefix);
