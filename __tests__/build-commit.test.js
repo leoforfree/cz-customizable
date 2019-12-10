@@ -98,4 +98,11 @@ line 2`;
       expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
     });
   });
+
+  it('should escape harmful characters', () => {
+    const altAnswers = { ...answers, subject: 'th"is i\'s a n`ew $ f<ea>ture &' };
+
+    // eslint-disable-next-line prettier/prettier, no-useless-escape
+    expect(buildCommit(altAnswers, {})).toEqual('feat(app): th\\\"is i\'s a n\\`ew \\\\$ f\\<ea\\>ture \\&');
+  });
 });
