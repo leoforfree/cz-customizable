@@ -27,7 +27,13 @@ module.exports = {
 
     messages.type = messages.type || "Select the type of change that you're committing:";
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
+    messages.clubhouseVerb = messages.clubhouseVerb || '\nSelect the clubhouse verb for this commit (optional):';
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
+    messages.clubhouseStoryID =
+      messages.clubhouseStoryID || '\nEnter clubhouse story ids separated by commas (REQUIRED). E.g.: 12, 34, 77\n';
+    messages.clubhouseAddVerb = messages.clubhouseAddVerb || '\nDo you want to add a clubhouse verb to the story?';
+    messages.clubhouseLinkBranch =
+      messages.clubhouseLinkBranch || '\nDo you want to link these stories with the current branch?';
     if (!messages.ticketNumber) {
       if (config.ticketNumberRegExp) {
         messages.ticketNumber =
@@ -148,6 +154,58 @@ module.exports = {
         name: 'footer',
         message: messages.footer,
         when: isNotWip,
+      },
+      {
+        type: 'input',
+        name: 'clubhouseStoryID',
+        message: messages.clubhouseStoryID,
+        when(answers) {
+          return isNotWip(answers) && !!config.isClubhouseIDRequired; // no clubhouse story ids allowed unless specified
+        },
+        validate(value = '') {
+          const filterEmpty = value.split(',').filter(id => !!id);
+
+          return filterEmpty.length > 0 && filterEmpty.every(id => /^\d+(,{0,1})$/.test(_.trim(id)));
+        },
+      },
+      {
+        type: 'expand',
+        name: 'clubhouseAddVerb',
+        // eslint-disable-next-line prettier/prettier
+        choices: [
+          { key: 'y', name: 'Yes add clubhouse verb', value: true },
+          { key: 'n', name: 'DO NOT add clubhouse verb', value: false },
+        ],
+        default: 1,
+        message: messages.clubhouseAddVerb,
+        when(answers) {
+          return isNotWip(answers) && !!config.isClubhouseIDRequired; // no clubhouse story ids allowed unless specified
+        },
+      },
+      {
+        type: 'list',
+        name: 'clubhouseVerb',
+        message: messages.clubhouseVerb,
+        choices() {
+          return config.clubhouseVerbs;
+        },
+        when(answers) {
+          return answers.clubhouseStoryID && answers.clubhouseAddVerb;
+        },
+      },
+      {
+        type: 'expand',
+        name: 'clubhouseLinkBranch',
+        // eslint-disable-next-line prettier/prettier
+        choices: [
+          { key: 'y', name: 'Yes link branch', value: true },
+          { key: 'n', name: 'DO NOT link branch', value: false },
+        ],
+        default: 1,
+        message: messages.clubhouseLinkBranch,
+        when(answers) {
+          return isNotWip(answers) && !!config.isClubhouseIDRequired; // no clubhouse story ids allowed unless specified
+        },
       },
       {
         type: 'expand',

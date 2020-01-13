@@ -46,6 +46,29 @@ const addFooter = (footer, config) => {
   return `\n\n${footerPrefix} ${addBreaklinesIfNeeded(footer, config.breaklineChar)}`;
 };
 
+const addClubhouse = answers => {
+  const commitVerb = answers.clubhouseVerb ? `${_.trim(answers.clubhouseVerb)} ` : '';
+
+  const result = `\n\nClubhouse Stories:\n${answers.clubhouseStoryID
+    .split(',')
+    .sort()
+    .flatMap(id => {
+      const formatted = [];
+      if (!id) return formatted;
+
+      if (answers.clubhouseLinkBranch) formatted.push(`[branch ch${_.trim(id)}]`);
+
+      if (answers.clubhouseAddVerb) formatted.push(`[${commitVerb}ch${_.trim(id)}]`);
+
+      if (!answers.clubhouseAddVerb && !answers.clubhouseLinkBranch) formatted.push(`[ch ${_.trim(id)}]`);
+
+      return formatted.join(' ');
+    })
+    .join('\n')}`;
+
+  return result;
+};
+
 const escapeSpecialChars = result => {
   // eslint-disable-next-line no-useless-escape
   const specialChars = ['`'];
@@ -88,10 +111,16 @@ module.exports = (answers, config) => {
   if (body) {
     result += `\n\n${body}`;
   }
+
+  if (config.isClubhouseIDRequired) {
+    result += addClubhouse(answers);
+  }
+
   if (breaking) {
     const breakingPrefix = config && config.breakingPrefix ? config.breakingPrefix : 'BREAKING CHANGE:';
     result += `\n\n${breakingPrefix}\n${breaking}`;
   }
+
   if (footer) {
     result += addFooter(footer, config);
   }

@@ -26,6 +26,55 @@ describe('buildCommit()', () => {
     expect(buildCommit(answers, options)).toEqual('feat(app) this is a new feature');
   });
 
+  describe('with clubhouse', () => {
+    it('link clubhouse stories to commit with no verb', () => {
+      const options = {
+        isClubhouseIDRequired: true,
+      };
+      const clubhouseAnswers = {
+        type: 'feat',
+        subject: 'subject',
+        clubhouseStoryID: '989, 123',
+        clubhouseAddVerb: true,
+      };
+
+      expect(buildCommit(clubhouseAnswers, options)).toEqual('feat: subject\n\nClubhouse Stories:\n[ch123]\n[ch989]');
+    });
+
+    it('link clubhouse stories to commit with verb', () => {
+      const options = {
+        isClubhouseIDRequired: true,
+      };
+      const clubhouseAnswers = {
+        type: 'feat',
+        subject: 'subject',
+        clubhouseStoryID: '989, 123',
+        clubhouseAddVerb: true,
+        clubhouseVerb: 'start',
+      };
+
+      expect(buildCommit(clubhouseAnswers, options)).toEqual(
+        'feat: subject\n\nClubhouse Stories:\n[start ch123]\n[start ch989]'
+      );
+    });
+
+    it('link clubhouse stories to the current branch', () => {
+      const options = {
+        isClubhouseIDRequired: true,
+      };
+      const clubhouseAnswers = {
+        type: 'feat',
+        subject: 'subject',
+        clubhouseStoryID: '989, 123',
+        clubhouseLinkBranch: true,
+      };
+
+      expect(buildCommit(clubhouseAnswers, options)).toEqual(
+        'feat: subject\n\nClubhouse Stories:\n[branch ch123]\n[branch ch989]'
+      );
+    });
+  });
+
   describe('without scope', () => {
     it('subject without scope', () => {
       const answersNoScope = {

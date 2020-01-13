@@ -1,4 +1,4 @@
-declare module "cz-customizable" {
+declare module 'cz-customizable' {
   export interface Option {
     name: string;
     value?: string;
@@ -8,14 +8,17 @@ declare module "cz-customizable" {
     scopes?: Option[];
     scopeOverrides?: { [type: string]: Option[] };
     messages?: {
-      type?: string,
-      scope?: string,
-      customScope?: string,
-      subject?: string,
-      body?: string,
-      breaking?: string,
-      footer?: string,
-      confirmCommit?: string,
+      type?: string;
+      scope?: string;
+      customScope?: string;
+      subject?: string;
+      body?: string;
+      breaking?: string;
+      footer?: string;
+      clubhouseStoryID?: string;
+      clubhouseAddVerb?: string;
+      clubhouseLinkBranch?: string;
+      confirmCommit?: string;
     };
     allowCustomScopes?: boolean;
     allowBreakingChanges?: string[];
@@ -25,5 +28,6 @@ declare module "cz-customizable" {
     breakingPrefix?: string;
     footerPrefix?: string;
     subjectLimit?: number;
+    isClubhouseIDRequired?: boolean;
   }
 }

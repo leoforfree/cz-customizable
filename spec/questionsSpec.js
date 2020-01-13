@@ -17,6 +17,7 @@ describe('cz-customizable', () => {
     config = {
       types: [{ value: 'feat', name: 'feat: my feat' }],
       scopes: [{ name: 'myScope' }],
+      clubhouseVerbs: [{ name: 'start' }, { name: 'close' }],
       scopeOverrides: {
         fix: [{ name: 'fixOverride' }],
       },
@@ -83,9 +84,28 @@ describe('cz-customizable', () => {
     expect(getQuestion(8).when({ type: 'fix' })).toEqual(true);
     expect(getQuestion(8).when({ type: 'WIP' })).toEqual(false);
 
-    // question 9, last one, CONFIRM COMMIT OR NOT
-    expect(getQuestion(9).name).toEqual('confirmCommit');
-    expect(getQuestion(9).type).toEqual('expand');
+    // question 9 - CLUBHOUSE LINK COMMIT
+    expect(getQuestion(9).name).toEqual('clubhouseStoryID');
+    expect(getQuestion(9).type).toEqual('input');
+    expect(getQuestion(9).message.indexOf('Enter clubhouse story ids separated by commas')).toEqual(1);
+    expect(getQuestion(9).validate()).toEqual(false); // mandatory question
+
+    // question 11 - CLUBHOUSE LINK COMMIT
+    expect(getQuestion(10).name).toEqual('clubhouseAddVerb');
+    expect(getQuestion(10).type).toEqual('expand');
+
+    // question 10 - CLUBHOUSE VERBS
+    expect(getQuestion(11).name).toEqual('clubhouseVerb');
+    expect(getQuestion(11).when({ clubhouseStoryID: true, clubhouseAddVerb: true })).toEqual(true);
+    expect(getQuestion(11).choices()[0]).toEqual({ name: 'start' });
+
+    // question 12 - CLUBHOUSE LINK BRANCH
+    expect(getQuestion(12).name).toEqual('clubhouseLinkBranch');
+    expect(getQuestion(12).type).toEqual('expand');
+
+    // question 13, last one, CONFIRM COMMIT OR NOT
+    expect(getQuestion(13).name).toEqual('confirmCommit');
+    expect(getQuestion(13).type).toEqual('expand');
 
     const answers = {
       confirmCommit: 'yes',
@@ -93,7 +113,7 @@ describe('cz-customizable', () => {
       scope: 'myScope',
       subject: 'create a new cool feature',
     };
-    expect(getQuestion(9).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+    expect(getQuestion(13).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
   });
 
   it('default length limit of subject should be 100', () => {
@@ -257,6 +277,62 @@ describe('cz-customizable', () => {
           ticketNumberRegExp: '\\d{1,5}',
         };
         expect(getQuestion(4).validate('12345')).toEqual(true);
+      });
+    });
+  });
+
+  describe('Clubhouse', () => {
+    it('disables clubhouse questions', () => {
+      config = {
+        types: [{ value: 'feat', name: 'feat: my feat' }],
+        isClubhouseIDRequired: false,
+      };
+
+      expect(getQuestion(9).name).toEqual('clubhouseStoryID');
+      expect(getQuestion(9).when({ type: 'wip', clubhouseStoryID: false })).toEqual(false);
+      expect(getQuestion(9).when({ type: 'wip', clubhouseStoryID: true })).toEqual(false);
+    });
+
+    it('custom message defined', () => {
+      config = {
+        types: [{ value: 'feat', name: 'feat: my feat' }],
+        allowTicketNumber: true,
+        messages: {
+          clubhouseStoryID: 'link story',
+        },
+      };
+
+      expect(getQuestion(9).name).toEqual('clubhouseStoryID');
+      expect(getQuestion(9).message).toEqual('link story');
+    });
+
+    describe('Validation', () => {
+      it('invalid because empty and required', () => {
+        config = {
+          isClubhouseIDRequired: true,
+        };
+        expect(getQuestion(9).validate('')).toEqual(false);
+      });
+
+      it('invalid because ID is not all digits', () => {
+        config = {
+          isClubhouseIDRequired: true,
+        };
+        expect(getQuestion(9).validate('sdf989')).toEqual(false);
+      });
+
+      it('valid because single ID is all digits', () => {
+        config = {
+          isClubhouseIDRequired: true,
+        };
+        expect(getQuestion(9).validate('989')).toEqual(true);
+      });
+
+      it('valid because list of IDs is all digits', () => {
+        config = {
+          isClubhouseIDRequired: true,
+        };
+        expect(getQuestion(9).validate('989, 123')).toEqual(true);
       });
     });
   });
