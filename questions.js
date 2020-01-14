@@ -179,7 +179,7 @@ module.exports = {
           { key: 'y', name: 'Yes add clubhouse verb', value: true },
           { key: 'n', name: 'DO NOT add clubhouse verb', value: false },
         ],
-        default: 1,
+        default: 0,
         message: messages.clubhouseAddVerb,
         when(answers) {
           return answers.clubhouseStoryID;
