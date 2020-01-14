@@ -60,7 +60,7 @@ const addClubhouse = answers => {
 
       if (answers.clubhouseAddVerb) formatted.push(`[${commitVerb}ch${_.trim(id)}]`);
 
-      if (!answers.clubhouseAddVerb && !answers.clubhouseLinkBranch) formatted.push(`[ch ${_.trim(id)}]`);
+      if (!answers.clubhouseAddVerb && !answers.clubhouseLinkBranch) formatted.push(`[ch${_.trim(id)}]`);
 
       return formatted.join(' ');
     })
