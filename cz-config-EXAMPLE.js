@@ -28,6 +28,7 @@ module.exports = {
 
   scopes: [{ name: 'accounts' }, { name: 'admin' }, { name: 'exampleScope' }, { name: 'changeMe' }],
   clubhouseVerbs: [{ name: 'start' }, { name: 'close' }],
+  clubhouseSkipTypes: ['test'],
 
   allowTicketNumber: false,
   isTicketNumberRequired: false,

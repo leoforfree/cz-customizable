@@ -131,6 +131,7 @@ Here are the options you can set in your `.cz-config.js`:
 * **upperCaseSubject**: { boolean, default false }: Capitalizes first subject letter if set to `true`
 * **askForBreakingChangeFirst**: { boolean, default false }: It asks for breaking change as first question when set to `true`
 * **isClubhouseIDRequired**: {boolean, default false}: Will ask to link stories to commits if set to `true`
+* **clubhouseSkipTypes**: {Array of string}: The commit types that should skip adding clubhouse stories
 * **clubhouseVerbs**: {Array of string}: The verbs used to move commits through Clubhouse workflows. Example: ["start", "finish"]
 
 ## Related tools

@@ -282,15 +282,27 @@ describe('cz-customizable', () => {
   });
 
   describe('Clubhouse', () => {
-    it('disables clubhouse questions', () => {
+    it('disables clubhouse questions when not required', () => {
       config = {
         types: [{ value: 'feat', name: 'feat: my feat' }],
         isClubhouseIDRequired: false,
       };
 
       expect(getQuestion(9).name).toEqual('clubhouseStoryID');
-      expect(getQuestion(9).when({ type: 'wip', clubhouseStoryID: false })).toEqual(false);
-      expect(getQuestion(9).when({ type: 'wip', clubhouseStoryID: true })).toEqual(false);
+      expect(getQuestion(9).when({ type: 'wip' })).toEqual(false);
+      expect(getQuestion(9).when({ type: 'feat' })).toEqual(false);
+    });
+
+    it('disables clubhouse questions when type is ignored', () => {
+      config = {
+        types: [{ value: 'feat', name: 'feat: my feat' }],
+        isClubhouseIDRequired: true,
+        clubhouseSkipTypes: ['test'],
+      };
+
+      expect(getQuestion(9).name).toEqual('clubhouseStoryID');
+      expect(getQuestion(9).when({ type: 'test' })).toEqual(false);
+      expect(getQuestion(9).when({ type: 'feat' })).toEqual(true);
     });
 
     it('custom message defined', () => {

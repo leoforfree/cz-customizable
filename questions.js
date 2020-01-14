@@ -160,7 +160,10 @@ module.exports = {
         name: 'clubhouseStoryID',
         message: messages.clubhouseStoryID,
         when(answers) {
-          return isNotWip(answers) && !!config.isClubhouseIDRequired; // no clubhouse story ids allowed unless specified
+          return (
+            // no clubhouse story ids allowed unless specified and the type should not be skipped
+            isNotWip(answers) && !!config.isClubhouseIDRequired && !config.clubhouseSkipTypes.includes(answers.type)
+          );
         },
         validate(value = '') {
           const filterEmpty = value.split(',').filter(id => !!id);
@@ -179,7 +182,7 @@ module.exports = {
         default: 1,
         message: messages.clubhouseAddVerb,
         when(answers) {
-          return isNotWip(answers) && !!config.isClubhouseIDRequired; // no clubhouse story ids allowed unless specified
+          return answers.clubhouseStoryID;
         },
       },
       {
@@ -190,7 +193,7 @@ module.exports = {
           return config.clubhouseVerbs;
         },
         when(answers) {
-          return answers.clubhouseStoryID && answers.clubhouseAddVerb;
+          return answers.clubhouseAddVerb;
         },
       },
       {
@@ -204,7 +207,7 @@ module.exports = {
         default: 1,
         message: messages.clubhouseLinkBranch,
         when(answers) {
-          return isNotWip(answers) && !!config.isClubhouseIDRequired; // no clubhouse story ids allowed unless specified
+          return answers.clubhouseStoryID;
         },
       },
       {

@@ -112,7 +112,7 @@ module.exports = (answers, config) => {
     result += `\n\n${body}`;
   }
 
-  if (config.isClubhouseIDRequired) {
+  if (config.isClubhouseIDRequired && answers.clubhouseStoryID) {
     result += addClubhouse(answers);
   }
 

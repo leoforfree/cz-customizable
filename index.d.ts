@@ -29,5 +29,6 @@ declare module 'cz-customizable' {
     footerPrefix?: string;
     subjectLimit?: number;
     isClubhouseIDRequired?: boolean;
+    clubhouseSkipTypes?: string[];
   }
 }
