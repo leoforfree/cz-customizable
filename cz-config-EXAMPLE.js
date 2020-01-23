@@ -58,7 +58,8 @@ module.exports = {
     body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
     breaking: 'List any BREAKING CHANGES (optional):\n',
     footer: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
-    clubhouseStoryID: '\nEnter clubhouse story ids separated by commas (REQUIRED). E.g.: 12, 34, 77\n',
+    clubhouseStoryID:
+      '\nEnter clubhouse story ids separated by commas (REQUIRED). E.g.: 12, 34, 77\nTo manually override enter "SKIP"\n',
     clubhouseAddVerb: '\nDo you want to add a clubhouse verb to the story?',
     clubhouseLinkBranch: '\nDo you want to link these stories with the current branch?',
     confirmCommit: 'Are you sure you want to proceed with the commit above?',

@@ -30,7 +30,8 @@ module.exports = {
     messages.clubhouseVerb = messages.clubhouseVerb || '\nSelect the clubhouse verb for this commit (optional):';
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
     messages.clubhouseStoryID =
-      messages.clubhouseStoryID || '\nEnter clubhouse story ids separated by commas (REQUIRED). E.g.: 12, 34, 77\n';
+      messages.clubhouseStoryID ||
+      '\nEnter clubhouse story ids separated by commas (REQUIRED). E.g.: 12, 34, 77\nTo manually override enter "SKIP"\n';
     messages.clubhouseAddVerb = messages.clubhouseAddVerb || '\nDo you want to add a clubhouse verb to the story?';
     messages.clubhouseLinkBranch =
       messages.clubhouseLinkBranch || '\nDo you want to link these stories with the current branch?';
@@ -168,7 +169,9 @@ module.exports = {
         validate(value = '') {
           const filterEmpty = value.split(',').filter(id => !!id);
 
-          return filterEmpty.length > 0 && filterEmpty.every(id => /^\d+(,{0,1})$/.test(_.trim(id)));
+          return (
+            value === 'SKIP' || (filterEmpty.length > 0 && filterEmpty.every(id => /^\d+(,{0,1})$/.test(_.trim(id))))
+          );
         },
       },
       {
@@ -182,7 +185,7 @@ module.exports = {
         default: 0,
         message: messages.clubhouseAddVerb,
         when(answers) {
-          return answers.clubhouseStoryID;
+          return answers.clubhouseStoryID && answers.clubhouseStoryID !== 'SKIP';
         },
       },
       {
@@ -207,7 +210,7 @@ module.exports = {
         default: 1,
         message: messages.clubhouseLinkBranch,
         when(answers) {
-          return answers.clubhouseStoryID;
+          return answers.clubhouseStoryID && answers.clubhouseStoryID !== 'SKIP';
         },
       },
       {
