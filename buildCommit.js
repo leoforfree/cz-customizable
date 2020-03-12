@@ -25,6 +25,13 @@ const addScope = (scope, config) => {
 
 const addSubject = subject => _.trim(subject);
 
+const addWip = (wip, config) => {
+  const wipPrefix = wip ? 
+    _.get(config, 'wipPrefix', 'w') : ''
+
+  return _.trim(wipPrefix)
+};
+
 const addType = (type, config) => {
   const prefix = _.get(config, 'typePrefix', '');
   const suffix = _.get(config, 'typeSuffix', '');
@@ -71,6 +78,7 @@ module.exports = (answers, config) => {
   // Hard limit this line
   // eslint-disable-next-line max-len
   const head = (
+    addWip(answers.wip, config) +
     addType(answers.type, config) +
     addScope(answers.scope, config) +
     addTicketNumber(answers.ticketNumber, config) +

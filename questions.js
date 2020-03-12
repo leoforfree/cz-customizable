@@ -25,6 +25,7 @@ module.exports = {
     const messages = config.messages || {};
     const skipQuestions = config.skipQuestions || [];
 
+    messages.wip = messages.wip || "Are you done with this change ?";
     messages.type = messages.type || "Select the type of change that you're committing:";
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
@@ -45,6 +46,16 @@ module.exports = {
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
     let questions = [
+      {
+        type: 'expand',
+        name: 'wip',
+        message: messages.wip,
+        choices: [
+          { key: 'n', name: 'No', value: true },
+          { key: 'y', name: 'Yes', value: false },
+        ],
+        default: 0,
+      },
       {
         type: 'list',
         name: 'type',

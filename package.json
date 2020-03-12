@@ -1,31 +1,67 @@
 {
-  "version": "0.0.0-development",
-  "name": "cz-customizable",
-  "description": "Commitizen customizable adapter following the conventional-changelog format.",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "scripts": {
-    "lint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
-    "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
-    "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/",
-    "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
-    "report-coverage": "cat ./coverage/lcov.info | codecov",
-    "semantic-release": "semantic-release",
-    "prettier": "prettier --single-quote --trailing-comma es5 --write '*.js' 'spec/**/*.js'",
-    "commit": "./standalone.js",
-    "travis-deploy-once": "travis-deploy-once"
-  },
-  "homepage": "https://github.com/leonardoanalista/cz-customizable",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/leonardoanalista/cz-customizable.git"
-  },
-  "author": "Leonardo Correa <leonardoanalista@gmail.com>",
-  "contributors": [
-    "Aleksey Guryanov <gurianov@gmail.com>"
+  "_args": [
+    [
+      "cz-customizable@6.2.0",
+      "/Users/anthonydomingue/Documents/wikodit/fcc-directory"
+    ]
   ],
-  "license": "MIT",
+  "_from": "cz-customizable@6.2.0",
+  "_id": "cz-customizable@6.2.0",
+  "_inBundle": false,
+  "_integrity": "sha512-6fBA8pbwApTY20Q5aDkWgJcg5wCmbwlcnccUFyBQypN8AoRJ0Vt4pLehai0/P2Xr29t2UDYoNGOUDhi4eoR0JQ==",
+  "_location": "/cz-customizable",
+  "_phantomChildren": {
+    "chalk": "2.4.2",
+    "cli-width": "2.2.0",
+    "escape-string-regexp": "1.0.5",
+    "external-editor": "3.1.0",
+    "lodash": "4.17.15",
+    "run-async": "2.4.0",
+    "rxjs": "6.5.4",
+    "signal-exit": "3.0.2",
+    "strip-ansi": "5.2.0",
+    "through": "2.3.8"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cz-customizable@6.2.0",
+    "name": "cz-customizable",
+    "escapedName": "cz-customizable",
+    "rawSpec": "6.2.0",
+    "saveSpec": null,
+    "fetchSpec": "6.2.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cz-customizable/-/cz-customizable-6.2.0.tgz",
+  "_spec": "6.2.0",
+  "_where": "/Users/anthonydomingue/Documents/wikodit/fcc-directory",
+  "author": {
+    "name": "Leonardo Correa",
+    "email": "leonardoanalista@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/leonardoanalista/cz-customizable/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./index.js"
+    },
+    "cz-customizable": {
+      "config": "cz-config-EXAMPLE.js"
+    },
+    "ghooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
+  },
+  "contributors": [
+    {
+      "name": "Aleksey Guryanov",
+      "email": "gurianov@gmail.com"
+    }
+  ],
   "dependencies": {
     "editor": "1.0.0",
     "find-config": "^1.0.0",
@@ -34,6 +70,7 @@
     "temp": "^0.9.0",
     "word-wrap": "^1.2.3"
   },
+  "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "devDependencies": {
     "codecov.io": "0.1.6",
     "commitizen": "^3.1.1",
@@ -51,15 +88,26 @@
     "semantic-release": "^15.13.12",
     "travis-deploy-once": "^5.0.11"
   },
-  "config": {
-    "commitizen": {
-      "path": "./index.js"
-    },
-    "cz-customizable": {
-      "config": "cz-config-EXAMPLE.js"
-    },
-    "ghooks": {
-      "pre-commit": "npm run lint && npm run test"
-    }
-  }
+  "homepage": "https://github.com/leonardoanalista/cz-customizable",
+  "license": "MIT",
+  "main": "index.js",
+  "name": "cz-customizable",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardoanalista/cz-customizable.git"
+  },
+  "scripts": {
+    "commit": "./standalone.js",
+    "lint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
+    "prettier": "prettier --single-quote --trailing-comma es5 --write '*.js' 'spec/**/*.js'",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
+    "semantic-release": "semantic-release",
+    "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
+    "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/",
+    "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
+    "travis-deploy-once": "travis-deploy-once"
+  },
+  "types": "index.d.ts",
+  "version": "6.3.0"
 }
