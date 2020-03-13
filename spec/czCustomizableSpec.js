@@ -160,7 +160,7 @@ describe('cz-customizable', () => {
     }, 100);
   });
 
-  it('should truncate first line if number of characters is higher than 200', () => {
+  it('should truncate first line if number of characters is higher than 100', () => {
     const chars100 =
       '0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789';
 

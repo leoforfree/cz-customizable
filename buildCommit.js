@@ -75,7 +75,7 @@ module.exports = (answers, config) => {
     addScope(answers.scope, config) +
     addTicketNumber(answers.ticketNumber, config) +
     addSubject(answers.subject)
-  ).slice(0, defaultMaxLineWidth);
+  ).slice(0, config.subjectLimit);
 
   // Wrap these lines at 100 characters
   let body = wrap(answers.body, wrapOptions) || '';
