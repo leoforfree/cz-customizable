@@ -72,7 +72,7 @@ module.exports = {
           name: item.name,
           message: `${item.isRequired ? '' : '(optional) '}${message}`,
           when(answers) {
-            return answers.customInput === item.name;
+            return !!item.show && answers.customInput === item.name;
           },
           validate(value) {
             return isValidate(value, item);
