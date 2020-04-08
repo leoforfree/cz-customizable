@@ -4,14 +4,11 @@ The customizable Commitizen plugin (or standalone utility) to help achieve consi
 
 ![screenshot](screenshot.png)
 
-Suitable for large teams working with multiple projects with their own commit scopes. It allows you to **select** the pre-defined scopes or commit types. It works perfectly with https://github.com/semantic-release/semantic-release.
-
+Suitable for large teams working with multiple projects with their own commit scopes. It allows you to **select** the pre-defined scopes or commit types. It works perfectly with <https://github.com/semantic-release/semantic-release.>
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Build Status](https://travis-ci.org/leonardoanalista/cz-customizable.svg)](https://travis-ci.org/leonardoanalista/cz-customizable) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![codecov.io](https://codecov.io/github/leonardoanalista/cz-customizable/coverage.svg?branch=master)](https://codecov.io/github/leonardoanalista/cz-customizable?branch=master) [![npm monthly downloads](https://img.shields.io/npm/dm/cz-customizable.svg?style=flat-square)](https://www.npmjs.com/package/cz-customizable)
 
-
 You have two ways to use `cz-customizable`. Originally, this project started as a commitizen plugin (Option 1). We introduced the second option to run this `cz-customizable` in standalone mode (Option 2), just like any NodeJS script. It's recommended to use `Option 2` for simplicity. The way you configure is shared between both options.
-
 
 ## Option 1 - cz-customizable as commitizen plugin
 
@@ -27,7 +24,6 @@ You have two ways to use `cz-customizable`. Originally, this project started as 
   }
 }
 ```
-
 
 ## Option 2 - cz-customizable in standalone mode **(New)**
 
@@ -46,17 +42,16 @@ Use `cz-customizable` without `commitzen`.
 * See options below how to create and where you could put your `.cz-config.js` file.
 * now run: `npm run commit`.
 
-
 ## Configuration (Shared between options 1 and 2)
 
 * Copy contents of `https://github.com/leonardoanalista/cz-customizable/blob/master/cz-config-EXAMPLE.js` and paste into a new file `.cz-config.js`
 
-
-### Option 1 - You can make changes to your git repository, file `package.json`.
+### Option 1 - You can make changes to your git repository, file `package.json`
 
 * `cz-customizable` will first look for a file called `.cz-config.js` in the project root, near your `package.json`
 * If no config found, it will look for `.cz-config.js` your home directory
 * alternatively add the config location in your `package.json`:
+
 ```
 ...
 "config": {
@@ -71,12 +66,12 @@ Use `cz-customizable` without `commitzen`.
 
 Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `.cz-config.js`.
 
-
-### Option 2 - No Changes to your git repository*.
+### Option 2 - No Changes to your git repository*
 
 This is suitable when your team is not ready to roll `cz-customizable` across all teams but you still would like to use it for your own commits, no matter the project.
 
 Steps:
+
 * create config file:
   * create a file called `.cz-config.js` in your git repository root (*Asumptions: you do a global git ignore on `~/.gitignore_global` for `.cz-config.js`). Or;
   * create a file called `.cz-config.js` your home directory.
@@ -88,17 +83,14 @@ Steps:
 * create global commitizen config file `.czrc`: `echo '{ "path": "cz-customizable" }' > ~/.czrc`
 * now run: `npx git-cz` or `git cz`.
 
-
 **Notes:**
+
 * you should commit your `.cz-config.js` file to your git when applicable.
-
-
 
 Hopefully this will help you to have consistent commit messages and have a fully automated deployment without any human intervention.
 
-
-
 ---
+
 ## Options
 
 Here are the options you can set in your `.cz-config.js`:
@@ -110,6 +102,7 @@ Here are the options you can set in your `.cz-config.js`:
 
 * **scopes**: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
 * **scopeOverrides**: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:
+
   ```
   scopeOverrides: {
     fix: [
@@ -120,6 +113,7 @@ Here are the options you can set in your `.cz-config.js`:
     ]
   }
   ```
+
 * **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
@@ -130,14 +124,47 @@ Here are the options you can set in your `.cz-config.js`:
 * **breaklineChar**: {string, default '|'}: It gets replaced with \n to create the breakline in your commit message. This is supported for fields `body` and `footer` at the moment.
 * **upperCaseSubject**: { boolean, default false }: Capitalizes first subject letter if set to `true`
 * **askForBreakingChangeFirst**: { boolean, default false }: It asks for breaking change as first question when set to `true`
+* **customInputList**: { Array of Object, default none }: Set custom input type after you want to answer the list
+Example you can get an associated list and input:
+
+```
+  customInputList: [
+    {
+      isRequired: true,
+      name: 'store',
+      desc: 'store ID',
+      prefix: '--store=',
+      regExp: '\\d*',
+      wrapOptions:{
+        trim: true,
+        newline: '\n',
+        indent: '',
+      }
+    },
+    {
+      isRequired: false,
+      name: 'task',
+      desc: 'task ID',
+      prefix: '--task=',
+      regExp: '\\d*',
+      wrapOptions:{
+        trim: true,
+        newline: '\n',
+        indent: '',
+      }
+    }
+  ]
+```
+
+![list](assets/list.png)
+![input](assets/input.png)
 
 ## Related tools
-- (https://github.com/commitizen/cz-cli)
-- (https://github.com/leonardoanalista/corp-semantic-release)
-- (https://github.com/semantic-release/semantic-release)
-- (https://github.com/uglow/cz-customizable-ghooks)
 
-
+- (<https://github.com/commitizen/cz-cli)>
+- (<https://github.com/leonardoanalista/corp-semantic-release)>
+- (<https://github.com/semantic-release/semantic-release)>
+- (<https://github.com/uglow/cz-customizable-ghooks)>
 
 ## GOTCHAS
 
@@ -149,26 +176,24 @@ Don't worry because on your `git log` will be "feat: \`string\`" as desired.
 Body is the only place where you can use a `pipe` to break lines.
 E.g.: you type this: `my items are:| - item01| - item 02`, which will become:
 
-
 ```
 my items are:
  - item01
  - item 02
 ```
 
-
 ## CONTRIBUTING
 
 ### Contributor Guidelines
+
 * if you add a new config property, please remember to update files `README.md` and `index.d.ts`.
 * add or update relevant tests
 * Favor non-breaking changes when possible
 * Send preliminary PR if you would like to start a discussion
 
-### Conduct of Code:
+### Conduct of Code
+
 * Be polite, respectful and understanding that we are all here after working hours spending time to build something useful to all.
 * We promise to extend courtesy and respect to everyone involved in this project regardless of gender, gender identity, sexual orientation, disability, age, race, ethnicity, religion, or level of experience
-
-
 
 Leonardo Correa

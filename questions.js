@@ -17,6 +17,19 @@ const isValidateTicketNo = (value, config) => {
   }
   return true;
 };
+const isValidate = (value, config) => {
+  if (!value) {
+    return !config.isRequired;
+  }
+  if (!config.regExp) {
+    return true;
+  }
+  const reg = new RegExp(config.regExp);
+  if (value.replace(reg, '') !== '') {
+    return false;
+  }
+  return true;
+};
 
 module.exports = {
   getQuestions(config, cz) {
@@ -43,6 +56,38 @@ module.exports = {
     messages.breaking = messages.breaking || 'List any BREAKING CHANGES (optional):\n';
     messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
+    let customInputList = [];
+    if (config.customInputList && config.customInputList.length) {
+      const inputList = [];
+      const choices = [];
+      config.customInputList.forEach(item => {
+        let message = `Enter the ${item.desc || 'custom input'}:\n`;
+        if (item.regExp) {
+          message =
+            item.pattern || `Enter the ${item.desc || 'custom input'} following this pattern (${item.regExp}):\n`;
+        }
+        choices.push(item.name);
+        inputList.push({
+          type: 'input',
+          name: item.name,
+          message: `${item.isRequired ? '' : '(optional) '}${message}`,
+          when(answers) {
+            return answers.customInput === item.name;
+          },
+          validate(value) {
+            return isValidate(value, item);
+          },
+        });
+      });
+      customInputList = [
+        {
+          type: 'list',
+          name: 'customInput',
+          choices,
+          message: messages.customInputList || 'Select custom input type',
+        },
+      ].concat(inputList);
+    }
 
     let questions = [
       {
@@ -92,7 +137,7 @@ module.exports = {
         name: 'scope',
         message: messages.customScope,
         when(answers) {
-          return answers.scope === 'custom';
+          return config.allowCustomScopes && answers.scope === 'custom';
         },
       },
       {
@@ -123,6 +168,7 @@ module.exports = {
           return (upperCaseSubject ? value.charAt(0).toUpperCase() : value.charAt(0).toLowerCase()) + value.slice(1);
         },
       },
+      ...customInputList,
       {
         type: 'input',
         name: 'body',

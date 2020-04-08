@@ -14,6 +14,23 @@ const addTicketNumber = (ticketNumber, config) => {
   }
   return `${ticketNumber.trim()} `;
 };
+const addCustomInputList = (answers, config) => {
+  let res = '';
+  if (config.customInputList && config.customInputList.length) {
+    config.customInputList.forEach(item => {
+      let v = answers[item.name];
+      if (!v) return;
+      if (item.prefix) {
+        v = `${item.prefix + v}\n`;
+      }
+      if (item.wrapOptions) {
+        v = wrap(v, item.wrapOptions);
+      }
+      res += v;
+    });
+  }
+  return res;
+};
 
 const addScope = (scope, config) => {
   const separator = _.get(config, 'subjectSeparator', defaultSubjectSeparator);
@@ -80,11 +97,15 @@ module.exports = (answers, config) => {
   // Wrap these lines at 100 characters
   let body = wrap(answers.body, wrapOptions) || '';
   body = addBreaklinesIfNeeded(body, config.breaklineChar);
-
+  const customInput = addCustomInputList(answers, config);
+  if (customInput) {
+    body += customInput;
+  }
   const breaking = wrap(answers.breaking, wrapOptions);
   const footer = wrap(answers.footer, wrapOptions);
 
   let result = head;
+
   if (body) {
     result += `\n\n${body}`;
   }
