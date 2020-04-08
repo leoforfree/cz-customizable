@@ -137,7 +137,10 @@ module.exports = {
         name: 'scope',
         message: messages.customScope,
         when(answers) {
-          return config.allowCustomScopes && answers.scope === 'custom';
+          const hasScope = config.allowCustomScopes && answers.scope === 'custom';
+          // eslint-disable-next-line no-param-reassign
+          if (!hasScope) answers.scope = null;
+          return hasScope;
         },
       },
       {
