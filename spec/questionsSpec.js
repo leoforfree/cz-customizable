@@ -26,7 +26,7 @@ describe('cz-customizable', () => {
       isTicketNumberRequired: true,
       ticketNumberPrefix: 'TICKET-',
       ticketNumberRegExp: '\\d{1,5}',
-      subjectLimit: 20,
+      subjectLimit: 40,
     };
 
     // question 1 - TYPE
@@ -64,7 +64,7 @@ describe('cz-customizable', () => {
     expect(getQuestion(5).type).toEqual('input');
     expect(getQuestion(5).message).toMatch(/IMPERATIVE tense description/);
     expect(getQuestion(5).filter('Subject')).toEqual('subject');
-    expect(getQuestion(5).validate('bad subject that exceed limit')).toEqual('Exceed limit: 20');
+    expect(getQuestion(5).validate('bad subject that exceed limit for 6 characters')).toEqual('Exceed limit: 40');
     expect(getQuestion(5).validate('good subject')).toEqual(true);
 
     // question 6 - BODY
