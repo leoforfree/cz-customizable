@@ -29,7 +29,7 @@ const getPreparedCommit = context => {
       .replace(/[\r\n]$/, '')
       .split(/\r\n|\r|\n/);
     if (preparedCommit) {
-      if (context === 'subject') [ message ] = preparedCommit;
+      if (context === 'subject') [message] = preparedCommit;
       else if (context === 'body' && preparedCommit.length > 1) {
         preparedCommit.shift();
         message = preparedCommit.join('|');
