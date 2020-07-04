@@ -1,4 +1,4 @@
-const { existsSync, readFileSync } = require('fs');
+const fs = require('fs');
 const _ = require('lodash');
 const buildCommit = require('./buildCommit');
 const log = require('./logger');
@@ -21,14 +21,15 @@ const isValidateTicketNo = (value, config) => {
 
 const getPreparedCommit = context => {
   let message = null;
-  if (existsSync('./.git/COMMIT_EDITMSG')) {
-    let preparedCommit = readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
+  if (fs.existsSync('./.git/COMMIT_EDITMSG')) {
+    let preparedCommit = fs.readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
     preparedCommit = preparedCommit
       .replace(/^#.*/gm, '')
       .replace(/^\s*[\r\n]/gm, '')
       .replace(/[\r\n]$/, '')
       .split(/\r\n|\r|\n/);
-    if (preparedCommit) {
+
+    if (preparedCommit.length && preparedCommit[0]) {
       if (context === 'subject') [message] = preparedCommit;
       else if (context === 'body' && preparedCommit.length > 1) {
         preparedCommit.shift();
