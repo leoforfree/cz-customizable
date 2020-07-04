@@ -54,8 +54,8 @@ Use `cz-customizable` without `commitzen`.
 
 ### Option 1 - You can make changes to your git repository, file `package.json`.
 
-* `cz-customizable` will first look for a file called `.cz-config.js` in the project root, near your `package.json`
-* If no config found, it will look for `.cz-config.js` your home directory
+* `cz-customizable` will first look for a file called `.cz-config.js` or `.config/cz-config.js` in the project root, near your `package.json`
+* If no config found, it will look for `.cz-config.js` or or `.config/cz-config.js` in your home directory
 * alternatively add the config location in your `package.json`:
 ```
 ...
