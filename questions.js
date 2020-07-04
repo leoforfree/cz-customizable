@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const buildCommit = require('./buildCommit');
+const { existsSync, readFileSync } = require('fs');
 const log = require('./logger');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
@@ -16,6 +17,26 @@ const isValidateTicketNo = (value, config) => {
     return false;
   }
   return true;
+};
+
+const getPreparedCommit = context => {
+  let message = null;
+  if (existsSync('./.git/COMMIT_EDITMSG')) {
+    let preparedCommit = readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
+    preparedCommit = preparedCommit
+      .replace(/^#.*/gm, '')
+      .replace(/^\s*[\r\n]/gm, '')
+      .replace(/[\r\n]$/, '')
+      .split(/\r\n|\r|\n/);
+    if (preparedCommit) {
+      if (context === 'subject') message = preparedCommit[0];
+      else if (context === 'body' && preparedCommit.length > 1) {
+        preparedCommit.shift();
+        message = preparedCommit.join('|');
+      }
+    }
+  }
+  return message;
 };
 
 module.exports = {
@@ -110,6 +131,7 @@ module.exports = {
         type: 'input',
         name: 'subject',
         message: messages.subject,
+        default: getPreparedCommit('subject'),
         validate(value) {
           const limit = config.subjectLimit || 100;
           if (value.length > limit) {
@@ -127,6 +149,7 @@ module.exports = {
         type: 'input',
         name: 'body',
         message: messages.body,
+        default: getPreparedCommit('body'),
       },
       {
         type: 'input',
