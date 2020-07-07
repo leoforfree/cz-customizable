@@ -48,11 +48,8 @@ const readConfigFile = () => {
 module.exports = {
   prompter(cz, commit) {
     const config = readConfigFile();
-    const subjectLimit = config.subjectLimit || 100;
-
-    log.info(
-      `\n\nLine 1 will be cropped at ${subjectLimit} characters. All other lines will be wrapped after 100 characters.\n`
-    );
+    config.subjectLimit = config.subjectLimit || 100;
+    log.info('All lines except first will be wrapped after 100 characters.');
 
     const questions = require('./questions').getQuestions(config, cz);
 
