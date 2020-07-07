@@ -160,7 +160,7 @@ describe('cz-customizable', () => {
     }, 100);
   });
 
-  it('should truncate first line if number of characters is higher than 200', () => {
+  it('should truncate subject if number of characters is higher than 100', () => {
     const chars100 =
       '0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789';
 
@@ -183,7 +183,7 @@ describe('cz-customizable', () => {
     const firstPart = 'feat(myScope): ';
 
     const firstLine = commit.mostRecentCall.args[0].split('\n\n')[0];
-    expect(firstLine).toEqual(firstPart + answers.subject.slice(0, 100 - firstPart.length));
+    expect(firstLine).toEqual(firstPart + answers.subject.slice(0, 100));
 
     // it should wrap body
     const body = commit.mostRecentCall.args[0].split('\n\n')[1];

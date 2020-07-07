@@ -54,8 +54,8 @@ Use `cz-customizable` without `commitzen`.
 
 ### Option 1 - You can make changes to your git repository, file `package.json`.
 
-* `cz-customizable` will first look for a file called `.cz-config.js` in the project root, near your `package.json`
-* If no config found, it will look for `.cz-config.js` your home directory
+* `cz-customizable` will first look for a file called `.cz-config.js` or `.config/cz-config.js` in the project root, near your `package.json`
+* If no config found, it will look for `.cz-config.js` or or `.config/cz-config.js` in your home directory
 * alternatively add the config location in your `package.json`:
 ```
 ...
@@ -103,7 +103,7 @@ Hopefully this will help you to have consistent commit messages and have a fully
 
 Here are the options you can set in your `.cz-config.js`:
 
-* **subjectLimit**: {number, default 100}: This is the commit first line. Example: `feat: this is a new feature` or `feat(scopePayments): this is a new feature`
+* **subjectLimit**: {number, default 100}: This is the subject limit. Example: `this is a new feature` or `fix a bug`
 * **subjectSeparator**: {string, default ': '}: This is the subject separator. Example: `feat: this is a new feature`
 * **typePrefix**: {string, default ''}: This is the commit type prefix. Example: config: `{ typePrefix: '[' }`, result: `[feat: this is a new feature`
 * **typeSuffix**: {string, default ''}: This is the commit type suffix. Example: config: `{ typePrefix: '[', typeSuffix: ']', subjectSeparator: ' ' }`, result: `[feat] this is a new feature`
