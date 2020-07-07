@@ -125,8 +125,6 @@ describe('cz-customizable', () => {
   });
 
   it('should allow edit message before commit', done => {
-    process.env.EDITOR = 'true';
-
     const answers = {
       confirmCommit: 'edit',
       type: 'feat',
@@ -137,25 +135,7 @@ describe('cz-customizable', () => {
     module.prompter(mockCz, commit);
 
     setTimeout(() => {
-      expect(commit).toHaveBeenCalledWith('feat: create a new cool feature');
-      done();
-    }, 100);
-  });
-
-  it('should not commit if editor returned non-zero value', done => {
-    process.env.EDITOR = 'false';
-
-    const answers = {
-      confirmCommit: 'edit',
-      type: 'feat',
-      subject: 'create a new cool feature',
-    };
-
-    const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
-
-    setTimeout(() => {
-      expect(commit.wasCalled).toEqual(false);
+      expect(commit).toHaveBeenCalledWith('feat: create a new cool feature', { args: ['--edit'] });
       done();
     }, 100);
   });
