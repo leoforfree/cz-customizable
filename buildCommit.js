@@ -70,12 +70,11 @@ module.exports = (answers, config) => {
 
   // Hard limit this line
   // eslint-disable-next-line max-len
-  const head = (
+  const head =
     addType(answers.type, config) +
     addScope(answers.scope, config) +
     addTicketNumber(answers.ticketNumber, config) +
-    addSubject(answers.subject)
-  ).slice(0, defaultMaxLineWidth);
+    addSubject(answers.subject.slice(0, config.subjectLimit));
 
   // Wrap these lines at 100 characters
   let body = wrap(answers.body, wrapOptions) || '';
