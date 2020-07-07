@@ -5,9 +5,7 @@ cache:
 notifications:
   email: false
 node_js:
-  - '10'
-  - '9'
-  - '8'
+  - '12'
 script:
   - npm run lint
   - npm run test
