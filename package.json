@@ -4,6 +4,9 @@
   "description": "Commitizen customizable adapter following the conventional-changelog format.",
   "main": "index.js",
   "types": "index.d.ts",
+  "bin": {
+    "cz-customizable": "./standalone.js"
+  },
   "scripts": {
     "lint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
     "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
