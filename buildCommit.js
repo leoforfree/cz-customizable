@@ -4,6 +4,8 @@ const wrap = require('word-wrap');
 const defaultSubjectSeparator = ': ';
 const defaultMaxLineWidth = 100;
 const defaultBreaklineChar = '|';
+const defaultBreakingPrefix = 'BREAKING CHANGE:';
+const defaultFooterPrefix = 'ISSUES CLOSED:';
 
 const addTicketNumber = (ticketNumber, config) => {
   if (!ticketNumber) {
@@ -32,18 +34,37 @@ const addType = (type, config) => {
   return _.trim(`${prefix}${type}${suffix}`);
 };
 
-const addBreaklinesIfNeeded = (value, breaklineChar = defaultBreaklineChar) =>
-  value
-    .split(breaklineChar)
-    .join('\n')
-    .valueOf();
+const addBreaklinesIfNeededAndWrap = (value = '', config) => {
+  const breaklineChar = _.get(config, 'breaklineChar', defaultBreaklineChar);
+  const wrapOptions = {
+    trim: true,
+    newline: '\n',
+    indent: '',
+    width: defaultMaxLineWidth,
+  };
+
+  return (
+    value
+      .split(breaklineChar)
+      // Wrap each line at 100 characters
+      .map(p => wrap(p, wrapOptions))
+      .join('\n')
+      .valueOf()
+  );
+};
+
+const addBreaking = (breaking, config) => {
+  const breakingPrefix = _.get(config, 'breakingPrefix', defaultBreakingPrefix);
+
+  return `\n\n${breakingPrefix}\n${breaking}`;
+};
 
 const addFooter = (footer, config) => {
-  if (config && config.footerPrefix === '') return `\n\n${footer}`;
+  if (config && config.footerPrefix === '') return `\n\n${addBreaklinesIfNeededAndWrap(footer, config)}`;
 
-  const footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
+  const footerPrefix = _.get(config, 'footerPrefix', defaultFooterPrefix);
 
-  return `\n\n${footerPrefix} ${addBreaklinesIfNeeded(footer, config.breaklineChar)}`;
+  return `\n\n${footerPrefix} ${addBreaklinesIfNeededAndWrap(footer, config)}`;
 };
 
 const escapeSpecialChars = result => {
@@ -61,13 +82,6 @@ const escapeSpecialChars = result => {
 };
 
 module.exports = (answers, config) => {
-  const wrapOptions = {
-    trim: true,
-    newline: '\n',
-    indent: '',
-    width: defaultMaxLineWidth,
-  };
-
   // Hard limit this line
   // eslint-disable-next-line max-len
   const head =
@@ -76,23 +90,15 @@ module.exports = (answers, config) => {
     addTicketNumber(answers.ticketNumber, config) +
     addSubject(answers.subject.slice(0, config.subjectLimit));
 
-  // Wrap these lines at 100 characters
-  let body = wrap(answers.body, wrapOptions) || '';
-  body = addBreaklinesIfNeeded(body, config.breaklineChar);
-
-  const breaking = wrap(answers.breaking, wrapOptions);
-  const footer = wrap(answers.footer, wrapOptions);
-
   let result = head;
-  if (body) {
-    result += `\n\n${body}`;
+  if (answers.body) {
+    result += `\n\n${addBreaklinesIfNeededAndWrap(answers.body, config)}`;
   }
-  if (breaking) {
-    const breakingPrefix = config && config.breakingPrefix ? config.breakingPrefix : 'BREAKING CHANGE:';
-    result += `\n\n${breakingPrefix}\n${breaking}`;
+  if (answers.breaking) {
+    result += addBreaking(answers.breaking, config);
   }
-  if (footer) {
-    result += addFooter(footer, config);
+  if (answers.footer) {
+    result += addFooter(answers.footer, config);
   }
 
   return escapeSpecialChars(result);
