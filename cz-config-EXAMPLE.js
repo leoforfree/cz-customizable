@@ -45,6 +45,45 @@ module.exports = {
     ]
   },
   */
+
+  customInputList: [
+    {
+      isRequired: true,
+      name: 'store',
+      desc: 'store ID',
+      prefix: '--store=',
+      regExp: '\\d*',
+      wrapOptions: {
+        trim: true,
+        newline: '\n',
+        indent: '',
+      },
+    },
+    {
+      isRequired: false,
+      name: 'task',
+      desc: 'task ID',
+      prefix: '--task=',
+      regExp: '\\d*',
+      wrapOptions: {
+        trim: true,
+        newline: '\n',
+        indent: '',
+      },
+    },
+    {
+      isRequired: false,
+      name: 'bug',
+      desc: 'bug ID',
+      prefix: '--bug=',
+      regExp: '\\d*',
+      wrapOptions: {
+        trim: true,
+        newline: '\n',
+        indent: '',
+      },
+    },
+  ],
   // override the messages, defaults are as follows
   messages: {
     type: "Select the type of change that you're committing:",
