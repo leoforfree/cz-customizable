@@ -47,16 +47,16 @@ const addFooter = (footer, config) => {
 };
 
 const escapeSpecialChars = result => {
-  // eslint-disable-next-line no-useless-escape
-  const specialChars = ['`'];
-
+  // eslint-disable-next-line no-useless-escape, prettier/prettier
+  const specialChars = ['`', '"', '\\$', '!'];
   let newResult = result;
-  // eslint-disable-next-line array-callback-return
-  specialChars.map(item => {
-    // If user types "feat: `string`", the commit preview should show "feat: `\string\`".
-    // Don't worry. The git log will be "feat: `string`"
-    newResult = result.replace(new RegExp(item, 'g'), '\\`');
+
+  specialChars.forEach(item => {
+    // If user types `feat: "string"`, the commit preview should show `feat: \"string\"`.
+    // Don't worry. The git log will be `feat: "string"`
+    newResult = newResult.replace(new RegExp(item, 'g'), `\\${item}`);
   });
+
   return newResult;
 };
 
