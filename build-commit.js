@@ -16,10 +16,13 @@ const addTicketNumber = (ticketNumber, config) => {
 };
 
 const addScope = (scope, config) => {
+  const scopeWrapper = _.get(config, 'scopeWrapper', null);
+  if (scopeWrapper && typeof scopeWrapper === 'function') {
+    return scopeWrapper(scope);
+  }
+
   const separator = _.get(config, 'subjectSeparator', defaultSubjectSeparator);
-
   if (!scope) return separator; // it could be type === WIP. So there is no scope
-
   return `(${scope.trim()})${separator}`;
 };
 

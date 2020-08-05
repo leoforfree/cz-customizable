@@ -1,6 +1,6 @@
 const fs = require('fs');
 const _ = require('lodash');
-const buildCommit = require('./buildCommit');
+const buildCommit = require('./build-commit');
 const log = require('./logger');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';

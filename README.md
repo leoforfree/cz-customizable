@@ -105,6 +105,7 @@ Here are the options you can set in your `.cz-config.js`:
 
 * **subjectLimit**: {number, default 100}: This is the subject limit. Example: `this is a new feature` or `fix a bug`
 * **subjectSeparator**: {string, default ': '}: This is the subject separator. Example: `feat: this is a new feature`
+* **scopeWrapper**: {function}: This is scope wrapper function. Example: config: `scopeWrapper: scope => `[${scope}]``, result: `feat[scope]this is a new feature`
 * **typePrefix**: {string, default ''}: This is the commit type prefix. Example: config: `{ typePrefix: '[' }`, result: `[feat: this is a new feature`
 * **typeSuffix**: {string, default ''}: This is the commit type suffix. Example: config: `{ typePrefix: '[', typeSuffix: ']', subjectSeparator: ' ' }`, result: `[feat] this is a new feature`
 
