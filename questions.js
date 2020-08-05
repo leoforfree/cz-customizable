@@ -41,6 +41,7 @@ const getPreparedCommit = context => {
 };
 
 module.exports = {
+  getPreparedCommit,
   getQuestions(config, cz) {
     // normalize config optional options
     const scopeOverrides = config.scopeOverrides || {};
