@@ -105,7 +105,6 @@ Here are the options you can set in your `.cz-config.js`:
 
 * **subjectLimit**: {number, default 100}: This is the subject limit. Example: `this is a new feature` or `fix a bug`
 * **subjectSeparator**: {string, default ': '}: This is the subject separator. Example: `feat: this is a new feature`
-* **scopeWrapper**: {function}: This is scope wrapper function. Example: config: `scopeWrapper: scope => `[${scope}]``, result: `feat[scope]this is a new feature`
 * **typePrefix**: {string, default ''}: This is the commit type prefix. Example: config: `{ typePrefix: '[' }`, result: `[feat: this is a new feature`
 * **typeSuffix**: {string, default ''}: This is the commit type suffix. Example: config: `{ typePrefix: '[', typeSuffix: ']', subjectSeparator: ' ' }`, result: `[feat] this is a new feature`
 
@@ -121,6 +120,8 @@ Here are the options you can set in your `.cz-config.js`:
     ]
   }
   ```
+* **scopeWrapper**: {function}: This is scope wrapper function. Example: config: `{ scopeWrapper: scope =>  `[${scope}]` }`, result: `feat[scope]this is a new feature`
+
 * **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
