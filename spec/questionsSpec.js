@@ -270,7 +270,10 @@ describe('cz-customizable', () => {
     let readFileSync;
 
     beforeEach(() => {
-      config = {};
+      config = {
+        ticketNumberPrefix: 'TICKET-',
+        ticketNumberRegExp: '\\d{1,5}',
+      };
       existsSync = spyOn(fs, 'existsSync');
       readFileSync = spyOn(fs, 'readFileSync');
     });
@@ -290,7 +293,7 @@ describe('cz-customizable', () => {
 
     it('should take a single line commit as the subject', () => {
       existsSync.andReturn(true);
-      readFileSync.andReturn('my commit');
+      readFileSync.andReturn('type(scope): TICKET-123 my commit');
       expect(getQuestion(5).default).toEqual('my commit');
       expect(getQuestion(6).default).toEqual(null);
     });

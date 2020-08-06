@@ -1,9 +1,8 @@
 const _ = require('lodash');
 const wrap = require('word-wrap');
+const defaults = require('./defaults');
 
-const defaultSubjectSeparator = ': ';
 const defaultMaxLineWidth = 100;
-const defaultBreaklineChar = '|';
 
 const addTicketNumber = (ticketNumber, config) => {
   if (!ticketNumber) {
@@ -16,7 +15,7 @@ const addTicketNumber = (ticketNumber, config) => {
 };
 
 const addScope = (scope, config) => {
-  const separator = _.get(config, 'subjectSeparator', defaultSubjectSeparator);
+  const separator = _.get(config, 'subjectSeparator', defaults.subjectSeparator);
 
   if (!scope) return separator; // it could be type === WIP. So there is no scope
 
@@ -32,7 +31,7 @@ const addType = (type, config) => {
   return _.trim(`${prefix}${type}${suffix}`);
 };
 
-const addBreaklinesIfNeeded = (value, breaklineChar = defaultBreaklineChar) =>
+const addBreaklinesIfNeeded = (value, breaklineChar = defaults.breaklineChar) =>
   value
     .split(breaklineChar)
     .join('\n')

@@ -2,6 +2,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const buildCommit = require('./buildCommit');
 const log = require('./logger');
+const defaults = require('./defaults');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
 
@@ -19,14 +20,24 @@ const isValidateTicketNo = (value, config) => {
   return true;
 };
 
-const getPreparedCommit = context => {
+const getPreparedCommit = (context, config) => {
   let message = null;
+
   if (fs.existsSync('./.git/COMMIT_EDITMSG')) {
     let preparedCommit = fs.readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
+    const separator = _.get(config, 'subjectSeparator', defaults.subjectSeparator);
+    const { ticketNumberPrefix, ticketNumberRegExp } = config;
+
+    const subjectSeparatorRegex = new RegExp(`^.+${separator}`);
+    const ticketRegex = new RegExp(`${ticketNumberPrefix}${ticketNumberRegExp}`);
+
     preparedCommit = preparedCommit
       .replace(/^#.*/gm, '')
       .replace(/^\s*[\r\n]/gm, '')
       .replace(/[\r\n]$/, '')
+      .replace(subjectSeparatorRegex, '')
+      .replace(ticketRegex, '')
+      .trimLeft()
       .split(/\r\n|\r|\n/);
 
     if (preparedCommit.length && preparedCommit[0]) {
@@ -37,6 +48,7 @@ const getPreparedCommit = context => {
       }
     }
   }
+
   return message;
 };
 
@@ -132,7 +144,7 @@ module.exports = {
         type: 'input',
         name: 'subject',
         message: messages.subject,
-        default: getPreparedCommit('subject'),
+        default: getPreparedCommit('subject', config),
         validate(value) {
           const limit = config.subjectLimit || 100;
           if (value.length > limit) {
@@ -150,7 +162,7 @@ module.exports = {
         type: 'input',
         name: 'body',
         message: messages.body,
-        default: getPreparedCommit('body'),
+        default: getPreparedCommit('body', config),
       },
       {
         type: 'input',
