@@ -20,17 +20,11 @@ const isValidateTicketNo = (value, config) => {
   return true;
 };
 
-const readPreviousCommitMessage = () => {
-  if (!fs.existsSync('./.git/COMMIT_EDITMSG')) return '';
-  return fs.readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
-};
-
 const getPreparedCommit = (context, config) => {
   let message = null;
 
-  const previousCommitMessage = readPreviousCommitMessage();
-  if (previousCommitMessage) {
-    let preparedCommit = previousCommitMessage;
+  if (fs.existsSync('./.git/COMMIT_EDITMSG')) {
+    let preparedCommit = fs.readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
     const separator = _.get(config, 'subjectSeparator', defaults.subjectSeparator);
     const { ticketNumberPrefix, ticketNumberRegExp } = config;
 
