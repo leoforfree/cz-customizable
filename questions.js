@@ -4,6 +4,7 @@ const buildCommit = require('./build-commit');
 const log = require('./logger');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
+const isFixOrFeat = answers => ['fix', 'feat'].indexOf(answers.type.toLowerCase()) !== -1;
 
 const isValidateTicketNo = (value, config) => {
   if (!value) {
@@ -174,6 +175,22 @@ module.exports = {
         message: messages.footer,
         when: isNotWip,
       },
+    ];
+
+    const bodys = messages.bodys || [];
+    if (bodys.length > 0) {
+      _.forEach(bodys, (b, idx) => {
+        questions.push({
+          type: 'input',
+          name: `body${idx}`,
+          message: `填写${b.msg}：\n`,
+          default: b.default || '',
+          when: isFixOrFeat,
+        });
+      });
+    }
+
+    questions = questions.concat([
       {
         type: 'expand',
         name: 'confirmCommit',
@@ -189,7 +206,7 @@ module.exports = {
           return messages.confirmCommit;
         },
       },
-    ];
+    ]);
 
     questions = questions.filter(item => !skipQuestions.includes(item.name));
 
