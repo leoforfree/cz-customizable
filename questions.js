@@ -71,7 +71,11 @@ module.exports = {
         type: 'list',
         name: 'type',
         message: messages.type,
-        choices: config.types,
+        choices() {
+          let types = [];
+          types = types.concat(config.types);
+          return types;
+        },
       },
       {
         type: 'list',

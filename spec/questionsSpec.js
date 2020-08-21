@@ -34,7 +34,7 @@ describe('cz-customizable', () => {
     // question 1 - TYPE
     expect(getQuestion(1).name).toEqual('type');
     expect(getQuestion(1).type).toEqual('list');
-    expect(getQuestion(1).choices[0]).toEqual({
+    expect(getQuestion(1).choices({})[0]).toEqual({
       value: 'feat',
       name: 'feat: my feat',
     });
