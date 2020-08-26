@@ -49,7 +49,7 @@ Use `cz-customizable` without `commitzen`.
 
 ## Configuration (Shared between options 1 and 2)
 
-* Copy contents of `https://github.com/leonardoanalista/cz-customizable/blob/master/cz-config-EXAMPLE.js` and paste into a new file `.cz-config.js`
+* Copy contents of [the example config file](./cz-config-EXAMPLE.js) and paste into a new file `.cz-config.js`
 
 
 ### Option 1 - You can make changes to your git repository, file `package.json`.
