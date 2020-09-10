@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
@@ -11,7 +11,7 @@ const temp = require('temp').track();
 const fs = require('fs');
 const path = require('path');
 const log = require('./logger');
-const buildCommit = require('./buildCommit');
+const buildCommit = require('./build-commit');
 
 /* istanbul ignore next */
 const readConfigFile = () => {

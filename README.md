@@ -120,6 +120,8 @@ Here are the options you can set in your `.cz-config.js`:
     ]
   }
   ```
+* **scopeWrapper**: {function}: This is scope wrapper function. Example: config: `{ scopeWrapper: scope =>  `[${scope}]` }`, result: `feat[scope]this is a new feature`
+
 * **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].

@@ -1,4 +1,4 @@
-const buildCommit = require('../buildCommit');
+const buildCommit = require('../build-commit');
 
 describe('buildCommit()', () => {
   const answers = {
@@ -24,6 +24,13 @@ describe('buildCommit()', () => {
       subjectSeparator: ' ',
     };
     expect(buildCommit(answers, options)).toEqual('feat(app) this is a new feature');
+  });
+
+  it('subject with custom scope wrapper option', () => {
+    const options = {
+      scopeWrapper: scope => `[${scope}] `,
+    };
+    expect(buildCommit(answers, options)).toEqual('feat[app] this is a new feature');
   });
 
   describe('without scope', () => {

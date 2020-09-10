@@ -16,10 +16,13 @@ const addTicketNumber = (ticketNumber, config) => {
 };
 
 const addScope = (scope, config) => {
+  const scopeWrapper = _.get(config, 'scopeWrapper', null);
+  if (scopeWrapper && typeof scopeWrapper === 'function') {
+    return scopeWrapper(scope);
+  }
+
   const separator = _.get(config, 'subjectSeparator', defaultSubjectSeparator);
-
   if (!scope) return separator; // it could be type === WIP. So there is no scope
-
   return `(${scope.trim()})${separator}`;
 };
 
@@ -44,6 +47,23 @@ const addFooter = (footer, config) => {
   const footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'ISSUES CLOSED:';
 
   return `\n\n${footerPrefix} ${addBreaklinesIfNeeded(footer, config.breaklineChar)}`;
+};
+
+const addBodys = (answers, config) => {
+  const bodys = config.messages.bodys || [];
+  let bodysArr = [];
+  if (bodys.length > 0) {
+    bodysArr = _.map(bodys, (b, idx) => {
+      const str = answers[`body${idx}`] || '';
+      return str !== '' ? `${b.msg}\n${answers[`body${idx}`] || ''}\n` : '';
+    });
+  }
+
+  if (bodysArr.join('') === '') {
+    return '';
+  }
+  bodysArr.push('\n');
+  return bodysArr.join('\n');
 };
 
 const escapeSpecialChars = result => {
@@ -80,12 +100,17 @@ module.exports = (answers, config) => {
   let body = wrap(answers.body, wrapOptions) || '';
   body = addBreaklinesIfNeeded(body, config.breaklineChar);
 
+  body += addBodys(answers, config);
+  if (answers.changeId && answers.changeId !== '') {
+    body += `\n\n${answers.changeId}`;
+  }
+
   const breaking = wrap(answers.breaking, wrapOptions);
   const footer = wrap(answers.footer, wrapOptions);
 
-  let result = head;
+  let result = `${head}\n`;
   if (body) {
-    result += `\n\n${body}`;
+    result += `\n${body}`;
   }
   if (breaking) {
     const breakingPrefix = config && config.breakingPrefix ? config.breakingPrefix : 'BREAKING CHANGE:';

@@ -25,5 +25,6 @@ declare module "cz-customizable" {
     breakingPrefix?: string;
     footerPrefix?: string;
     subjectLimit?: number;
+    scopeWrapper?: (scope: string) => string;
   }
 }
