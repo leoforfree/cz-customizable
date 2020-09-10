@@ -4,7 +4,8 @@ const buildCommit = require('./build-commit');
 const log = require('./logger');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
-const isFixOrFeat = answers => ['fix', 'feat'].indexOf(answers.type.toLowerCase()) !== -1;
+const isFixOrFeat = answers => ['fix'].indexOf(answers.type.toLowerCase()) !== -1;
+const needBody = answers => ['fix'].indexOf(answers.type.toLowerCase()) === -1;
 
 const isValidateTicketNo = (value, config) => {
   if (!value) {
@@ -20,14 +21,30 @@ const isValidateTicketNo = (value, config) => {
   return true;
 };
 
+const getBodyChangeId = () => {
+  let changeId = '';
+  if (fs.existsSync('./.git/COMMIT_EDITMSG')) {
+    const preparedCommit = fs.readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
+    const match = preparedCommit.match(/(Change-Id:.*)/);
+    if (match) {
+      changeId = match[0] || '';
+    }
+  }
+  return changeId;
+};
+
 const getPreparedCommit = context => {
   let message = null;
   if (fs.existsSync('./.git/COMMIT_EDITMSG')) {
     let preparedCommit = fs.readFileSync('./.git/COMMIT_EDITMSG', 'utf-8');
     preparedCommit = preparedCommit
+      // 过滤 Change-Id
+      .replace(/Change-Id:.*[\r\n]/g, '')
       .replace(/^#.*/gm, '')
       .replace(/^\s*[\r\n]/gm, '')
       .replace(/[\r\n]$/, '')
+      // 替换掉现有的scope
+      .replace(/^(\w*) (?:\|(?: (\w+-\d+)? )?>)? /, '')
       .split(/\r\n|\r|\n/);
 
     if (preparedCommit.length && preparedCommit[0]) {
@@ -153,6 +170,7 @@ module.exports = {
         name: 'body',
         message: messages.body,
         default: getPreparedCommit('body'),
+        when: needBody,
       },
       {
         type: 'input',
@@ -188,6 +206,17 @@ module.exports = {
           when: isFixOrFeat,
         });
       });
+    }
+
+    const changeId = getBodyChangeId() || '';
+    if (changeId !== '') {
+      questions = questions.concat([
+        {
+          type: 'input',
+          name: 'changeId',
+          default: changeId,
+        },
+      ]);
     }
 
     questions = questions.concat([

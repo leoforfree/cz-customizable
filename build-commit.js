@@ -101,6 +101,9 @@ module.exports = (answers, config) => {
   body = addBreaklinesIfNeeded(body, config.breaklineChar);
 
   body += addBodys(answers, config);
+  if (answers.changeId && answers.changeId !== '') {
+    body += `\n\n${answers.changeId}`;
+  }
 
   const breaking = wrap(answers.breaking, wrapOptions);
   const footer = wrap(answers.footer, wrapOptions);
