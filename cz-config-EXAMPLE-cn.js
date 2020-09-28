@@ -34,6 +34,7 @@ module.exports = {
   // override the messages, defaults are as follows
   messages: {
     type: '请选择 Commit 类型:',
+    scope: '请选择影响范围 (Scope) (可选):',
     customScope: '请选择影响范围 (Scope) (可选):',
     subject: '请提供一段简要的 Commit 信息:\n',
     body: '请提供一段详细的信息来描述此次更改 (可选). 使用 "|" 来另起一行:\n',
