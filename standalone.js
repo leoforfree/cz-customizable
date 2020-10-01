@@ -16,4 +16,4 @@ const commit = commitMessage => {
   }
 };
 
-app.prompter(inquirer, commit);
+app.prompter(inquirer, commit, true);
