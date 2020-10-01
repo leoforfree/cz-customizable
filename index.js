@@ -46,12 +46,14 @@ const readConfigFile = () => {
 };
 
 module.exports = {
-  prompter(cz, commit) {
+  prompter(cz, commit, isStandalone = false) {
     const config = readConfigFile();
     config.subjectLimit = config.subjectLimit || 100;
     log.info('All lines except first will be wrapped after 100 characters.');
 
-    const questions = require('./questions').getQuestions(config, cz);
+    const isHook = process.argv.includes('--hook');
+
+    const questions = require('./questions').getQuestions(config, cz, isStandalone || isHook);
 
     cz.prompt(questions).then(answers => {
       if (answers.confirmCommit === 'edit') {

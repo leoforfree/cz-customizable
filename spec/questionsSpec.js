@@ -13,7 +13,8 @@ describe('cz-customizable', () => {
     Separator: jasmine.createSpy(),
   };
 
-  const getQuestion = number => questions.getQuestions(config, mockedCz)[number - 1];
+  const getQuestion = (number, isStandaloneOrHook = false) =>
+    questions.getQuestions(config, mockedCz, isStandaloneOrHook)[number - 1];
 
   it('should array of questions be returned', () => {
     config = {
@@ -277,29 +278,29 @@ describe('cz-customizable', () => {
 
     it('should ignore if there is no prepared commit file', () => {
       existsSync.andReturn(false);
-      expect(getQuestion(5).default).toEqual(null);
-      expect(getQuestion(6).default).toEqual(null);
+      expect(getQuestion(5, true).default).toEqual(null);
+      expect(getQuestion(6, true).default).toEqual(null);
     });
 
     it('should ignore an empty prepared commit', () => {
       existsSync.andReturn(true);
       readFileSync.andReturn('');
-      expect(getQuestion(5).default).toEqual(null);
-      expect(getQuestion(6).default).toEqual(null);
+      expect(getQuestion(5, true).default).toEqual(null);
+      expect(getQuestion(6, true).default).toEqual(null);
     });
 
     it('should take a single line commit as the subject', () => {
       existsSync.andReturn(true);
       readFileSync.andReturn('my commit');
-      expect(getQuestion(5).default).toEqual('my commit');
-      expect(getQuestion(6).default).toEqual(null);
+      expect(getQuestion(5, true).default).toEqual('my commit');
+      expect(getQuestion(6, true).default).toEqual(null);
     });
 
     it('should split multi line commit between the subject and the body', () => {
       existsSync.andReturn(true);
       readFileSync.andReturn('my commit\nmessage\n\nis on several lines');
-      expect(getQuestion(5).default).toEqual('my commit');
-      expect(getQuestion(6).default).toEqual(`message|is on several lines`);
+      expect(getQuestion(5, true).default).toEqual('my commit');
+      expect(getQuestion(6, true).default).toEqual(`message|is on several lines`);
     });
   });
 });

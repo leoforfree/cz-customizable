@@ -41,7 +41,7 @@ const getPreparedCommit = context => {
 };
 
 module.exports = {
-  getQuestions(config, cz) {
+  getQuestions(config, cz, isStandaloneOrHook = false) {
     // normalize config optional options
     const scopeOverrides = config.scopeOverrides || {};
     const messages = config.messages || {};
@@ -132,7 +132,7 @@ module.exports = {
         type: 'input',
         name: 'subject',
         message: messages.subject,
-        default: getPreparedCommit('subject'),
+        default: isStandaloneOrHook ? getPreparedCommit('subject') : null,
         validate(value) {
           const limit = config.subjectLimit || 100;
           if (value.length > limit) {
@@ -150,7 +150,7 @@ module.exports = {
         type: 'input',
         name: 'body',
         message: messages.body,
-        default: getPreparedCommit('body'),
+        default: isStandaloneOrHook ? getPreparedCommit('body') : null,
       },
       {
         type: 'input',
