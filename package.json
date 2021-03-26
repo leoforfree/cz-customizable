@@ -63,6 +63,7 @@
     }
   ],
   "dependencies": {
+    "chalk": "^4.1.0",
     "editor": "1.0.0",
     "find-config": "^1.0.0",
     "inquirer": "^6.3.1",
@@ -82,7 +83,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "ghooks": "^2.0.4",
     "istanbul": "^0.4.5",
-    "jasmine-node": "^1.16.2",
+    "jasmine": "^3.7.0",
     "prettier": "^1.17.1",
     "rewire": "^4.0.1",
     "semantic-release": "^15.13.12",
@@ -102,10 +103,10 @@
     "prettier": "prettier --single-quote --trailing-comma es5 --write '*.js' 'spec/**/*.js'",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "semantic-release": "semantic-release",
-    "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
+    "test": "jasmine --random=false \"spec/*.js\"",
     "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/",
-    "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
+    "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js jasmine --random=false spec/",
+    "test:watch": "jasmine --random=false --color --autotest spec/ --watch .",
     "travis-deploy-once": "travis-deploy-once"
   },
   "types": "index.d.ts",

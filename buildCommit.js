@@ -5,14 +5,28 @@ const defaultSubjectSeparator = ': ';
 const defaultMaxLineWidth = 100;
 const defaultBreaklineChar = '|';
 
-const addTicketNumber = (ticketNumber, config) => {
-  if (!ticketNumber) {
+const getTicketNumbers = (ticketNumbers, config) => {
+  if (!ticketNumbers) {
+    return undefined;
+  }
+  const tickets = ticketNumbers.split(' ');
+  const ticketPrefix = _.get(config, 'ticketNumberPrefix', '');
+  return `${_.get(config, 'ticketNumberPositionPrefix', '')}${tickets
+    .map(ticket => {
+      let ticketNumber = ticket.trim();
+      if (ticketPrefix !== '') {
+        ticketNumber = ticketNumber.replace(ticketPrefix, '');
+      }
+      return ticketPrefix + ticketNumber;
+    })
+    .join(_.get(config, 'ticketNumberSeparator', ' '))}${_.get(config, 'ticketNumberPositionSuffix', '') || ''}`;
+};
+
+const addTicketNumbersToHead = (ticketNumbers, position, config) => {
+  if (!ticketNumbers || config !== position) {
     return '';
   }
-  if (config.ticketNumberPrefix) {
-    return `${config.ticketNumberPrefix + ticketNumber.trim()} `;
-  }
-  return `${ticketNumber.trim()} `;
+  return `${ticketNumbers}${position === 'inline-prepend' ? ' ' : ''}`;
 };
 
 const addScope = (scope, config) => {
@@ -26,10 +40,9 @@ const addScope = (scope, config) => {
 const addSubject = subject => _.trim(subject);
 
 const addWip = (wip, config) => {
-  const wipPrefix = wip ? 
-    _.get(config, 'wipPrefix', 'w') : ''
+  const wipPrefix = wip ? _.get(config, 'wipPrefix', 'w') : '';
 
-  return _.trim(wipPrefix)
+  return _.trim(wipPrefix);
 };
 
 const addType = (type, config) => {
@@ -75,24 +88,32 @@ module.exports = (answers, config) => {
     width: defaultMaxLineWidth,
   };
 
+  const ticketNumbers = getTicketNumbers(answers.ticketNumber, config);
+  const ticketNumberPosition = config && config.ticketNumberPosition ? config.ticketNumberPosition : 'inline-prepend';
+
   // Hard limit this line
   // eslint-disable-next-line max-len
   const head = (
     addWip(answers.wip, config) +
     addType(answers.type, config) +
     addScope(answers.scope, config) +
-    addTicketNumber(answers.ticketNumber, config) +
-    addSubject(answers.subject)
+    addTicketNumbersToHead(ticketNumbers, 'inline-prepend', ticketNumberPosition) +
+    addSubject(answers.subject) +
+    addTicketNumbersToHead(ticketNumbers, 'inline-append', ticketNumberPosition)
   ).slice(0, defaultMaxLineWidth);
 
   // Wrap these lines at 100 characters
   let body = wrap(answers.body, wrapOptions) || '';
   body = addBreaklinesIfNeeded(body, config.breaklineChar);
 
+  const footerTickets = ticketNumberPosition === 'footer' ? wrap(ticketNumbers) : null;
   const breaking = wrap(answers.breaking, wrapOptions);
   const footer = wrap(answers.footer, wrapOptions);
 
   let result = head;
+  if (footerTickets) {
+    result += `\n\n${footerTickets}`;
+  }
   if (body) {
     result += `\n\n${body}`;
   }

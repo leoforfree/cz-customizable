@@ -1,3 +1,4 @@
+/* eslint-disable nada/path-case */
 module.exports = {
   types: [
     { value: 'feat', name: 'feat:     A new feature' },
@@ -28,10 +29,20 @@ module.exports = {
 
   scopes: [{ name: 'accounts' }, { name: 'admin' }, { name: 'exampleScope' }, { name: 'changeMe' }],
 
-  allowTicketNumber: false,
-  isTicketNumberRequired: false,
+  allowTicketNumber: true,
+  // can be boolean or array of names
+  isTicketNumberRequired: ['feat'],
   ticketNumberPrefix: 'TICKET-',
   ticketNumberRegExp: '\\d{1,5}',
+  // can be inline-prepend, inline-append or footer
+  ticketNumberPosition: 'inline-append',
+  ticketNumberSeparator: ', ',
+  ticketNumberPositionPrefix: '',
+  ticketNumberPositionSuffix: '',
+
+  // false if not wip, true if it is
+  wipDefaultChoice: false,
+  wipPrefix: 'w',
 
   // it needs to match the value for field type. Eg.: 'fix'
   /*
@@ -59,6 +70,9 @@ module.exports = {
   },
 
   allowCustomScopes: true,
+  allowEmptyScopes: true,
+  allowScopeWithWip: false,
+  defaultScopeInFirst: false,
   allowBreakingChanges: ['feat', 'fix'],
   // skip any questions you want
   skipQuestions: ['body'],

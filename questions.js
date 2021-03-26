@@ -1,12 +1,14 @@
 const _ = require('lodash');
+const chalk = require('chalk');
 const buildCommit = require('./buildCommit');
 const log = require('./logger');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
 
-const isValidateTicketNo = (value, config) => {
+const validateTicketNo = (type, value, config) => {
+  const required = config.isTicketNumberRequired;
   if (!value) {
-    return !config.isTicketNumberRequired;
+    return !required || (Array.isArray(required) && !required.includes(type));
   }
   if (!config.ticketNumberRegExp) {
     return true;
@@ -25,17 +27,16 @@ module.exports = {
     const messages = config.messages || {};
     const skipQuestions = config.skipQuestions || [];
 
-    messages.wip = messages.wip || "Are you done with this change ?";
+    messages.wip = messages.wip || 'Are you done with this change ?';
     messages.type = messages.type || "Select the type of change that you're committing:";
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
     if (!messages.ticketNumber) {
+      messages.ticketNumber = 'Enter the ticket number:\n';
       if (config.ticketNumberRegExp) {
         messages.ticketNumber =
           messages.ticketNumberPattern ||
-          `Enter the ticket number following this pattern (${config.ticketNumberRegExp})\n`;
-      } else {
-        messages.ticketNumber = 'Enter the ticket number:\n';
+          `Enter the ticket number following this pattern (${config.ticketNumberRegExp}):\n`;
       }
     }
     messages.subject = messages.subject || 'Write a SHORT, IMPERATIVE tense description of the change:\n';
@@ -45,15 +46,18 @@ module.exports = {
     messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
+    const wipChoices = [{ key: 'n', name: 'No', value: true }];
+    if (_.get(config, 'wipDefaultChoice', true)) {
+      wipChoices.push({ key: 'y', name: 'Yes', value: false });
+    } else {
+      wipChoices.unshift({ key: 'y', name: 'Yes', value: false });
+    }
     let questions = [
       {
         type: 'expand',
         name: 'wip',
         message: messages.wip,
-        choices: [
-          { key: 'n', name: 'No', value: true },
-          { key: 'y', name: 'Yes', value: false },
-        ],
+        choices: wipChoices,
         default: 0,
       },
       {
@@ -73,12 +77,19 @@ module.exports = {
           } else {
             scopes = scopes.concat(config.scopes);
           }
-          if (config.allowCustomScopes || scopes.length === 0) {
-            scopes = scopes.concat([
-              new cz.Separator(),
-              { name: 'empty', value: false },
-              { name: 'custom', value: 'custom' },
-            ]);
+          const defaultChoices = [];
+          if (config.allowEmptyScopes) {
+            defaultChoices.push({ name: 'empty', value: false });
+          }
+          if (config.allowCustomScopes) {
+            defaultChoices.push({ name: 'custom', value: 'custom' });
+          }
+          if (defaultChoices.length > 0) {
+            if (config.defaultScopeInFirst) {
+              scopes.unshift(...defaultChoices, new cz.Separator());
+            } else {
+              scopes.push(new cz.Separator(), ...defaultChoices);
+            }
           }
           return scopes;
         },
@@ -89,11 +100,25 @@ module.exports = {
           } else {
             hasScope = !!(config.scopes && config.scopes.length > 0);
           }
+
           if (!hasScope) {
-            // TODO: Fix when possible
-            // eslint-disable-next-line no-param-reassign
-            answers.scope = 'custom';
+            if (config.allowCustomScopes && config.allowEmptyScopes) {
+              return true;
+            }
+            if ((!config.allowCustomScopes && !config.allowEmptyScopes) || config.allowCustomScopes) {
+              // TODO: Fix when possible
+              // eslint-disable-next-line no-param-reassign
+              answers.scope = 'custom';
+            }
+            if (config.allowEmptyScopes) {
+              // TODO: Fix when possible
+              // eslint-disable-next-line no-param-reassign
+              answers.scope = false;
+            }
             return false;
+          }
+          if (config.allowScopeWithWip) {
+            return true;
           }
           return isNotWip(answers);
         },
@@ -109,12 +134,32 @@ module.exports = {
       {
         type: 'input',
         name: 'ticketNumber',
-        message: messages.ticketNumber,
+        message: answers => {
+          if (config.isTicketNumberRequired === true) {
+            return messages.ticketNumber + chalk.reset(' ') + chalk.dim('(Ticket number is required)\n');
+          }
+          if (Array.isArray(config.isTicketNumberRequired) && config.isTicketNumberRequired.includes(answers.type)) {
+            return (
+              messages.ticketNumber +
+              chalk.reset(' ') +
+              chalk.dim(`(Ticket number is required with type${config.isTicketNumberRequired.length > 1 ? 's' : ''}`) +
+              config.isTicketNumberRequired
+                .map(type =>
+                  type === answers.type
+                    ? chalk.reset(' ') + chalk.cyan.bold(type) + chalk.reset('*')
+                    : chalk.reset(' ') + chalk`{dim ${type}}`
+                )
+                .join(chalk.dim(',')) +
+              chalk.dim(')\n')
+            );
+          }
+          return messages.ticketNumber;
+        },
         when() {
           return !!config.allowTicketNumber; // no ticket numbers allowed unless specifed
         },
-        validate(value) {
-          return isValidateTicketNo(value, config);
+        validate(value, answers) {
+          return validateTicketNo(answers.type, value, config);
         },
       },
       {

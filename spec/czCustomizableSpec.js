@@ -155,7 +155,7 @@ describe('cz-customizable', () => {
     module.prompter(mockCz, commit);
 
     setTimeout(() => {
-      expect(commit.wasCalled).toEqual(false);
+      expect(commit.calls.count()).toEqual(0);
       done();
     }, 100);
   });
@@ -181,16 +181,15 @@ describe('cz-customizable', () => {
     module.prompter(mockCz, commit);
 
     const firstPart = 'feat(myScope): ';
-
-    const firstLine = commit.mostRecentCall.args[0].split('\n\n')[0];
+    const firstLine = commit.calls.mostRecent().args[0].split('\n\n')[0];
     expect(firstLine).toEqual(firstPart + answers.subject.slice(0, 100 - firstPart.length));
 
     // it should wrap body
-    const body = commit.mostRecentCall.args[0].split('\n\n')[1];
+    const body = commit.calls.mostRecent().args[0].split('\n\n')[1];
     expect(body).toEqual(`${chars100}\nbody-second-line`);
 
     // it should wrap footer
-    const footer = commit.mostRecentCall.args[0].split('\n\n')[2];
+    const footer = commit.calls.mostRecent().args[0].split('\n\n')[2];
     expect(footer).toEqual(`ISSUES CLOSED: ${footerChars100}\nfooter-second-line`);
   });
 

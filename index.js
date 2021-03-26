@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
