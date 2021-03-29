@@ -9,6 +9,7 @@ const findConfig = require('find-config');
 const editor = require('editor');
 const temp = require('temp').track();
 const fs = require('fs');
+const { MultipleSelectSearchPrompt } = require('inquirer-better-prompts');
 const path = require('path');
 const log = require('./logger');
 const buildCommit = require('./buildCommit');
@@ -47,6 +48,8 @@ const readConfigFile = () => {
 
 module.exports = {
   prompter(cz, commit) {
+    cz.registerPrompt('multiple-select-search', MultipleSelectSearchPrompt);
+
     const config = readConfigFile();
     const subjectLimit = config.subjectLimit || 100;
 

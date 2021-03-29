@@ -63,10 +63,15 @@
     }
   ],
   "dependencies": {
+    "axios": "^0.21.1",
     "chalk": "^4.1.0",
     "editor": "1.0.0",
     "find-config": "^1.0.0",
-    "inquirer": "^6.3.1",
+    "fuzzy": "^0.1.3",
+    "inquirer": "^8.0.0",
+    "inquirer-autocomplete-prompt": "github:NorthBlue333/inquirer-better-prompts#master",
+    "inquirer-better-prompts": "github:NorthBlue333/inquirer-better-prompts#master",
+    "jira-client": "^6.21.1",
     "lodash": "^4.17.11",
     "temp": "^0.9.0",
     "word-wrap": "^1.2.3"
@@ -75,6 +80,7 @@
   "devDependencies": {
     "codecov.io": "0.1.6",
     "commitizen": "^3.1.1",
+    "dotenv": "^8.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.2.0",
@@ -107,7 +113,8 @@
     "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js jasmine --random=false spec/",
     "test:watch": "jasmine --random=false --color --autotest spec/ --watch .",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "fetch-jira": "./fetchJiraIssues.js"
   },
   "types": "index.d.ts",
   "version": "6.3.0"

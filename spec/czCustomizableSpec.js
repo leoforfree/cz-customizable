@@ -40,6 +40,7 @@ describe('cz-customizable', () => {
           },
         };
       },
+      registerPrompt() {},
     };
   }
 
@@ -313,7 +314,7 @@ describe('cz-customizable', () => {
       type: 'feat',
       scope: 'myScope',
       subject: 'create a new cool feature',
-      ticketNumber: 'TICKET-1234',
+      ticketNumbers: ['TICKET-1234'],
     };
 
     const mockCz = getMockedCz(answers);
@@ -348,7 +349,7 @@ describe('cz-customizable', () => {
       type: 'feat',
       scope: 'myScope',
       subject: 'create a new cool feature',
-      ticketNumber: '1234',
+      ticketNumbers: ['1234'],
     };
 
     const mockCz = getMockedCz(answers);

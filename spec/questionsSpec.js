@@ -61,11 +61,11 @@ describe('cz-customizable', () => {
     expect(getQuestion(4).when({ scope: 'scope' })).toEqual(false);
 
     // question 5 - TICKET_NUMBER
-    expect(getQuestion(5).name).toEqual('ticketNumber');
-    expect(getQuestion(5).type).toEqual('input');
+    expect(getQuestion(5).name).toEqual('ticketNumbers');
+    expect(getQuestion(5).type).toEqual('multiple-select-search');
     expect(getQuestion(5).message({ type: 'feat' })).toContain('(Ticket number is required)');
     expect(getQuestion(5).message({ type: 'feat' })).toContain('Enter the ticket number following this pattern');
-    expect(getQuestion(5).validate(undefined, {})).toEqual(false); // mandatory question
+    expect(getQuestion(5).validate([], {})).toEqual('You must specify at least one ticket.'); // mandatory question
 
     // question 6 - SUBJECT
     expect(getQuestion(6).name).toEqual('subject');
@@ -200,7 +200,7 @@ describe('cz-customizable', () => {
         allowTicketNumber: false,
       };
 
-      expect(getQuestion(5).name).toEqual('ticketNumber');
+      expect(getQuestion(5).name).toEqual('ticketNumbers');
       expect(getQuestion(5).when()).toEqual(false);
     });
   });
@@ -217,14 +217,14 @@ describe('cz-customizable', () => {
     });
   });
 
-  describe('TicketNumber', () => {
+  describe('TicketNumbers', () => {
     it('disable TicketNumber question', () => {
       config = {
         types: [{ value: 'feat', name: 'feat: my feat' }],
         allowTicketNumber: false,
       };
 
-      expect(getQuestion(5).name).toEqual('ticketNumber');
+      expect(getQuestion(5).name).toEqual('ticketNumbers');
       expect(getQuestion(5).when()).toEqual(false);
     });
 
@@ -233,15 +233,15 @@ describe('cz-customizable', () => {
         types: [{ value: 'feat', name: 'feat: my feat' }],
         allowTicketNumber: true,
         messages: {
-          ticketNumber: 'ticket number',
+          ticketNumbers: 'ticket number',
         },
         isTicketNumberRequired: ['feat'],
       };
 
-      expect(getQuestion(5).name).toEqual('ticketNumber');
+      expect(getQuestion(5).name).toEqual('ticketNumbers');
       expect(getQuestion(5).message({ type: 'feat' })).toContain('ticket number');
       expect(getQuestion(5).message({ type: 'feat' })).toMatch(
-        /^.*\(Ticket number is required with type.*feat.*.*\).*/
+        new RegExp(/^.*\(Ticket number is required with type.*feat.*.*\).*/, 'm')
       );
     });
 
@@ -250,46 +250,46 @@ describe('cz-customizable', () => {
         config = {
           isTicketNumberRequired: true,
         };
-        expect(getQuestion(5).validate('', {})).toEqual(false);
+        expect(getQuestion(5).validate([], {})).toEqual('You must specify at least one ticket.');
       });
       it('invalid because empty and required with array', () => {
         config = {
           isTicketNumberRequired: ['feat'],
         };
-        expect(getQuestion(5).validate('', { type: 'feat' })).toEqual(false);
+        expect(getQuestion(5).validate([], { type: 'feat' })).toContain('You must specify at least one ticket.');
       });
       it('empty but valid because optional', () => {
         config = {
           isTicketNumberRequired: false,
         };
-        expect(getQuestion(5).validate('', {})).toEqual(true);
+        expect(getQuestion(5).validate([], {})).toEqual(true);
       });
       it('empty but valid because not in required array', () => {
         config = {
           isTicketNumberRequired: ['feat'],
         };
-        expect(getQuestion(5).validate('', { type: 'fix' })).toEqual(true);
+        expect(getQuestion(5).validate([], { type: 'fix' })).toEqual(true);
       });
       it('valid because there is no regexp defined', () => {
         config = {
           isTicketNumberRequired: true,
           ticketNumberRegExp: undefined,
         };
-        expect(getQuestion(5).validate('21234', {})).toEqual(true);
+        expect(getQuestion(5).validate(['21234'], {})).toEqual(true);
       });
       it("invalid because regexp don't match", () => {
         config = {
           isTicketNumberRequired: true,
           ticketNumberRegExp: '\\d{1,5}',
         };
-        expect(getQuestion(5).validate('sddsa', {})).toEqual(false);
+        expect(getQuestion(5).validate(['sddsa'], {})).toContain('Tickets do not match format');
       });
       it('valid because regexp match', () => {
         config = {
           isTicketNumberRequired: true,
           ticketNumberRegExp: '\\d{1,5}',
         };
-        expect(getQuestion(5).validate('12345', {})).toEqual(true);
+        expect(getQuestion(5).validate(['12345'], {})).toEqual(true);
       });
     });
   });

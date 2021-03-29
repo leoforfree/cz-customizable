@@ -9,9 +9,9 @@ const getTicketNumbers = (ticketNumbers, config) => {
   if (!ticketNumbers) {
     return undefined;
   }
-  const tickets = ticketNumbers.split(' ');
+
   const ticketPrefix = _.get(config, 'ticketNumberPrefix', '');
-  return `${_.get(config, 'ticketNumberPositionPrefix', '')}${tickets
+  return `${_.get(config, 'ticketNumberPositionPrefix', '')}${ticketNumbers
     .map(ticket => {
       let ticketNumber = ticket.trim();
       if (ticketPrefix !== '') {
@@ -26,7 +26,7 @@ const addTicketNumbersToHead = (ticketNumbers, position, config) => {
   if (!ticketNumbers || config !== position) {
     return '';
   }
-  return `${ticketNumbers}${position === 'inline-prepend' ? ' ' : ''}`;
+  return `${position === 'inline-append' ? ' ' : ''}${ticketNumbers}${position === 'inline-prepend' ? ' ' : ''}`;
 };
 
 const addScope = (scope, config) => {
@@ -88,7 +88,7 @@ module.exports = (answers, config) => {
     width: defaultMaxLineWidth,
   };
 
-  const ticketNumbers = getTicketNumbers(answers.ticketNumber, config);
+  const ticketNumbers = getTicketNumbers(answers.ticketNumbers, config);
   const ticketNumberPosition = config && config.ticketNumberPosition ? config.ticketNumberPosition : 'inline-prepend';
 
   // Hard limit this line

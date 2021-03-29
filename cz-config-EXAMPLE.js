@@ -1,4 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable nada/path-case */
+require('dotenv').config();
+
 module.exports = {
   types: [
     { value: 'feat', name: 'feat:     A new feature' },
@@ -32,7 +35,7 @@ module.exports = {
   allowTicketNumber: true,
   // can be boolean or array of names
   isTicketNumberRequired: ['feat'],
-  ticketNumberPrefix: 'TICKET-',
+  ticketNumberPrefix: 'FTY-',
   ticketNumberRegExp: '\\d{1,5}',
   // can be inline-prepend, inline-append or footer
   ticketNumberPosition: 'inline-append',
@@ -59,7 +62,7 @@ module.exports = {
   // override the messages, defaults are as follows
   messages: {
     type: "Select the type of change that you're committing:",
-    scope: '\nDenote the SCOPE of this change (optional):',
+    scope: 'Denote the SCOPE of this change (optional):\n',
     // used if allowCustomScopes is true
     customScope: 'Denote the SCOPE of this change:',
     subject: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
@@ -82,4 +85,8 @@ module.exports = {
   // breaklineChar: '|', // It is supported for fields body and footer.
   // footerPrefix : 'ISSUES CLOSED:'
   // askForBreakingChangeFirst : true, // default is false
+
+  jiraDomain: process.env.CZ_CUSTOMIZABLE_JIRA_DOMAIN,
+  jiraProjectAcronym: process.env.CZ_CUSTOMIZABLE_JIRA_PROJECT_ACRONYM,
+  jiraToken: process.env.CZ_CUSTOMIZABLE_JIRA_TOKEN,
 };
