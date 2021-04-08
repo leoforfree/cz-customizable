@@ -11,7 +11,7 @@ const getTicketNumbers = (ticketNumbers, config) => {
   }
 
   const ticketPrefix = _.get(config, 'ticketNumberPrefix', '');
-  return `${_.get(config, 'ticketNumberPositionPrefix', '')}${ticketNumbers
+  return `${ticketNumbers.length > 0 ? _.get(config, 'ticketNumberPositionPrefix', '') : ''}${ticketNumbers
     .map(ticket => {
       let ticketNumber = ticket.trim();
       if (ticketPrefix !== '') {
@@ -19,7 +19,9 @@ const getTicketNumbers = (ticketNumbers, config) => {
       }
       return ticketPrefix + ticketNumber;
     })
-    .join(_.get(config, 'ticketNumberSeparator', ' '))}${_.get(config, 'ticketNumberPositionSuffix', '') || ''}`;
+    .join(_.get(config, 'ticketNumberSeparator', ' '))}${
+    ticketNumbers.length > 0 ? _.get(config, 'ticketNumberPositionSuffix', '') || '' : ''
+  }`;
 };
 
 const addTicketNumbersToHead = (ticketNumbers, position, config) => {
