@@ -89,4 +89,5 @@ module.exports = {
   jiraDomain: process.env.CZ_CUSTOMIZABLE_JIRA_DOMAIN,
   jiraProjectAcronym: process.env.CZ_CUSTOMIZABLE_JIRA_PROJECT_ACRONYM,
   jiraToken: process.env.CZ_CUSTOMIZABLE_JIRA_TOKEN,
+  pathToJiraIssues: process.env.CZ_CUSTOMIZABLE_JIRA_ISSUES_FILE,
 };

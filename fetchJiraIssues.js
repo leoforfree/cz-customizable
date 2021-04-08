@@ -2,6 +2,10 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-console */
+const _ = {
+  get: require('lodash/get'),
+};
+
 const CZ_CONFIG_NAME = '.cz-config.js';
 const findConfig = require('find-config');
 const axios = require('axios');
@@ -79,7 +83,10 @@ function retrieveJiraIssues(startAt) {
       if (response.data.startAt + response.data.maxResults < response.data.total - 1) {
         retrieveJiraIssues(response.data.startAt + response.data.maxResults);
       } else {
-        fs.writeFileSync('./.jira-issues-cache.json', JSON.stringify(issues.map(issueToJson)));
+        fs.writeFileSync(
+          _.get(config, 'pathToJiraIssues', './.jira-issues-cache.json'),
+          JSON.stringify(issues.map(issueToJson))
+        );
         log.log(chalk.green('Done retrieving issues for your project.'));
       }
     })

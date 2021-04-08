@@ -123,7 +123,9 @@ module.exports = {
     messages.footer = messages.footer || 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n';
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
-    const issues = JSON.parse(fs.readFileSync(config.pathToJiraIssues, 'utf-8')).map(issue => {
+    const issues = JSON.parse(
+      fs.readFileSync(_.get(config, 'pathToJiraIssues', './.jira-issues-cache.json'), 'utf-8')
+    ).map(issue => {
       const name = `${issue.key} - ${issue.summary}`.split('\n').flatMap(el =>
         // el.match(/[^\s]+\s+/g).reduce((acc, word, index) => {
         //   if (acc[index % 10]) {
