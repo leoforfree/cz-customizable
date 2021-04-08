@@ -124,35 +124,37 @@ module.exports = {
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
     const filePath = _.get(config, 'pathToJiraIssues', './.jira-issues-cache.json');
-    const issues = JSON.parse(fs.statSync(filePath, fs.F_OK).isFile() ? fs.readFileSync(filePath, 'utf-8') : '[]').map(
-      issue => {
-        const name = `${issue.key} - ${issue.summary}`.split('\n').flatMap(el =>
-          // el.match(/[^\s]+\s+/g).reduce((acc, word, index) => {
-          //   if (acc[index % 10]) {
-          //     acc[index % 10].push(word);
-          //     return acc;
-          //   }
-          //   acc[index % 10] = [word];
-          //   return acc;
-          // }, [])
-          el.match(/([^\s]+\s?){1,20}/g)
-        );
-        const parent =
-          issue.parent && issue.parent.type.name === 'Epic'
-            ? chalk.bgBlackBright.white(` ${issue.parent.summary} `)
-            : '';
-        if (name[name.length - 1].length + parent.length > 149) {
-          name.push(parent);
-        } else {
-          name[name.length - 1] = `${name[name.length - 1]} ${parent}`;
-        }
-        return {
-          name: name.map((l, i) => (i > 0 ? `    ${l}` : l)).join('\n'),
-          value: issue.key,
-          short: issue.key,
-        };
+    let issuesString = '[]';
+    try {
+      issuesString = fs.readFileSync(filePath, 'utf-8');
+    } catch (e) {
+      //
+    }
+    const issues = JSON.parse(issuesString).map(issue => {
+      const name = `${issue.key} - ${issue.summary}`.split('\n').flatMap(el =>
+        // el.match(/[^\s]+\s+/g).reduce((acc, word, index) => {
+        //   if (acc[index % 10]) {
+        //     acc[index % 10].push(word);
+        //     return acc;
+        //   }
+        //   acc[index % 10] = [word];
+        //   return acc;
+        // }, [])
+        el.match(/([^\s]+\s?){1,20}/g)
+      );
+      const parent =
+        issue.parent && issue.parent.type.name === 'Epic' ? chalk.bgBlackBright.white(` ${issue.parent.summary} `) : '';
+      if (name[name.length - 1].length + parent.length > 149) {
+        name.push(parent);
+      } else {
+        name[name.length - 1] = `${name[name.length - 1]} ${parent}`;
       }
-    );
+      return {
+        name: name.map((l, i) => (i > 0 ? `    ${l}` : l)).join('\n'),
+        value: issue.key,
+        short: issue.key,
+      };
+    });
 
     const wipChoices = [{ key: 'n', name: 'No', value: true }];
     if (_.get(config, 'wipDefaultChoice', true)) {
