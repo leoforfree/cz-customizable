@@ -15,6 +15,15 @@ const addTicketNumber = (ticketNumber, config) => {
   return `${ticketNumber.trim()} `;
 };
 
+const addJirasBody = (jirasBody, config) => {
+  const jiraPrefix = _.get(config, 'jiraPrefix', '');
+  if (!config.jiraMode) return '';
+
+  if (!jirasBody) return '#ignore_scan# '; // jira id could be none. So there is '#ignore_scan#'
+
+  return `${jiraPrefix}-${jirasBody.trim()} #comment `;
+};
+
 const addScope = (scope, config) => {
   const separator = _.get(config, 'subjectSeparator', defaultSubjectSeparator);
 
@@ -71,6 +80,7 @@ module.exports = (answers, config) => {
   // Hard limit this line
   // eslint-disable-next-line max-len
   const head =
+    addJirasBody(answers.jirasBody, config) +
     addType(answers.type, config) +
     addScope(answers.scope, config) +
     addTicketNumber(answers.ticketNumber, config) +

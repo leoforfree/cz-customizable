@@ -46,7 +46,11 @@ module.exports = {
     const scopeOverrides = config.scopeOverrides || {};
     const messages = config.messages || {};
     const skipQuestions = config.skipQuestions || [];
+    const jiraPrefix = config.jiraPrefix || 'NULL';
 
+    messages.jirasBody =
+      messages.jirasBody ||
+      `Enter jira ID(s) (e.g. "0000", message will become "${jiraPrefix}-0000 #comment".): (press enter to skip)\n`;
     messages.type = messages.type || "Select the type of change that you're committing:";
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
@@ -67,6 +71,13 @@ module.exports = {
     messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
 
     let questions = [
+      {
+        type: 'input',
+        name: 'jirasBody',
+        message: messages.jirasBody,
+        when: config.jiraMode || false,
+        default: '',
+      },
       {
         type: 'list',
         name: 'type',
