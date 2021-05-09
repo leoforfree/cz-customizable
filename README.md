@@ -131,6 +131,9 @@ Here are the options you can set in your `.cz-config.js`:
 * **upperCaseSubject**: { boolean, default false }: Capitalizes first subject letter if set to `true`
 * **askForBreakingChangeFirst**: { boolean, default false }: It asks for breaking change as first question when set to `true`
 
+* **jiraMode**: { boolean, default false }: Add jira smart commits when set to `true`. only have `Comment` now. adding... `Workflow command`, `Time Spent`...
+* **jiraPrefix**: { string, default 'NULL' }: Project code of jira
+
 ## Related tools
 - (https://github.com/commitizen/cz-cli)
 - (https://github.com/leonardoanalista/corp-semantic-release)
