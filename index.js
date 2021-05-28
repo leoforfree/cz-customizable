@@ -1,5 +1,8 @@
 // #!/usr/bin/env node
 
+/* eslint-disable no-continue */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 // Inspired by: https://github.com/commitizen/cz-conventional-changelog and https://github.com/commitizen/cz-cli
@@ -13,6 +16,7 @@ const { MultipleSelectSearchPrompt } = require('inquirer-better-prompts');
 const path = require('path');
 const log = require('./logger');
 const buildCommit = require('./buildCommit');
+const timeTracking = require('./sendJiraTimeTracking');
 
 /* istanbul ignore next */
 const readConfigFile = () => {
@@ -60,30 +64,34 @@ module.exports = {
     const questions = require('./questions').getQuestions(config, cz);
 
     cz.prompt(questions).then(answers => {
-      if (answers.confirmCommit === 'edit') {
-        temp.open(null, (err, info) => {
-          /* istanbul ignore else */
-          if (!err) {
-            fs.writeSync(info.fd, buildCommit(answers, config));
-            fs.close(info.fd, () => {
-              editor(info.path, code => {
-                if (code === 0) {
-                  const commitStr = fs.readFileSync(info.path, {
-                    encoding: 'utf8',
-                  });
-                  commit(commitStr);
-                } else {
-                  log.info(`Editor returned non zero value. Commit message was:\n${buildCommit(answers, config)}`);
-                }
+      const timeTrackingQuestions = require('./questions').getTimeTrackQuestions(config, cz, answers);
+      cz.prompt(timeTrackingQuestions).then(a => {
+        if (a.confirmCommit === 'edit') {
+          temp.open(null, (err, info) => {
+            /* istanbul ignore else */
+            if (!err) {
+              fs.writeSync(info.fd, buildCommit(answers, config));
+              fs.close(info.fd, () => {
+                editor(info.path, code => {
+                  if (code === 0) {
+                    const commitStr = fs.readFileSync(info.path, {
+                      encoding: 'utf8',
+                    });
+                    commit(commitStr);
+                  } else {
+                    log.info(`Editor returned non zero value. Commit message was:\n${buildCommit(answers, config)}`);
+                  }
+                });
               });
-            });
-          }
-        });
-      } else if (answers.confirmCommit === 'yes') {
-        commit(buildCommit(answers, config));
-      } else {
-        log.info('Commit has been canceled.');
-      }
+            }
+          });
+        } else if (a.confirmCommit === 'yes') {
+          timeTracking.applyTimeTracking(a, config);
+          commit(buildCommit(answers, config));
+        } else {
+          log.info('Commit has been canceled.');
+        }
+      });
     });
   },
 };

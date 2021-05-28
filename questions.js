@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-control-regex */
 const _ = require('lodash');
 const fuzzy = require('fuzzy');
@@ -98,6 +99,65 @@ const validateTicketNo = (type, value, config) => {
 };
 
 module.exports = {
+  getTimeTrackQuestions(config, cz, answers) {
+    const messages = config.messages || {};
+    const skipQuestions = config.skipQuestions || [];
+    const ticketsNumbers =
+      answers && answers.ticketNumbers && answers.ticketNumbers.length ? answers.ticketNumbers : [];
+    messages.confirmCommit = messages.confirmCommit || 'Are you sure you want to proceed with the commit above?';
+
+    let questions = [];
+
+    if (!skipQuestions.includes('timeTracking')) {
+      for (const ticket of ticketsNumbers) {
+        questions.push({
+          type: 'input',
+          name: ticket,
+          validate(value) {
+            if (!value && !config.isTimeTrackingRequired) {
+              return true;
+            }
+            if (!value && config.isTimeTrackingRequired) {
+              return 'Time tracking is required';
+            }
+
+            if (value.match(/\d{1,2}(m|h(\d{2}?)?)/)) {
+              return true;
+            }
+            return "Time doesn't match the pattern";
+          },
+          message: () => {
+            if (config.isTimeTrackingRequired) {
+              return `Enter the time for the ticket ${ticket} following the pattern (\\d{1,2}(m|h(\\d{2}?)?)) ex: 1h30, 2h, 30m ${chalk.reset(
+                ' '
+              )}${chalk.dim('(Time tracking is required)\n')}`;
+            }
+            return `Enter the time for the ticket ${ticket} following the pattern (\\d{1,2}(m|h(\\d{2}?)?)) ex: 1h30, 2h, 30m`;
+          },
+        });
+      }
+    }
+
+    questions.push({
+      type: 'expand',
+      name: 'confirmCommit',
+      choices: [
+        { key: 'y', name: 'Yes', value: 'yes' },
+        { key: 'n', name: 'Abort commit', value: 'no' },
+        { key: 'e', name: 'Edit message', value: 'edit' },
+      ],
+      default: 0,
+      message() {
+        const SEP = '###--------------------------------------------------------###';
+        log.info(`\n${SEP}\n${buildCommit(answers, config)}\n${SEP}\n`);
+        return messages.confirmCommit;
+      },
+    });
+
+    questions = questions.filter(item => !skipQuestions.includes(item.name));
+
+    return questions;
+  },
   getQuestions(config, cz) {
     // normalize config optional options
     const scopeOverrides = config.scopeOverrides || {};
@@ -329,21 +389,6 @@ module.exports = {
         name: 'footer',
         message: messages.footer,
         when: isNotWip,
-      },
-      {
-        type: 'expand',
-        name: 'confirmCommit',
-        choices: [
-          { key: 'y', name: 'Yes', value: 'yes' },
-          { key: 'n', name: 'Abort commit', value: 'no' },
-          { key: 'e', name: 'Edit message', value: 'edit' },
-        ],
-        default: 0,
-        message(answers) {
-          const SEP = '###--------------------------------------------------------###';
-          log.info(`\n${SEP}\n${buildCommit(answers, config)}\n${SEP}\n`);
-          return messages.confirmCommit;
-        },
       },
     ];
 

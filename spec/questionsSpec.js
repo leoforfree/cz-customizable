@@ -12,7 +12,16 @@ describe('cz-customizable', () => {
     Separator: jasmine.createSpy(),
   };
 
+  const endQuestionAnswers = {
+    ticketsNumbers: ['TEST-1'],
+    confirmCommit: 'yes',
+    type: 'feat',
+    scope: 'myScope',
+    subject: 'create a new cool feature',
+  };
+
   const getQuestion = number => questions.getQuestions(config, mockedCz)[number - 1];
+  const getEndQuestion = number => questions.getTimeTrackQuestions(config, mockedCz, endQuestionAnswers)[number - 1];
 
   it('should array of questions be returned', () => {
     config = {
@@ -91,17 +100,12 @@ describe('cz-customizable', () => {
     expect(getQuestion(9).when({ type: 'fix' })).toEqual(true);
     expect(getQuestion(9).when({ type: 'WIP' })).toEqual(false);
 
-    // question 10, last one, CONFIRM COMMIT OR NOT
-    expect(getQuestion(10).name).toEqual('confirmCommit');
-    expect(getQuestion(10).type).toEqual('expand');
-
-    const answers = {
-      confirmCommit: 'yes',
-      type: 'feat',
-      scope: 'myScope',
-      subject: 'create a new cool feature',
-    };
-    expect(getQuestion(10).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+    // endQuestion 1, last one, CONFIRM COMMIT OR NOT
+    expect(getEndQuestion(1).name).toEqual('confirmCommit');
+    expect(getEndQuestion(1).type).toEqual('expand');
+    expect(getEndQuestion(1).message(endQuestionAnswers)).toMatch(
+      'Are you sure you want to proceed with the commit above?'
+    );
   });
 
   it('default length limit of subject should be 100', () => {

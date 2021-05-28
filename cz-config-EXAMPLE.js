@@ -77,8 +77,9 @@ module.exports = {
   allowScopeWithWip: false,
   defaultScopeInFirst: false,
   allowBreakingChanges: ['feat', 'fix'],
+  isTimeTrackingRequired: false,
   // skip any questions you want
-  skipQuestions: ['body'],
+  skipQuestions: ['body', 'footer', 'breaking', 'timeTracking'],
 
   // limit subject length
   subjectLimit: 100,
