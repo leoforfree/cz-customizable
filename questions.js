@@ -2,6 +2,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const buildCommit = require('./buildCommit');
 const log = require('./logger');
+const {execSync} = require('child_process');
 
 const isNotWip = answers => answers.type.toLowerCase() !== 'wip';
 
@@ -20,15 +21,15 @@ const isValidateTicketNo = (value, config) => {
 };
 
 const getGitMsgFile = () => {
-  let root = './'
-  let filePath = '.git/COMMIT_EDITMSG'
+  let root = './';
+  let filePath = '.git/COMMIT_EDITMSG';
   try {
-    const buffer = execSync('git rev-parse --show-toplevel')
-    root = buffer.toString().replace('\n', '') + '/'
+    const buffer = execSync('git rev-parse --show-toplevel');
+    root = buffer.toString().replace('\n', '') + '/';
   } catch (error) {
     // emtpy
   }
-  return root + filePath
+  return root + filePath;
 }
 
 const getPreparedCommit = context => {
