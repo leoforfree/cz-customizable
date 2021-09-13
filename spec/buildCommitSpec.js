@@ -98,4 +98,48 @@ line 2`;
       expect(buildCommit(answersNoScope, options)).toEqual(expecteMessage);
     });
   });
+
+  describe('adds to footer', () => {
+    
+    it('custom footer prefix', () => {
+      const expectedMessage = `feat: this is a new feature\n
+body
+
+foo bar`;
+
+      const answers = {
+        type: 'feat',
+        subject: 'this is a new feature',
+        body: 'body',
+        footer: 'bar',
+      };
+
+      const options = {
+        footerPrefix: 'foo'
+      };
+
+      expect(buildCommit(answers, options)).toEqual(expectedMessage);
+    });
+
+    it('a prefix without trailing whitespace if user opts out', () => {
+      const expectedMessage = `feat: this is a new feature\n
+body
+
+foobar`;
+
+      const answers = {
+        type: 'feat',
+        subject: 'this is a new feature',
+        body: 'body',
+        footer: 'bar',
+      };
+      
+      const options = {
+        addWhiteSpaceToFooterPrefix: false,
+        footerPrefix: 'foo'
+      };
+      expect(buildCommit(answers, options)).toEqual(expectedMessage);
+    });
+
+  })
 });

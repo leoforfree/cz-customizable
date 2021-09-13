@@ -67,5 +67,6 @@ module.exports = {
   subjectLimit: 100,
   // breaklineChar: '|', // It is supported for fields body and footer.
   // footerPrefix : 'ISSUES CLOSED:'
+  // addWhiteSpaceToFooterPrefix: true,
   // askForBreakingChangeFirst : true, // default is false
 };
