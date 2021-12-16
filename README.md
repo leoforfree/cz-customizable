@@ -109,7 +109,7 @@ Here are the options you can set in your `.cz-config.js`:
 * **typeSuffix**: {string, default ''}: This is the commit type suffix. Example: config: `{ typePrefix: '[', typeSuffix: ']', subjectSeparator: ' ' }`, result: `[feat] this is a new feature`
 
 * **scopes**: {Array of Strings}: Specify the scopes for your particular project. Eg.: for some banking system: ["acccounts", "payments"]. For another travelling application: ["bookings", "search", "profile"]
-* **scopeOverrides**: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example bellow specify scopes when type is `fix`:
+* **scopeOverrides**: {Object where key contains a Array of String}: Use this when you want to override scopes for a specific commit type. Example below specify scopes when type is `fix`:
   ```
   scopeOverrides: {
     fix: [
