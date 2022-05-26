@@ -16,7 +16,7 @@ const buildCommit = require('./buildCommit');
 /* istanbul ignore next */
 const readConfigFile = () => {
   // First try to find the .cz-config.js config file
-  const czConfig = findConfig.require(CZ_CONFIG_NAME, { home: false });
+  let czConfig = findConfig.require(CZ_CONFIG_NAME, { home: false });
 
   if (czConfig) {
     return czConfig;
@@ -37,6 +37,12 @@ const readConfigFile = () => {
 
       return require(pkgPath);
     }
+  }
+  
+  // If no config found, it will look for .cz-config.js in your home directory
+  if (!czConfig) {
+    czConfig = findConfig.require(CZ_CONFIG_NAME, { home: true });
+    return czConfig
   }
 
   log.warn(
