@@ -23,7 +23,7 @@ You have two ways to use `cz-customizable`. Originally, this project started as 
 ...
 "config": {
   "commitizen": {
-    "path": "node_modules/cz-customizable"
+    "path": "cz-customizable"
   }
 }
 ```
@@ -61,7 +61,7 @@ Use `cz-customizable` without `commitzen`.
 ...
 "config": {
   "commitizen": { // not needed for standlone usage
-    "path": "node_modules/cz-customizable"
+    "path": "cz-customizable"
   },
   "cz-customizable": {
     "config": "config/path/to/my/config.js"
