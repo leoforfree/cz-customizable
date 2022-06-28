@@ -47,6 +47,7 @@ module.exports = {
     const scopeOverrides = config.scopeOverrides || {};
     const messages = config.messages || {};
     const skipQuestions = config.skipQuestions || [];
+    const skipEmptyScopes = config.skipEmptyScopes || false;
 
     messages.type = messages.type || "Select the type of change that you're committing:";
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
@@ -104,7 +105,7 @@ module.exports = {
           if (!hasScope) {
             // TODO: Fix when possible
             // eslint-disable-next-line no-param-reassign
-            answers.scope = 'custom';
+            answers.scope = skipEmptyScopes ? '' : 'custom';
             return false;
           }
           return isNotWip(answers);
