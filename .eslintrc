@@ -6,10 +6,11 @@
   },
   "globals": {
     "console": true,
+    "jest": true,
     "module": true
   },
-  "plugins": ["prettier", "nada"],
+  "plugins": ["prettier"],
   "rules": {
-    "nada/path-case": [1, { "case": "kebabCase" }]
+
   }
 }
