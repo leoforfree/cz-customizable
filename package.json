@@ -51,7 +51,7 @@
     "jest": "^28.1.1",
     "prettier": "^1.17.1",
     "rewire": "^4.0.1",
-    "semantic-release": "^15.13.12",
+    "semantic-release": "^19.0.3",
     "travis-deploy-once": "^5.0.11"
   },
   "config": {
