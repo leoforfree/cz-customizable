@@ -8,16 +8,15 @@
     "cz-customizable": "./standalone.js"
   },
   "scripts": {
-    "lint": "node_modules/eslint/bin/eslint.js *.js spec/**.js",
-    "test": "node_modules/jasmine-node/bin/jasmine-node spec/",
+    "lint": "node_modules/eslint/bin/eslint.js *.js __tests__/**.js",
+    "test": "jest",
     "test:coverage": "istanbul cover -x cz-config-EXAMPLE.js node_modules/jasmine-node/bin/jasmine-node spec/",
     "test:check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "test:watch": "node_modules/jasmine-node/bin/jasmine-node --color --autotest spec/ --watch .",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "semantic-release": "semantic-release",
     "prettier": "prettier --single-quote --trailing-comma es5 --write '*.js' 'spec/**/*.js'",
-    "commit": "./standalone.js",
-    "travis-deploy-once": "travis-deploy-once"
+    "commit": "./standalone.js"
   },
   "homepage": "https://github.com/leoforfree/cz-customizable",
   "repository": {
@@ -48,7 +47,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "ghooks": "^2.0.4",
     "istanbul": "^0.4.5",
-    "jasmine-node": "^1.16.2",
+    "jasmine-node": "^3.0.0",
+    "jest": "^28.1.1",
     "prettier": "^1.17.1",
     "rewire": "^4.0.1",
     "semantic-release": "^15.13.12",

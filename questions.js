@@ -37,6 +37,7 @@ const getPreparedCommit = context => {
       }
     }
   }
+
   return message;
 };
 
