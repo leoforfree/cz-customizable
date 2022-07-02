@@ -15,24 +15,28 @@ Suitable for large teams working with multiple projects with their own commit sc
 
 You have two ways to use `cz-customizable`. Originally, this project started as a commitizen plugin (Option 1). We introduced the second option to run this `cz-customizable` in standalone mode (Option 2), just like any NodeJS script. It's recommended to use `Option 2` for simplicity. The way you configure is shared between both options.
 
+# Quick start **(New, recommended)**
+## Configuration
 
-## Option 1 - cz-customizable as commitizen plugin
+* Copy contents of [the example config file](./cz-config-EXAMPLE.js) and paste into a new file `.cz-config.js`
+* move file `cz-config.js` to your home directory.
 
-* install commitizen in case you don't have it: `npm install -g commitizen`. Make sure you have the latest version of commitizen installed globally.
+## cz-customizable via global install
 
-* configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
+`npm i cz-customizable -g`
 
-```
-...
-"config": {
-  "commitizen": {
-    "path": "node_modules/cz-customizable"
-  }
-}
-```
+Then run `cz-customizable` from your root repo. You can also use the alias `cz-cust`.
+
+If everything is correct, you should see commit questions like the image above.
+
+# Slow start
+
+## Option 1 - cz-customizable via npx
+
+`npx cz-customizable`
 
 
-## Option 2 - cz-customizable in standalone mode **(New)**
+## Option 2 - cz-customizable in standalone mode
 
 Use `cz-customizable` without `commitzen`.
 
@@ -50,7 +54,25 @@ Use `cz-customizable` without `commitzen`.
 * now run: `npm run commit`.
 
 
-## Configuration (Shared between options 1 and 2)
+## Option 3 - cz-customizable as commitizen plugin
+
+This is how this project started.
+
+* install commitizen in case you don't have it: `npm install -g commitizen`. Make sure you have the latest version of commitizen installed globally.
+
+* configure `commitizen` to use `cz-customizable` as plugin. Add those lines to your `package.json`:
+
+```
+...
+"config": {
+  "commitizen": {
+    "path": "node_modules/cz-customizable"
+  }
+}
+```
+
+
+## Configuration (Shared between options 1,2 and 3)
 
 * Copy contents of [the example config file](./cz-config-EXAMPLE.js) and paste into a new file `.cz-config.js`
 
@@ -75,13 +97,13 @@ Use `cz-customizable` without `commitzen`.
 Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `.cz-config.js`.
 
 
-### Option 2 - No Changes to your git repository*.
+### No Changes to your git repository*.
 
 This is suitable when your team is not ready to roll `cz-customizable` across all teams but you still would like to use it for your own commits, no matter the project.
 
 Steps:
 * create config file:
-  * create a file called `.cz-config.js` in your git repository root (*Asumptions: you do a global git ignore on `~/.gitignore_global` for `.cz-config.js`). Or;
+  * create a file called `.cz-config.js` in your git repository root (*Assumptions: you git ignore global on `~/.gitignore_global` for `.cz-config.js`). Or;
   * create a file called `.cz-config.js` your home directory.
 
 #### Additional steps when used as commitizen plugin

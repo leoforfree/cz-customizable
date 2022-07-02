@@ -5,7 +5,8 @@
   "main": "index.js",
   "types": "index.d.ts",
   "bin": {
-    "cz-customizable": "./standalone.js"
+    "cz-customizable": "./standalone.js",
+    "cz-cust": "./standalone.js"
   },
   "scripts": {
     "lint": "node_modules/eslint/bin/eslint.js *.js __tests__/**.js",
