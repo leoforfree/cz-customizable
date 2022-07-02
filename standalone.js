@@ -8,7 +8,7 @@ const log = require('./lib/logger');
 
 log.info('cz-customizable standalone version');
 
-const commit = commitMessage => {
+const commit = (commitMessage) => {
   try {
     execSync(`git commit -m "${commitMessage}"`, { stdio: [0, 1, 2] });
   } catch (error) {

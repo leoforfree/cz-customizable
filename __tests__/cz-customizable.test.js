@@ -1,4 +1,4 @@
-const czModule = require('./../index');
+const czModule = require('../index');
 const readConfigFile = require('../lib/read-config');
 
 const commit = jest.fn();
@@ -152,7 +152,7 @@ describe('cz-customizable', () => {
     expect(commit).toHaveBeenCalledWith('WIP: this is my work-in-progress');
   });
 
-  it('should allow edit message before commit', done => {
+  it('should allow edit message before commit', (done) => {
     process.env.EDITOR = 'true';
 
     const answers = {
@@ -170,7 +170,7 @@ describe('cz-customizable', () => {
     }, 100);
   });
 
-  it('should not commit if editor returned non-zero value', done => {
+  it('should not commit if editor returned non-zero value', (done) => {
     process.env.EDITOR = 'false';
 
     const answers = {

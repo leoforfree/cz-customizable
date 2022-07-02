@@ -18,14 +18,14 @@ module.exports = {
 
     const questions = require('./lib/questions').getQuestions(config, cz);
 
-    cz.prompt(questions).then(answers => {
+    cz.prompt(questions).then((answers) => {
       if (answers.confirmCommit === 'edit') {
         temp.open(null, (err, info) => {
           /* istanbul ignore else */
           if (!err) {
             fs.writeSync(info.fd, buildCommit(answers, config));
             fs.close(info.fd, () => {
-              editor(info.path, code => {
+              editor(info.path, (code) => {
                 if (code === 0) {
                   const commitStr = fs.readFileSync(info.path, {
                     encoding: 'utf8',
