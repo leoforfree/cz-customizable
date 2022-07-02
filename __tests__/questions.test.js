@@ -268,6 +268,7 @@ describe('cz-customizable', () => {
     });
   });
 
+  // TODO: fix tests
   describe.skip('commit already prepared', () => {
     let existsSync;
     let readFileSync;
