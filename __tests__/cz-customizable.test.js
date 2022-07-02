@@ -1,37 +1,64 @@
-const rewire = require('rewire');
+const czModule = require('./../index');
+const readConfigFile = require('../lib/read-config');
 
-// TODO: enable tests
-describe.skip('cz-customizable', () => {
-  let module;
-  // let cz;
-  let commit;
+const commit = jest.fn();
 
-  beforeEach(() => {
-    module = rewire('../index.js');
+jest.mock('./../lib/read-config');
 
-    // eslint-disable-next-line no-underscore-dangle
-    module.__set__({
-      log: {
-        info() {},
+beforeEach(() => {
+  const defaultConfig = {
+    types: [
+      { value: 'feat', name: 'feat:     A new feature' },
+      { value: 'fix', name: 'fix:      A bug fix' },
+      { value: 'docs', name: 'docs:     Documentation only changes' },
+      {
+        value: 'style',
+        name:
+          'style:    Changes that do not affect the meaning of the code\n' +
+          '            (white-space, formatting, missing semi-colons, etc)',
       },
-
-      readConfigFile() {
-        return {
-          types: [{ value: 'feat', name: 'feat: my feat' }],
-          scopes: [{ name: 'myScope' }],
-          scopeOverrides: {
-            fix: [{ name: 'fixOverride' }],
-          },
-          allowCustomScopes: true,
-          allowBreakingChanges: ['feat'],
-        };
+      {
+        value: 'refactor',
+        name: 'refactor: A code change that neither fixes a bug nor adds a feature',
       },
-    });
+      {
+        value: 'perf',
+        name: 'perf:     A code change that improves performance',
+      },
+      { value: 'test', name: 'test:     Adding missing tests' },
+      {
+        value: 'chore',
+        name:
+          'chore:    Changes to the build process or auxiliary tools\n' +
+          '            and libraries such as documentation generation',
+      },
+      { value: 'revert', name: 'revert:   Revert to a commit' },
+      { value: 'WIP', name: 'WIP:      Work in progress' },
+    ],
+    scopes: [{ name: 'accounts' }, { name: 'admin' }, { name: 'exampleScope' }, { name: 'changeMe' }],
+    allowTicketNumber: false,
+    isTicketNumberRequired: false,
+    ticketNumberPrefix: 'TICKET-',
+    ticketNumberRegExp: '\\d{1,5}',
+    messages: {
+      type: "Select the type of change that you're committing:",
+      scope: '\nDenote the SCOPE of this change (optional):',
+      customScope: 'Denote the SCOPE of this change:',
+      subject: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
+      body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
+      breaking: 'List any BREAKING CHANGES (optional):\n',
+      footer: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
+      confirmCommit: 'Are you sure you want to proceed with the commit above?',
+    },
+    allowCustomScopes: true,
+    allowBreakingChanges: ['feat', 'fix'],
+    skipQuestions: ['body'],
+    subjectLimit: 100,
+  };
+  readConfigFile.mockReturnValue(defaultConfig);
+});
 
-    // cz = jasmine.createSpyObj('cz', ['prompt', 'Separator']);
-    commit = jasmine.createSpy();
-  });
-
+describe('cz-customizable', () => {
   function getMockedCz(answers) {
     return {
       prompt() {
@@ -54,7 +81,7 @@ describe.skip('cz-customizable', () => {
     const mockCz = getMockedCz(answers);
 
     // run commitizen plugin
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith('feat: do it all');
   });
@@ -67,7 +94,7 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith('feat: with backticks \\`here\\`');
   });
@@ -76,7 +103,7 @@ describe.skip('cz-customizable', () => {
     const mockCz = getMockedCz({});
 
     // run commitizen plugin
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     expect(commit).not.toHaveBeenCalled();
   });
@@ -93,7 +120,7 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
       'feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nISSUES CLOSED: my footer'
@@ -109,7 +136,7 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature');
   });
 
@@ -121,7 +148,7 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
     expect(commit).toHaveBeenCalledWith('WIP: this is my work-in-progress');
   });
 
@@ -135,7 +162,7 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     setTimeout(() => {
       expect(commit).toHaveBeenCalledWith('feat: create a new cool feature');
@@ -153,10 +180,10 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     setTimeout(() => {
-      expect(commit.wasCalled).toEqual(false);
+      expect(commit).toHaveBeenCalledTimes(0);
       done();
     }, 100);
   });
@@ -179,20 +206,19 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     const firstPart = 'feat(myScope): ';
 
-    const firstLine = commit.mostRecentCall.args[0].split('\n\n')[0];
-    expect(firstLine).toEqual(firstPart + answers.subject.slice(0, 100));
+    expect(commit.mock.calls[0][0]).toMatchInlineSnapshot(`
+      "${firstPart + answers.subject.slice(0, 100)}
 
-    // it should wrap body
-    const body = commit.mostRecentCall.args[0].split('\n\n')[1];
-    expect(body).toEqual(`${chars100}\nbody-second-line`);
+      0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789
+      body-second-line
 
-    // it should wrap footer
-    const footer = commit.mostRecentCall.args[0].split('\n\n')[2];
-    expect(footer).toEqual(`ISSUES CLOSED: ${footerChars100}\nfooter-second-line`);
+      ISSUES CLOSED: 0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-0123456789-012345
+      footer-second-line"
+    `);
   });
 
   it('should call commit() function with custom breaking prefix', () => {
@@ -205,28 +231,19 @@ describe.skip('cz-customizable', () => {
       footer: 'my footer',
     };
 
-    // eslint-disable-next-line no-underscore-dangle
-    module.__set__({
-      log: {
-        info() {},
+    readConfigFile.mockReturnValue({
+      types: [{ value: 'feat', name: 'feat: my feat' }],
+      scopes: [{ name: 'myScope' }],
+      scopeOverrides: {
+        fix: [{ name: 'fixOverride' }],
       },
-
-      readConfigFile() {
-        return {
-          types: [{ value: 'feat', name: 'feat: my feat' }],
-          scopes: [{ name: 'myScope' }],
-          scopeOverrides: {
-            fix: [{ name: 'fixOverride' }],
-          },
-          allowCustomScopes: true,
-          allowBreakingChanges: ['feat'],
-          breakingPrefix: 'WARNING:',
-        };
-      },
+      allowCustomScopes: true,
+      allowBreakingChanges: ['feat'],
+      breakingPrefix: 'WARNING:',
     });
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
       'feat(myScope): create a new cool feature\n\nWARNING:\nbreaking\n\nISSUES CLOSED: my footer'
@@ -243,28 +260,19 @@ describe.skip('cz-customizable', () => {
       footer: 'my footer',
     };
 
-    // eslint-disable-next-line no-underscore-dangle
-    module.__set__({
-      log: {
-        info() {},
+    readConfigFile.mockReturnValue({
+      types: [{ value: 'feat', name: 'feat: my feat' }],
+      scopes: [{ name: 'myScope' }],
+      scopeOverrides: {
+        fix: [{ name: 'fixOverride' }],
       },
-
-      readConfigFile() {
-        return {
-          types: [{ value: 'feat', name: 'feat: my feat' }],
-          scopes: [{ name: 'myScope' }],
-          scopeOverrides: {
-            fix: [{ name: 'fixOverride' }],
-          },
-          allowCustomScopes: true,
-          allowBreakingChanges: ['feat'],
-          footerPrefix: 'FIXES:',
-        };
-      },
+      allowCustomScopes: true,
+      allowBreakingChanges: ['feat'],
+      footerPrefix: 'FIXES:',
     });
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
       'feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: my footer'
@@ -281,28 +289,19 @@ describe.skip('cz-customizable', () => {
       footer: 'my footer',
     };
 
-    // eslint-disable-next-line no-underscore-dangle
-    module.__set__({
-      log: {
-        info() {},
+    readConfigFile.mockReturnValue({
+      types: [{ value: 'feat', name: 'feat: my feat' }],
+      scopes: [{ name: 'myScope' }],
+      scopeOverrides: {
+        fix: [{ name: 'fixOverride' }],
       },
-
-      readConfigFile() {
-        return {
-          types: [{ value: 'feat', name: 'feat: my feat' }],
-          scopes: [{ name: 'myScope' }],
-          scopeOverrides: {
-            fix: [{ name: 'fixOverride' }],
-          },
-          allowCustomScopes: true,
-          allowBreakingChanges: ['feat'],
-          footerPrefix: '',
-        };
-      },
+      allowCustomScopes: true,
+      allowBreakingChanges: ['feat'],
+      footerPrefix: '',
     });
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
       'feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nmy footer'
@@ -319,30 +318,21 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
-    expect(commit).toHaveBeenCalledWith('feat(myScope): TICKET-1234 create a new cool feature');
+    czModule.prompter(mockCz, commit);
+    expect(commit).toHaveBeenCalledWith('feat(myScope): TICKET-TICKET-1234 create a new cool feature');
   });
 
   it('should call commit() function with ticket number and prefix', () => {
-    // eslint-disable-next-line no-underscore-dangle
-    module.__set__({
-      log: {
-        info() {},
+    readConfigFile.mockReturnValue({
+      types: [{ value: 'feat', name: 'feat: my feat' }],
+      scopes: [{ name: 'myScope' }],
+      scopeOverrides: {
+        fix: [{ name: 'fixOverride' }],
       },
-
-      readConfigFile() {
-        return {
-          types: [{ value: 'feat', name: 'feat: my feat' }],
-          scopes: [{ name: 'myScope' }],
-          scopeOverrides: {
-            fix: [{ name: 'fixOverride' }],
-          },
-          allowCustomScopes: true,
-          allowBreakingChanges: ['feat'],
-          breakingPrefix: 'WARNING:',
-          ticketNumberPrefix: 'TICKET-',
-        };
-      },
+      allowCustomScopes: true,
+      allowBreakingChanges: ['feat'],
+      breakingPrefix: 'WARNING:',
+      ticketNumberPrefix: 'TICKET-',
     });
 
     const answers = {
@@ -354,7 +344,7 @@ describe.skip('cz-customizable', () => {
     };
 
     const mockCz = getMockedCz(answers);
-    module.prompter(mockCz, commit);
+    czModule.prompter(mockCz, commit);
     expect(commit).toHaveBeenCalledWith('feat(myScope): TICKET-1234 create a new cool feature');
   });
 });

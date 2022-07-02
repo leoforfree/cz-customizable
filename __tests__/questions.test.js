@@ -1,6 +1,6 @@
 /* eslint-disable nada/path-case */
 const fs = require('fs');
-const questions = require('../questions.js');
+const questions = require('../lib/questions.js');
 
 describe('cz-customizable', () => {
   let config;
@@ -268,6 +268,7 @@ describe('cz-customizable', () => {
     });
   });
 
+  // TODO: fix tests
   describe.skip('commit already prepared', () => {
     let existsSync;
     let readFileSync;
