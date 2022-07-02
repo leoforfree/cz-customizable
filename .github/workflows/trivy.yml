@@ -1,8 +1,8 @@
-name: Security Gate
+name: Trivy security Gate
 on: [push]
 jobs:
   security-gate:
-    name: Security Gate
+    name: Trivy security Gate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
