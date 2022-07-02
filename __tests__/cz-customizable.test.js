@@ -1,9 +1,9 @@
 const czModule = require('./../index');
-const readConfigFile = require('./../read-config');
+const readConfigFile = require('../lib/read-config');
 
 const commit = jest.fn();
 
-jest.mock('./../read-config');
+jest.mock('./../lib/read-config');
 
 beforeEach(() => {
   const defaultConfig = {

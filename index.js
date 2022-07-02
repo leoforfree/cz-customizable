@@ -6,9 +6,9 @@
 const editor = require('editor');
 const temp = require('temp').track();
 const fs = require('fs');
-const log = require('./logger');
-const buildCommit = require('./buildCommit');
-const readConfigFile = require('./read-config');
+const log = require('./lib/logger');
+const buildCommit = require('./lib/build-commit');
+const readConfigFile = require('./lib/read-config');
 
 module.exports = {
   prompter(cz, commit) {
@@ -16,7 +16,7 @@ module.exports = {
     config.subjectLimit = config.subjectLimit || 100;
     log.info('All lines except first will be wrapped after 100 characters.');
 
-    const questions = require('./questions').getQuestions(config, cz);
+    const questions = require('./lib/questions').getQuestions(config, cz);
 
     cz.prompt(questions).then(answers => {
       if (answers.confirmCommit === 'edit') {

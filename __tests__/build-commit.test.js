@@ -1,4 +1,4 @@
-const buildCommit = require('../buildCommit');
+const buildCommit = require('../lib/build-commit');
 
 describe('buildCommit()', () => {
   const answers = {
