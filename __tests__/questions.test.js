@@ -1,5 +1,3 @@
-/* eslint-disable nada/path-case */
-const fs = require('fs');
 const questions = require('../lib/questions.js');
 
 describe('cz-customizable', () => {
@@ -10,10 +8,7 @@ describe('cz-customizable', () => {
   });
 
   const mockedCz = {
-    // Separator: jasmine.createSpy(),
-    // Separator: jest.fn().mockReturnValue(null),
     Separator: jest.fn(),
-    // Separator: () => '',
   };
 
   const getQuestion = number => questions.getQuestions(config, mockedCz)[number - 1];
@@ -265,45 +260,6 @@ describe('cz-customizable', () => {
         };
         expect(getQuestion(4).validate('12345')).toEqual(true);
       });
-    });
-  });
-
-  // TODO: fix tests
-  describe.skip('commit already prepared', () => {
-    let existsSync;
-    let readFileSync;
-
-    beforeEach(() => {
-      config = {};
-      existsSync = spyOn(fs, 'existsSync');
-      readFileSync = spyOn(fs, 'readFileSync');
-    });
-
-    it('should ignore if there is no prepared commit file', () => {
-      existsSync.andReturn(false);
-      expect(getQuestion(5).default).toEqual(null);
-      expect(getQuestion(6).default).toEqual(null);
-    });
-
-    it('should ignore an empty prepared commit', () => {
-      existsSync.andReturn(true);
-      readFileSync.andReturn('');
-      expect(getQuestion(5).default).toEqual(null);
-      expect(getQuestion(6).default).toEqual(null);
-    });
-
-    it('should take a single line commit as the subject', () => {
-      existsSync.andReturn(true);
-      readFileSync.andReturn('my commit');
-      expect(getQuestion(5).default).toEqual('my commit');
-      expect(getQuestion(6).default).toEqual(null);
-    });
-
-    it('should split multi line commit between the subject and the body', () => {
-      existsSync.andReturn(true);
-      readFileSync.andReturn('my commit\nmessage\n\nis on several lines');
-      expect(getQuestion(5).default).toEqual('my commit');
-      expect(getQuestion(6).default).toEqual(`message|is on several lines`);
     });
   });
 });
