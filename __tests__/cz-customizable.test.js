@@ -1,9 +1,9 @@
 const czModule = require('../index');
-const readConfigFile = require('../lib/read-config');
+const readConfigFile = require('../lib/read-config-file');
 
 const commit = jest.fn();
 
-jest.mock('./../lib/read-config');
+jest.mock('./../lib/read-config-file');
 
 beforeEach(() => {
   const defaultConfig = {
@@ -123,7 +123,7 @@ describe('cz-customizable', () => {
     czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
-      'feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nISSUES CLOSED: my footer'
+      'feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nISSUES CLOSED: my footer',
     );
   });
 
@@ -246,7 +246,7 @@ describe('cz-customizable', () => {
     czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
-      'feat(myScope): create a new cool feature\n\nWARNING:\nbreaking\n\nISSUES CLOSED: my footer'
+      'feat(myScope): create a new cool feature\n\nWARNING:\nbreaking\n\nISSUES CLOSED: my footer',
     );
   });
 
@@ -275,7 +275,7 @@ describe('cz-customizable', () => {
     czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
-      'feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: my footer'
+      'feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: my footer',
     );
   });
 
@@ -304,7 +304,7 @@ describe('cz-customizable', () => {
     czModule.prompter(mockCz, commit);
 
     expect(commit).toHaveBeenCalledWith(
-      'feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nmy footer'
+      'feat(myScope): create a new cool feature\n\nBREAKING CHANGE:\nbreaking\n\nmy footer',
     );
   });
 
