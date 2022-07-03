@@ -46,6 +46,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "ghooks": "^2.0.4",
     "jest": "^28.1.2",
+    "minimist": ">=1.2.6",
     "prettier": "^2.7.1",
     "semantic-release": "^19.0.3"
   },
