@@ -146,6 +146,9 @@ Here are the options you can set in your `.cz-config.js`:
   }
   ```
 * **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
+* **allowEmptyScopes**: {boolean, default false}: allow non-selection or not to fill in the scopes.
+* **customScopesName**: {string, default 'custom scopes'}: custom scopes label in terminal scopes list.
+* **emptyScopesName**: {string, default 'empty scopes'}: empty scopes label in terminal scopes list.
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
 * **skipEmptyScopes**: {boolean, default false}: If a chosen type has no scopes declared, skip the scope question

@@ -18,6 +18,9 @@ declare module "cz-customizable" {
       confirmCommit?: string,
     };
     allowCustomScopes?: boolean;
+    customScopesName?: string;
+    allowEmptyScopes?: boolean;
+    emptyScopesName?: string;
     allowBreakingChanges?: string[];
     skipQuestions?: string[];
     appendBranchNameToCommitMessage?: boolean;
