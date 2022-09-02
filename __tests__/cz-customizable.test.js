@@ -1,9 +1,11 @@
 const czModule = require('../index');
 const readConfigFile = require('../lib/read-config');
+const getPreviousCommit = require('../lib/utils/get-previous-commit');
 
 const commit = jest.fn();
 
 jest.mock('./../lib/read-config');
+jest.mock('./../lib/utils/get-previous-commit');
 
 beforeEach(() => {
   const defaultConfig = {
@@ -346,5 +348,30 @@ describe('cz-customizable', () => {
     const mockCz = getMockedCz(answers);
     czModule.prompter(mockCz, commit);
     expect(commit).toHaveBeenCalledWith('feat(myScope): TICKET-1234 create a new cool feature');
+  });
+
+  it('should call commit() function with preparedCommit message', () => {
+    getPreviousCommit.mockReturnValue('fix: a terrible bug');
+
+    readConfigFile.mockReturnValue({
+      types: [{ value: 'feat', name: 'feat: my feat' }],
+      scopes: [{ name: 'myScope' }],
+      scopeOverrides: {
+        fix: [{ name: 'fixOverride' }],
+      },
+      allowCustomScopes: true,
+      allowBreakingChanges: ['feat'],
+      usePreparedCommit: true,
+    });
+
+    const answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      subject: 'create a new cool feature',
+    };
+
+    const mockCz = getMockedCz(answers);
+    czModule.prompter(mockCz, commit);
+    expect(commit).toHaveBeenCalledWith('feat: create a new cool feature');
   });
 });
