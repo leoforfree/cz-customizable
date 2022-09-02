@@ -105,8 +105,8 @@ describe('cz-customizable', () => {
     expect(getQuestion(5).validate('good subject')).toEqual(true);
     expect(
       getQuestion(5).validate(
-        'bad subject that exceed limit bad subject that exceed limitbad subject that exceed limit test test test'
-      )
+        'bad subject that exceed limit bad subject that exceed limitbad subject that exceed limit test test test',
+      ),
     ).toEqual('Exceed limit: 100');
   });
 

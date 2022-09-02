@@ -8,7 +8,7 @@ const temp = require('temp').track();
 const fs = require('fs');
 const log = require('./lib/logger');
 const buildCommit = require('./lib/build-commit');
-const readConfigFile = require('./lib/read-config');
+const readConfigFile = require('./lib/read-config-file');
 
 module.exports = {
   prompter(cz, commit) {

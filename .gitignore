@@ -27,4 +27,4 @@ build/Release
 node_modules
 .DS_Store
 coverage
-.cz-config.js
+!.cz-config.js
