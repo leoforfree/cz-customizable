@@ -156,6 +156,7 @@ Here are the options you can set in your `.cz-config.js`:
 * **breaklineChar**: {string, default '|'}: It gets replaced with \n to create the breakline in your commit message. This is supported for fields `body` and `footer` at the moment.
 * **upperCaseSubject**: { boolean, default false }: Capitalizes first subject letter if set to `true`
 * **askForBreakingChangeFirst**: { boolean, default false }: It asks for breaking change as first question when set to `true`
+* **usePreparedCommit**: { boolean, default false }: It re-uses commit from ./.git/COMMIT_EDITMSG when set to `true`
 
 ## Related tools
 - (https://github.com/commitizen/cz-cli)
