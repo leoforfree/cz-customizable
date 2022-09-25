@@ -1,6 +1,6 @@
 # cz-customizable
 
-The customizable Commitizen plugin (or standalone utility) to help achieve consistent commit messages like the [AngularJS team](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines). Note that you can create any commit message pattern. You don't have to use the pattern from the Angular team. For example, my team uses this pattern: `[minor] add new feature x`
+The customizable Commitizen plugin (or standalone utility) to help achieve consistent commit messages such as [Conventional Commits](https://www.conventionalcommits.org/). Note that you can create any commit message pattern. You don't have to use the pattern from the Conventional Commits. For example, my team uses this pattern: `[minor] add new feature xyz`
 
 ![screenshot](screenshot.png)
 
