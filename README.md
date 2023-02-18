@@ -19,7 +19,8 @@ You have two ways to use `cz-customizable`. Originally, this project started as 
 ## Configuration
 
 * Copy contents of [the example config file](./cz-config-EXAMPLE.js) and paste into a new file `.cz-config.js`
-* move file `cz-config.js` to your home directory.
+* Option 1: Move file `cz-config.js` to your home directory.
+* Option 2: Put file `cz-config.js` at the root level of your project and commit it to your code repository (Assuming you have a team agreement to use this tool).
 
 ## cz-customizable via global install
 
