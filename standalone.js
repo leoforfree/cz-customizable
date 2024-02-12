@@ -11,9 +11,9 @@ log.info('cz-customizable standalone version');
 const commit = (commitMessage) => {
   try {
     execSync(
-      `git commit${commitMessage
+      `git commit ${commitMessage
         .split('\n')
-        .map((n) => ` -m "${n}"`)
+        .map((n) => `-m "${n}"`)
         .join(' ')}`,
       { stdio: [0, 1, 2] },
     );
