@@ -374,4 +374,31 @@ describe('cz-customizable', () => {
     czModule.prompter(mockCz, commit);
     expect(commit).toHaveBeenCalledWith('feat: create a new cool feature');
   });
+
+  it('should call commit() function with ticket number and prefix and suffix', () => {
+    readConfigFile.mockReturnValue({
+      types: [{ value: 'feat', name: 'feat: my feat' }],
+      scopes: [{ name: 'myScope' }],
+      scopeOverrides: {
+        fix: [{ name: 'fixOverride' }],
+      },
+      allowCustomScopes: true,
+      allowBreakingChanges: ['feat'],
+      breakingPrefix: 'WARNING:',
+      ticketNumberPrefix: '[TICKET-',
+      ticketNumberSuffix: ']',
+    });
+
+    const answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      ticketNumber: '1234',
+    };
+
+    const mockCz = getMockedCz(answers);
+    czModule.prompter(mockCz, commit);
+    expect(commit).toHaveBeenCalledWith('feat(myScope): [TICKET-1234] create a new cool feature');
+  });
 });
