@@ -9,7 +9,7 @@
     "cz-cust": "./standalone.js"
   },
   "scripts": {
-    "lint": "node_modules/eslint/bin/eslint.js *.js __tests__/**.js",
+    "lint": "npx eslint *.js __tests__/**.js",
     "test": "jest",
     "test:watch": "jest -- --watch",
     "semantic-release": "semantic-release",
