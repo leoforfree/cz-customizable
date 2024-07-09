@@ -115,12 +115,30 @@ describe('cz-customizable', () => {
     expect(getQuestion(5).filter('Some subject')).toEqual('some subject');
   });
 
-  it('subject should be capitilized when config property "upperCaseSubject" is set to true', () => {
+  it('subject should be capitalized when config property "upperCaseSubject" is set to true', () => {
     config = {
       upperCaseSubject: true,
     };
 
     expect(getQuestion(5).filter('some subject')).toEqual('Some subject');
+  });
+
+  it('message should contain regexp and fallbackTicketNumber if given', () => {
+    config = {
+      ticketNumberRegExp: '\\d{1,5}',
+      fallbackTicketNumber: '12345',
+    };
+
+    expect(getQuestion(4).message).toContain('Enter the ticket number following this pattern');
+    expect(getQuestion(4).message).toContain(', default: 12345)');
+  });
+
+  it('message should contain fallbackTicketNumber if given', () => {
+    config = {
+      fallbackTicketNumber: '12345',
+    };
+
+    expect(getQuestion(4).message).toContain('(default: 12345)');
   });
 
   describe('optional fixOverride and allowBreakingChanges', () => {
@@ -259,6 +277,13 @@ describe('cz-customizable', () => {
           ticketNumberRegExp: '\\d{1,5}',
         };
         expect(getQuestion(4).validate('12345')).toEqual(true);
+      });
+      it('valid because fallbackTicketNumber provided', () => {
+        config = {
+          isTicketNumberRequired: true,
+          fallbackTicketNumber: '12345',
+        };
+        expect(getQuestion(4).validate('')).toEqual(true);
       });
     });
   });
