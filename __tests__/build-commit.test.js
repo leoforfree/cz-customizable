@@ -48,6 +48,78 @@ describe('buildCommit()', () => {
     });
   });
 
+  describe('ticket number', () => {
+    it('subject with ticket number', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'this is a new feature',
+        ticketNumber: '123',
+      };
+      const options = {};
+      expect(buildCommit(answersNoScope, options)).toEqual('feat: 123 this is a new feature');
+    });
+
+    it('subject with ticket number prefix but no scope', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'this is a new feature',
+        ticketNumber: '123',
+      };
+      const options = {
+        ticketNumberPrefix: 'PREFIX-',
+      };
+      expect(buildCommit(answersNoScope, options)).toEqual('feat: PREFIX-123 this is a new feature');
+    });
+
+    it('subject with scope, ticket number and prefix', () => {
+      const answersNoScope = {
+        type: 'feat',
+        scope: 'app',
+        subject: 'this is a new feature',
+        ticketNumber: '123',
+      };
+      const options = {
+        ticketNumberPrefix: 'PREFIX-',
+      };
+      expect(buildCommit(answersNoScope, options)).toEqual('feat(app): PREFIX-123 this is a new feature');
+    });
+
+    it('subject with no ticket number or scope but with fallback', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'this is a new feature',
+      };
+      const options = {
+        fallbackTicketNumber: '000',
+      };
+      expect(buildCommit(answersNoScope, options)).toEqual('feat: 000 this is a new feature');
+    });
+
+    it('subject with prefix and fallback ticket number', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'this is a new feature',
+      };
+      const options = {
+        ticketNumberPrefix: 'PREFIX-',
+        fallbackTicketNumber: '000',
+      };
+      expect(buildCommit(answersNoScope, options)).toEqual('feat: PREFIX-000 this is a new feature');
+    });
+
+    it('subject with ticket number and fallback', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'should not use fallback',
+        ticketNumber: '123',
+      };
+      const options = {
+        fallbackTicketNumber: '000',
+      };
+      expect(buildCommit(answersNoScope, options)).toEqual('feat: 123 should not use fallback');
+    });
+  });
+
   describe('type prefix and type suffix', () => {
     it('subject with both', () => {
       const answersNoScope = {
