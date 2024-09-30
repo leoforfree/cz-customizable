@@ -39,7 +39,7 @@ If everything is correct, you should see commit questions like the image above.
 
 ## Option 2 - cz-customizable in standalone mode
 
-Use `cz-customizable` without `commitzen`.
+Use `cz-customizable` without `commitizen`.
 
 * npm install `npm install cz-customizable --save-dev`
 * add a new script to your `package.json`:
