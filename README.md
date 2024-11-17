@@ -146,6 +146,23 @@ Here are the options you can set in your `.cz-config.js`:
     ]
   }
   ```
+* **additionalQuestions**:{Array of object} To ask additional question. Answers will be appended to body part. All keys of object are required.
+  ```
+   additionalQuestions: [
+    {
+      type: 'input',
+      name: 'time',
+      message: 'Time spent (i.e. 1h 15m) (optional):\n',
+      mapping: "#time"
+    },
+    {
+      type: 'input',
+      name: 'comment',
+      message: 'Jira comment (optional):\n',
+      mapping: "#comment"
+    }
+  ],
+  ```
 * **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
