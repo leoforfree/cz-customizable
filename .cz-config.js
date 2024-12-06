@@ -25,7 +25,20 @@ module.exports = {
     { value: 'revert', name: 'revert:   Revert to a commit' },
     { value: 'WIP', name: 'WIP:      Work in progress' },
   ],
-
+  additionalQuestions: [ 
+    {
+      type: 'input',
+      name: 'time',
+      message: 'Time spent (i.e. 1h 15m) (optional):\n',
+      mapping: "#time"
+    },
+    {
+      type: 'input',
+      name: 'comment',
+      message: 'Jira comment (optional):\n',
+      mapping: "#comment"
+    }
+  ],
   scopes: [{ name: 'accounts' }, { name: 'admin' }, { name: 'exampleScope' }, { name: 'changeMe' }],
 
   allowTicketNumber: false,
