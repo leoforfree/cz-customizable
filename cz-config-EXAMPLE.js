@@ -28,6 +28,7 @@ module.exports = {
 
   usePreparedCommit: false, // to re-use commit from ./.git/COMMIT_EDITMSG
   allowTicketNumber: false,
+  prependTicketToHead: false,
   isTicketNumberRequired: false,
   ticketNumberPrefix: 'TICKET-',
   ticketNumberRegExp: '\\d{1,5}',

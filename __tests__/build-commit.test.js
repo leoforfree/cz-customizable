@@ -118,6 +118,18 @@ describe('buildCommit()', () => {
       };
       expect(buildCommit(answersNoScope, options)).toEqual('feat: 123 should not use fallback');
     });
+
+    it('subject with ticket number prepend', () => {
+      const answersNoScope = {
+        type: 'feat',
+        subject: 'should prepend ticket number to head',
+        ticketNumber: '123',
+      };
+      const options = {
+        prependTicketToHead: true,
+      };
+      expect(buildCommit(answersNoScope, options)).toEqual('123 feat: should prepend ticket number to head');
+    });
   });
 
   describe('type prefix and type suffix', () => {
