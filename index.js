@@ -11,8 +11,8 @@ const buildCommit = require('./lib/build-commit');
 const readConfigFile = require('./lib/read-config-file');
 
 module.exports = {
-  prompter(cz, commit) {
-    const config = readConfigFile();
+  prompter(cz, commit, configObj) {
+    const config = configObj || readConfigFile();
     config.subjectLimit = config.subjectLimit || 100;
     log.info('All lines except first will be wrapped after 100 characters.');
 
