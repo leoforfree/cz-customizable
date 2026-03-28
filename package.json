@@ -26,6 +26,9 @@
     "Aleksey Guryanov <gurianov@gmail.com>"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
   "dependencies": {
     "editor": "1.0.0",
     "find-config": "^1.0.0",
