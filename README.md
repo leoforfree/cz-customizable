@@ -73,7 +73,7 @@ This is how this project started.
 ```
 
 
-## Configuration (Shared between options 1,2 and 3)
+## Configuration (shared between Options 1, 2 and 3)
 
 * Copy contents of [the example config file](./cz-config-EXAMPLE.js) and paste into a new file `.cz-config.js`
 
@@ -81,12 +81,12 @@ This is how this project started.
 ### Option 1 - You can make changes to your git repository, file `package.json`.
 
 * `cz-customizable` will first look for a file called `.cz-config.js` or `.config/cz-config.js` in the project root, near your `package.json`
-* If no config found, it will look for `.cz-config.js` or or `.config/cz-config.js` in your home directory
+* If no config found, it will look for `.cz-config.js` or `.config/cz-config.js` in your home directory
 * alternatively add the config location in your `package.json`:
 ```
 ...
 "config": {
-  "commitizen": { // not needed for standlone usage
+  "commitizen": { // not needed for standalone usage
     "path": "node_modules/cz-customizable"
   },
   "cz-customizable": {
@@ -95,10 +95,10 @@ This is how this project started.
 }
 ```
 
-Note: option one allows you to have your config away from root directory. It also gives you a change to define any name to your `.cz-config.js`.
+Note: option one allows you to have your config away from root directory. It also gives you a chance to define any name to your `.cz-config.js`.
 
 
-### No Changes to your git repository*.
+### No Changes to your git repository.
 
 This is suitable when your team is not ready to roll `cz-customizable` across all teams but you still would like to use it for your own commits, no matter the project.
 
@@ -168,8 +168,8 @@ Here are the options you can set in your `.cz-config.js`:
 * **skipQuestions**: {Array of Strings: default none}. List of questions you want to skip. Eg.: ['body', 'footer'].
 * **skipEmptyScopes**: {boolean, default false}: If a chosen type has no scopes declared, skip the scope question
 * **appendBranchNameToCommitMessage**: If you use `cz-customizable` with `cz-customizable-ghooks`, you can get the branch name automatically appended to the commit message. This is done by a commit hook on `cz-customizable-ghooks`. This option has been added on `cz-customizable-ghooks`, v1.3.0. Default value is `true`.
-* **ticketNumberPrefix**: {string, default 'ISSUES CLOSED:'}: Set custom prefix for footer ticker number.
-* **ticketNumberSuffix**: {string, default ''}: Set custom suffix for footer ticker number.
+* **ticketNumberPrefix**: {string, default ''}: Set custom prefix for the ticket number.
+* **ticketNumberSuffix**: {string, default ''}: Set custom suffix for the ticket number.
 * **fallbackTicketNumber**: {string, default ''}: Set fallback ticket number which will be used if `ticketNumber` is not provided.
 * **breakingPrefix**: {string, default 'BREAKING CHANGE:'}: Set a custom prefix for the breaking change block in commit messages.
 * **footerPrefix**: {string, default 'ISSUES CLOSED:'}: Set a custom prefix for the footer block in commit messages. Set to empty string to remove prefix.
@@ -212,7 +212,7 @@ my items are:
 * Favor non-breaking changes when possible
 * Send preliminary PR if you would like to start a discussion
 
-### Conduct of Code:
+### Code of Conduct:
 * Be polite, respectful and understanding that we are all here after working hours spending time to build something useful to all.
 * We promise to extend courtesy and respect to everyone involved in this project regardless of gender, gender identity, sexual orientation, disability, age, race, ethnicity, religion, or level of experience
 
