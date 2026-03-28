@@ -31,7 +31,7 @@ module.exports = {
   allowTicketNumber: false,
   isTicketNumberRequired: false,
   ticketNumberPrefix: 'TICKET-',
-  ticketNumberSuffix:'',
+  ticketNumberSuffix: '',
   ticketNumberRegExp: '\\d{1,5}',
 
   // it needs to match the value for field type. Eg.: 'fix'
