@@ -1,6 +1,11 @@
 # cz-customizable
 
-The customizable Commitizen plugin (or standalone utility) to help achieve consistent commit messages such as [Conventional Commits](https://www.conventionalcommits.org/). Note that you can create any commit message pattern. You don't have to use the pattern from the Conventional Commits. For example, my team uses this pattern: `[minor] add new feature xyz`
+
+Command line tool to guide teams to writing [Conventional Commits](https://www.conventionalcommits.org/).
+
+Use it as standalone utility (or Commitizen plugin) to help achieve consistent commit messages such as.
+
+Note that you can create any commit message pattern. You don't have to use the pattern from the Conventional Commits. For example, my team uses this pattern: `[minor] add new feature xyz`
 
 ![screenshot](screenshot.png)
 
