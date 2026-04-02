@@ -189,4 +189,50 @@ line 2`;
     // eslint-disable-next-line prettier/prettier, no-useless-escape
     expect(buildCommit(altAnswers, {})).toEqual('feat(app): th\\\"is i\'s a n\\`ew \\\\$ f\\<ea\\>ture \\&');
   });
+
+  describe('additionalQuestions', () => {
+    const baseAnswers = {
+      type: 'feat',
+      scope: 'app',
+      subject: 'this is a new feature',
+    };
+
+    it('should include all additional questions in the commit body', () => {
+      const answersWithAQ = {
+        ...baseAnswers,
+        epic: 'EPIC-124',
+        issue: 'ISSUE-456',
+      };
+      const options = {
+        additionalQuestions: [
+          { name: 'epic', mapping: 'Epic Link:' },
+          { name: 'issue', mapping: 'Issue:' },
+        ],
+      };
+
+      expect(buildCommit(answersWithAQ, options)).toEqual(
+        'feat(app): this is a new feature\n\n\nEpic Link: EPIC-124\nIssue: ISSUE-456',
+      );
+    });
+
+    it('should exclude questions when excludeFromCommitMsg returns true', () => {
+      const answersWithAQ = {
+        ...baseAnswers,
+        epic: 'EPIC-124',
+        issue: 'ISSUE-456',
+      };
+      const options = {
+        additionalQuestions: [
+          { name: 'epic', mapping: 'Epic Link:' },
+          {
+            name: 'issue',
+            mapping: 'Issue:',
+            excludeFromCommitMsg: () => true,
+          },
+        ],
+      };
+
+      expect(buildCommit(answersWithAQ, options)).toEqual('feat(app): this is a new feature\n\n\nEpic Link: EPIC-124');
+    });
+  });
 });

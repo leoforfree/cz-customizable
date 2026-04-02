@@ -151,9 +151,14 @@ Here are the options you can set in your `.cz-config.js`:
     ]
   }
   ```
-* **additionalQuestions**:{Array of object} To ask additional question. Answers will be appended to body part. All keys of object are required.
-  ```
-   additionalQuestions: [
+* **additionalQuestions**: {Array<Object>, default `[]`}: Specify extra prompts whose answers will be appended to the commit message body. Each object **must** include:
+  - `type` (`string`): Prompt type for [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) (e.g. `input`, `confirm`)
+  - `name` (`string`): Key under which the answer is stored
+  - `message` (`string`): Text shown to the user when prompting
+  - `mapping` (`string`): Label to prepend to the answer in the commit body
+  - `excludeFromCommitMsg` (`() => boolean`, _optional_): If it returns `true`, this answer is omitted from the commit body  
+  ```js
+  additionalQuestions: [
     {
       type: 'input',
       name: 'time',
@@ -164,9 +169,10 @@ Here are the options you can set in your `.cz-config.js`:
       type: 'input',
       name: 'comment',
       message: 'Jira comment (optional):\n',
-      mapping: "#comment"
+      mapping: "#comment:",
+      excludeFromCommitMsg: () => true
     }
-  ],
+  ]
   ```
 * **allowCustomScopes**: {boolean, default false}: adds the option `custom` to scope selection so you can still type a scope if you need.
 * **allowBreakingChanges**: {Array of Strings: default none}. List of commit types you would like to the question `breaking change` prompted. Eg.: ['feat', 'fix'].
