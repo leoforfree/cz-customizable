@@ -34,7 +34,6 @@
     "find-config": "^1.0.0",
     "inquirer": "^6.3.1",
     "lodash": "^4.17.23",
-    "temp": "^0.9.4",
     "word-wrap": "^1.2.5"
   },
   "devDependencies": {
