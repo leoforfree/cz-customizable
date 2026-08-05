@@ -4,6 +4,9 @@ const getPreviousCommit = require('../lib/utils/get-previous-commit');
 
 const commit = jest.fn();
 
+const MOCK_EDITOR_SUCCESS = process.platform === 'win32' ? 'cmd /c exit 0' : 'true';
+const MOCK_EDITOR_FAILURE = process.platform === 'win32' ? 'cmd /c exit 1' : 'false';
+
 jest.mock('./../lib/read-config-file');
 jest.mock('./../lib/utils/get-previous-commit');
 
@@ -155,7 +158,7 @@ describe('cz-customizable', () => {
   });
 
   it('should allow edit message before commit', (done) => {
-    process.env.EDITOR = 'true';
+    process.env.EDITOR = MOCK_EDITOR_SUCCESS;
 
     const answers = {
       confirmCommit: 'edit',
@@ -173,7 +176,7 @@ describe('cz-customizable', () => {
   });
 
   it('should not commit if editor returned non-zero value', (done) => {
-    process.env.EDITOR = 'false';
+    process.env.EDITOR = MOCK_EDITOR_FAILURE;
 
     const answers = {
       confirmCommit: 'edit',
