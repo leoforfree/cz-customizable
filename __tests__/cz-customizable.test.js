@@ -401,4 +401,26 @@ describe('cz-customizable', () => {
     czModule.prompter(mockCz, commit);
     expect(commit).toHaveBeenCalledWith('feat(myScope): [TICKET-1234] create a new cool feature');
   });
+
+  it('should use config from args', () => {
+    const config = {
+      types: [{ value: 'feat', name: 'feat: my feat' }],
+      scopes: [{ name: 'myScope' }],
+      scopeOverrides: {
+        fix: [{ name: 'myScope' }],
+      },
+    };
+
+    const answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      subject: 'do it all',
+    };
+
+    const mockCz = getMockedCz(answers);
+
+    czModule.prompter(mockCz, commit, config);
+
+    expect(commit).toHaveBeenCalledWith('feat: do it all');
+  });
 });
